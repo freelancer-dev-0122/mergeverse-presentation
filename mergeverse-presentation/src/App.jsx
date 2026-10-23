@@ -215,10 +215,62 @@ const GAMEPLAY_OVERLAPPING_CARDS = [
   },
 ];
 
+const NOTEBOOK_CHECKLIST_ITEMS = [
+  { id: 1, text: 'Idea: merge puzzle + real inventions' },
+  { id: 2, text: 'Plan & logic: ChatGPT' },
+  { id: 3, text: 'Art direction: Gemini & Stitch' },
+  { id: 4, text: 'Built with: Antigravity' },
+  { id: 5, text: '4 realms. Agriculture: 20 levels' },
+  { id: 6, text: 'Play. Fix. Repeat.', hasDoodle: true },
+];
+
 function App() {
   const containerRef = useRef(null);
   const heroViewportRef = useRef(null);
   const presentationRef = useRef(null);
+
+  // Story Notebook & Desk Section State & Handlers
+  const [isNotebookInView, setIsNotebookInView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  });
+  const [isMonitorHovered, setIsMonitorHovered] = useState(false);
+  const [isMonitorToggled, setIsMonitorToggled] = useState(false);
+  const notebookSectionRef = useRef(null);
+
+  const isWorldMapShowing = isMonitorHovered || isMonitorToggled;
+
+  const toggleMonitorScreen = () => {
+    setIsMonitorToggled((prev) => !prev);
+  };
+
+  // Single-run IntersectionObserver for the notebook checklist line-by-line reveal
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNotebookInView(true);
+          if (notebookSectionRef.current) {
+            observer.unobserve(notebookSectionRef.current);
+          }
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    const el = notebookSectionRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
 
   const [activeRealmId, setActiveRealmId] = useState('agriculture');
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
@@ -1309,6 +1361,176 @@ function App() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* ---------------------------------------------------------------------
+          SECTION 1.95: NOTEBOOK BUILD STORY & DESK SHOWCASE
+          Full-width wooden desk with CSS spiral notebook & interactive playtest monitor
+          --------------------------------------------------------------------- */}
+      <section
+        id="notebook-build-story"
+        ref={notebookSectionRef}
+        className="desk-build-story-section"
+        aria-label="Built Step by Step. Tested Merge by Merge"
+      >
+        {/* Decorative Desk Props: Faint Coffee-Ring Stain & Pencil (Non-clickable, behind content) */}
+        <div className="desk-coffee-stain" aria-hidden="true" />
+        <div className="desk-pencil" aria-hidden="true" />
+
+        <div className="desk-content-container">
+          {/* Section Header */}
+          <div className="desk-header-lockup">
+            <h2 className="desk-main-heading">
+              BUILT STEP BY STEP. TESTED MERGE BY MERGE.
+            </h2>
+            <p className="desk-subheading">
+              Every level was planned, built and played by one creator, then improved after each test.
+            </p>
+
+            {/* Three small round tool chips: Glass style, thin gold border */}
+            <div className="desk-tools-chips-row">
+              <div className="desk-tool-chip">
+                <span className="chip-sparkle" aria-hidden="true">✦</span>
+                <span>Planning — ChatGPT</span>
+              </div>
+              <div className="desk-tool-chip">
+                <span className="chip-sparkle" aria-hidden="true">✦</span>
+                <span>Art — Gemini</span>
+              </div>
+              <div className="desk-tool-chip">
+                <span className="chip-sparkle" aria-hidden="true">✦</span>
+                <span>Build — Antigravity</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Desk Composition: Notebook on Left, Monitor on Right */}
+          <div className="desk-composition-layout">
+            {/* LEFT: THE NOTEBOOK (CSS only) */}
+            <div className="notebook-assembly-col">
+              <div className="notebook-page-card">
+                {/* Translucent tape at top */}
+                <div className="notebook-top-tape" aria-hidden="true" />
+
+                {/* Left spiral rings */}
+                <div className="notebook-spiral-binder" aria-hidden="true">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="spiral-ring-unit">
+                      <span className="ring-hole" />
+                      <span className="ring-loop" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Notebook Page Content */}
+                <div className="notebook-inner-ruled-content">
+                  <div className="notebook-header-stamp" aria-hidden="true">
+                    <span>DEV LOG · EXPEDITION 01</span>
+                  </div>
+
+                  <ul className="notebook-checklist">
+                    {NOTEBOOK_CHECKLIST_ITEMS.map((item, idx) => (
+                      <li
+                        key={item.id}
+                        className={`notebook-check-row ${isNotebookInView ? 'is-animated' : ''}`}
+                        style={{
+                          '--item-delay': `${idx * 250}ms`,
+                        }}
+                      >
+                        {/* Hand-drawn style checkmark */}
+                        <span className="notebook-check-glyph" aria-hidden="true">
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4 12.5l5.5 5.5L20 6" />
+                          </svg>
+                        </span>
+
+                        {/* Hand-written text with clip-path writing reveal */}
+                        <span className="notebook-line-text">
+                          {item.text}
+                        </span>
+
+                        {/* Hand-drawn loop doodle next to "Play. Fix. Repeat." */}
+                        {item.hasDoodle && (
+                          <span className="notebook-hand-doodle" aria-hidden="true">
+                            <svg width="54" height="30" viewBox="0 0 64 36" fill="none" stroke="#d97706" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M4 22 C 16 6, 42 6, 52 18 C 57 25, 46 32, 36 26 C 28 20, 36 8, 48 12" />
+                              <polyline points="50 7 49 13 43 12" />
+                            </svg>
+                            <span className="doodle-note-text">Cycle</span>
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT: THE MONITOR (CSS only) */}
+            <div className="monitor-assembly-col">
+              <div className="monitor-rig-wrapper">
+                <button
+                  type="button"
+                  className="monitor-display-frame"
+                  onMouseEnter={() => setIsMonitorHovered(true)}
+                  onMouseLeave={() => setIsMonitorHovered(false)}
+                  onClick={toggleMonitorScreen}
+                  aria-label="Playtest desktop monitor. Shows Level 19 Harvest Board screenshot; hover or tap to swap to the World Map"
+                >
+                  <div className="monitor-bezel-rim">
+                    {/* 16:10 Screen Viewport */}
+                    <div className="monitor-screen-viewport">
+                      {/* Screenshot 1: Level 19 Harvest Board */}
+                      <img
+                        src="/images/gameplay.jpg"
+                        alt="Level 19 Harvest Board in-game gameplay screenshot"
+                        className={`monitor-screen-img ${isWorldMapShowing ? 'img-hidden' : 'img-active'}`}
+                        loading="lazy"
+                      />
+
+                      {/* Screenshot 2: World Map (Swapped on hover/tap) */}
+                      <img
+                        src="/images/world-map.jpg"
+                        alt="World Map Archipelago in-game screenshot"
+                        className={`monitor-screen-img ${isWorldMapShowing ? 'img-active' : 'img-hidden'}`}
+                        loading="lazy"
+                      />
+
+                      {/* Screen reflection/glare */}
+                      <div className="monitor-screen-glare" aria-hidden="true" />
+
+                      {/* Screen HUD badge indicating active view */}
+                      <div className="monitor-hud-badge" aria-hidden="true">
+                        <span className="hud-rec-dot" />
+                        <span>{isWorldMapShowing ? 'ARCHIPELAGO MAP' : 'LEVEL 19 · HARVEST'}</span>
+                      </div>
+                    </div>
+
+                    {/* Monitor Bottom Chin with Power Light */}
+                    <div className="monitor-bottom-chin" aria-hidden="true">
+                      <span className="monitor-brand-mark">MERGEVERSE ENGINE</span>
+                      <span className="monitor-status-light" />
+                    </div>
+                  </div>
+                </button>
+
+                {/* Silver Stand and Base */}
+                <div className="monitor-stand-chassis" aria-hidden="true">
+                  <div className="stand-neck-pillar" />
+                  <div className="stand-pedestal-base" />
+                </div>
+
+                {/* Sticky Note under the monitor */}
+                <div className="monitor-sticky-note" aria-hidden="true">
+                  <span className="sticky-tape-strip" />
+                  <span className="sticky-note-handwriting">
+                    {isWorldMapShowing ? 'World Map — verified!' : 'Level 19 — playtested!'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ---------------------------------------------------------------------

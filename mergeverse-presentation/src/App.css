@@ -2539,6 +2539,669 @@
 }
 
 /* --------------------------------------------------------------------------
+   2.95 SECTION 1.95: NOTEBOOK BUILD STORY & DESK SHOWCASE
+   CSS Wooden Desk, Ruled Paper Notebook with Animated Checklist & Playtest Monitor
+   -------------------------------------------------------------------------- */
+.desk-build-story-section {
+  width: 100%;
+  min-height: 90vh;
+  padding: 96px 24px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  /* CSS Wooden Desk: layered dark brown gradients, wood grain repeating-linear-gradient, soft vignette */
+  background-color: #170e0a;
+  background-image:
+    /* Soft dark vignette */
+    radial-gradient(ellipse at 50% 35%, rgba(48, 30, 20, 0.45) 0%, rgba(14, 9, 6, 0.9) 72%, rgba(6, 4, 2, 0.98) 100%),
+    /* Wood-grain subtle vertical plank lines */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 28px
+    ),
+    /* Rich warm dark timber gradient */
+    linear-gradient(180deg, #281810 0%, #1e120c 35%, #150d08 70%, #0d0805 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Decorative Desk Props: Coffee-ring stain & pencil (non-clickable, behind content) */
+.desk-coffee-stain {
+  position: absolute;
+  top: 140px;
+  right: 8%;
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 56%, rgba(75, 44, 22, 0.22) 59%, rgba(98, 58, 28, 0.32) 63%, rgba(65, 38, 18, 0.16) 69%, transparent 74%);
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(0.5px);
+  transform: rotate(18deg);
+}
+
+.desk-pencil {
+  position: absolute;
+  bottom: 50px;
+  left: 6%;
+  width: 190px;
+  height: 10px;
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 50%, #92400e 100%);
+  border-radius: 2px;
+  transform: rotate(-22deg);
+  box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.desk-pencil::before {
+  content: '';
+  position: absolute;
+  right: -16px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 16px solid #fde68a;
+}
+
+.desk-pencil::after {
+  content: '';
+  position: absolute;
+  right: -17px;
+  top: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #27272a;
+}
+
+/* Desk Content Container */
+.desk-content-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Top Section Header */
+.desk-header-lockup {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.desk-main-heading {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: clamp(1.7rem, 3.2vw, 2.7rem);
+  font-weight: 700;
+  color: #FFF6D8;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  margin: 0 0 14px 0;
+  text-align: center;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+}
+
+.desk-subheading {
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: #C4BFB5;
+  line-height: 1.55;
+  margin: 0 0 24px 0;
+  text-align: center;
+  max-width: 660px;
+}
+
+/* Tool Chips */
+.desk-tools-chips-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.desk-tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 246, 216, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(233, 173, 72, 0.35);
+  border-radius: 9999px;
+  padding: 6px 18px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #FFF0C2;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.desk-tool-chip .chip-sparkle {
+  color: #E9AD48;
+  font-size: 0.75rem;
+}
+
+/* Desk Composition: Notebook on Left, Monitor on Right */
+.desk-composition-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  position: relative;
+}
+
+/* LEFT: THE NOTEBOOK (CSS only) */
+.notebook-assembly-col {
+  flex: 1;
+  max-width: 500px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+}
+
+.notebook-page-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background-color: #faf5ea;
+  /* Ruled lines using repeating-linear-gradient */
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 31px,
+    rgba(70, 110, 160, 0.22) 31px,
+    rgba(70, 110, 160, 0.22) 32px
+  );
+  border-radius: 8px 16px 16px 8px;
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.25),
+    inset -2px 0 6px rgba(0, 0, 0, 0.04);
+  transform: rotate(-2deg);
+  box-sizing: border-box;
+  padding: 34px 28px 36px 68px; /* Left padding provides margin for red line and rings */
+  transition: transform 0.35s ease;
+}
+
+/* Left margin line in soft red */
+.notebook-page-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 56px;
+  width: 1.5px;
+  background: rgba(220, 75, 70, 0.45);
+  z-index: 2;
+}
+
+/* Translucent Tape at Top */
+.notebook-top-tape {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(1.2deg);
+  width: 88px;
+  height: 26px;
+  background: rgba(255, 255, 230, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+/* 6 Spiral Rings down left edge */
+.notebook-spiral-binder {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 10px;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.spiral-ring-unit {
+  position: relative;
+  width: 26px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.ring-hole {
+  position: absolute;
+  left: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #1e130c;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.ring-loop {
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 12px;
+  border-radius: 8px 12px 12px 8px;
+  border: 2.5px solid #aeb6be;
+  border-right-color: transparent;
+  background: transparent;
+  box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.35);
+  transform: rotate(-10deg);
+}
+
+/* Notebook Header Stamp */
+.notebook-header-stamp {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  color: rgba(90, 110, 140, 0.6);
+  margin-bottom: 12px;
+  user-select: none;
+}
+
+/* Checklist in handwriting font and dark blue ink */
+.notebook-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.notebook-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  min-height: 32px;
+}
+
+.notebook-check-glyph {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--item-delay);
+}
+
+.notebook-check-row.is-animated .notebook-check-glyph {
+  transform: scale(1);
+}
+
+.notebook-line-text {
+  font-family: var(--font-handwriting, 'Caveat', 'Patrick Hand', cursive, sans-serif);
+  font-size: clamp(1.22rem, 1.8vw, 1.48rem);
+  font-weight: 600;
+  color: #173259; /* Dark blue ink */
+  line-height: 1.25;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 400ms cubic-bezier(0.16, 1, 0.3, 1) var(--item-delay);
+  white-space: nowrap;
+}
+
+.notebook-check-row.is-animated .notebook-line-text {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Hand-drawn loop doodle next to last item */
+.notebook-hand-doodle {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 400ms ease calc(var(--item-delay) + 200ms), transform 400ms ease calc(var(--item-delay) + 200ms);
+}
+
+.notebook-check-row.is-animated .notebook-hand-doodle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.doodle-note-text {
+  font-family: var(--font-handwriting, 'Caveat', cursive, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #d97706;
+}
+
+/* RIGHT: THE MONITOR (CSS only) */
+.monitor-assembly-col {
+  flex: 1.15;
+  max-width: 620px;
+  margin-left: -32px; /* Slight natural overlap with notebook on desktop */
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.monitor-rig-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(1.5deg);
+  transition: transform 0.35s ease;
+}
+
+.monitor-display-frame {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: left;
+  outline: none;
+}
+
+.monitor-display-frame:focus-visible .monitor-bezel-rim {
+  outline: 3px solid #E9AD48;
+  outline-offset: 4px;
+}
+
+.monitor-bezel-rim {
+  width: 100%;
+  background: #14181c;
+  border: 3px solid #2d3339;
+  border-radius: 16px;
+  padding: 12px 12px 8px 12px;
+  box-sizing: border-box;
+  /* Soft green glow */
+  box-shadow:
+    0 22px 55px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(78, 157, 134, 0.32),
+    0 0 16px rgba(74, 222, 128, 0.18);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.monitor-display-frame:hover .monitor-bezel-rim {
+  border-color: rgba(78, 157, 134, 0.6);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 0 45px rgba(78, 157, 134, 0.45),
+    0 0 20px rgba(74, 222, 128, 0.28);
+}
+
+.monitor-screen-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000000;
+}
+
+.monitor-screen-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: opacity 400ms ease;
+}
+
+.monitor-screen-img.img-active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.monitor-screen-img.img-hidden {
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glass screen glare */
+.monitor-screen-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Screen HUD badge */
+.monitor-hud-badge {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(9, 28, 20, 0.85);
+  border: 1px solid rgba(78, 157, 134, 0.45);
+  border-radius: 9999px;
+  padding: 3px 10px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #FFF6D8;
+  z-index: 6;
+}
+
+.hud-rec-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
+
+/* Monitor bottom chin */
+.monitor-bottom-chin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 6px 2px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.65rem;
+  color: #64748b;
+  letter-spacing: 0.12em;
+}
+
+.monitor-status-light {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
+
+/* Stand and Base */
+.monitor-stand-chassis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.stand-neck-pillar {
+  width: 32px;
+  height: 38px;
+  background: linear-gradient(90deg, #9ca3af 0%, #e5e7eb 50%, #6b7280 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.stand-pedestal-base {
+  width: 190px;
+  height: 10px;
+  background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 50%, #4b5563 100%);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+/* Sticky Note under monitor */
+.monitor-sticky-note {
+  position: absolute;
+  bottom: -24px;
+  right: 18px;
+  background: #fef08a; /* Soft cream/yellow post-it */
+  border-radius: 3px;
+  padding: 8px 14px 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transform: rotate(-3deg);
+  z-index: 10;
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+.sticky-tape-strip {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(1px);
+}
+
+.sticky-note-handwriting {
+  font-family: var(--font-handwriting, 'Caveat', cursive, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #713f12;
+  white-space: nowrap;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .desk-build-story-section {
+    padding: 72px 18px;
+  }
+
+  /* Below 900px, stack monitor under notebook, remove overlap */
+  .desk-composition-layout {
+    flex-direction: column;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .monitor-assembly-col {
+    margin-left: 0;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .notebook-page-card {
+    transform: rotate(0deg);
+  }
+
+  .monitor-rig-wrapper {
+    transform: rotate(0deg);
+  }
+
+  .notebook-line-text {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .desk-build-story-section {
+    padding: 56px 14px;
+  }
+
+  .desk-main-heading {
+    font-size: 1.55rem;
+  }
+
+  .notebook-page-card {
+    padding: 28px 16px 28px 52px;
+  }
+
+  .notebook-page-card::before {
+    left: 44px;
+  }
+
+  .notebook-line-text {
+    font-size: 1.12rem;
+    white-space: normal;
+  }
+
+  .stand-neck-pillar {
+    height: 24px;
+  }
+
+  .stand-pedestal-base {
+    width: 150px;
+  }
+
+  .desk-coffee-stain {
+    display: none;
+  }
+
+  .desk-pencil {
+    display: none;
+  }
+}
+
+/* Reduced Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .notebook-check-glyph {
+    transform: scale(1) !important;
+    transition: none !important;
+  }
+
+  .notebook-line-text {
+    clip-path: inset(0 0 0 0) !important;
+    transition: none !important;
+  }
+
+  .notebook-hand-doodle {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    transition: none !important;
+  }
+
+  .monitor-screen-img {
+    transition: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
    3. SECTION 2: INTRODUCTION — EDITORIAL SPLIT COMPOSITION
    Warm Cream & Parchment Editorial Tone
    -------------------------------------------------------------------------- */
