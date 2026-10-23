@@ -79,7 +79,7 @@ const ATELIER_TIMELINE = [
   },
 ];
 
-export default function BehindTheWorlds({ onOpenModal }) {
+export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} } = {}) {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -119,14 +119,6 @@ export default function BehindTheWorlds({ onOpenModal }) {
         y: 20,
         stagger: 0.08,
         duration: 0.7,
-        ease: 'power2.out',
-      });
-
-      // Gallery items
-      gsap.from('.gallery-item-card', {
-        y: 25,
-        duration: 0.8,
-        stagger: 0.08,
         ease: 'power2.out',
       });
     }, containerRef);
@@ -352,179 +344,16 @@ export default function BehindTheWorlds({ onOpenModal }) {
               </p>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* =====================================================================
-          CHAPTER 04: THE IN-ENGINE REALIZATION (ART-DIRECTED GALLERY)
-          Varied image-and-text compositions showcasing authentic game captures
-          ===================================================================== */}
-      <div className="btw-chapter-section btw-gallery-section">
-        <div className="editorial-container">
-          <header className="btw-gallery-header">
-            <div className="editorial-pill">
-              <span className="pill-star">✦</span>
-              <span>CHAPTER 04 · THE RESULT</span>
-              <span className="pill-star">✦</span>
-            </div>
-            <h3 className="gallery-section-title">The Complete In-Engine Experience</h3>
-            <p className="gallery-section-sub">
-              Four verified in-game screenshots illustrating the playable reality of MERGEVERSE.
-            </p>
-          </header>
-
-          {/* Art-Directed Asymmetric Media Grid */}
-          <div className="btw-gallery-grid" aria-label="In-Game Captures">
-            {/* Primary Feature: World Map */}
-            <div
-              className="gallery-item-card is-featured"
-              onClick={() => onOpenModal?.('map')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onOpenModal?.('map');
-              }}
-              aria-label="Inspect Full Resolution World Map"
-            >
-              <div className="card-thumb-wrap ratio-map">
-                <img
-                  src="/images/world-map.jpg"
-                  alt="MERGEVERSE In-Game World Map with four floating islands"
-                  className="card-thumb-img"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="card-info-pane">
-                <span className="card-kicker">01 · ARCHIPELAGO CARTOGRAPHY</span>
-                <h4 className="card-title">The Four Sovereign Sky Realms</h4>
-                <p className="card-caption">
-                  Active Agriculture hub alongside locked Food &amp; Culinary, Healthcare &amp; Medicine, and Assistive Technology floating archipelagos.
-                </p>
-                <div className="card-action-row">
-                  <span className="card-inspect-btn primary-inspect">
-                    <span className="inspect-icon" aria-hidden="true">⛶</span>
-                    <span>Inspect Map</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Secondary Item: Home Basecamp */}
-            <div
-              className="gallery-item-card"
-              onClick={() => onOpenModal?.('dashboard')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onOpenModal?.('dashboard');
-              }}
-              aria-label="Inspect Basecamp Sanctuary"
-            >
-              <div className="card-thumb-wrap ratio-dashboard">
-                <img
-                  src="/images/home-dashboard.jpg"
-                  alt="MERGEVERSE Home Dashboard screenshot"
-                  className="card-thumb-img"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="card-info-pane">
-                <span className="card-kicker">02 · EXPEDITION BASECAMP</span>
-                <h4 className="card-title">The Alpine Sanctuary</h4>
-                <p className="card-caption">
-                  Explorer Level 6 standing (1,395 / 1,400 XP), achievements, and persistent telemetry.
-                </p>
-                <div className="card-action-row">
-                  <span className="card-inspect-btn">
-                    <span className="inspect-icon" aria-hidden="true">⛶</span>
-                    <span>Inspect</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Tertiary Item: Level 19 Harvest Board */}
-            <div
-              className="gallery-item-card"
-              onClick={() => onOpenModal?.('gameplay')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onOpenModal?.('gameplay');
-              }}
-              aria-label="Inspect Level 19 Gameplay"
-            >
-              <div className="card-thumb-wrap ratio-gameplay">
-                <img
-                  src="/images/gameplay.jpg"
-                  alt="MERGEVERSE Level 19 gameplay board"
-                  className="card-thumb-img"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="card-info-pane">
-                <span className="card-kicker">03 · PUZZLE BOARD</span>
-                <h4 className="card-title">Level 19 Harvest Board</h4>
-                <p className="card-caption">
-                  5×6 cascade merge board fulfilling artisanal bread recipes with double merge bonuses.
-                </p>
-                <div className="card-action-row">
-                  <span className="card-inspect-btn">
-                    <span className="inspect-icon" aria-hidden="true">⛶</span>
-                    <span>Inspect</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Quaternary Item: In-Game Knowledge Challenge */}
-            <div
-              className="gallery-item-card"
-              onClick={() => onOpenModal?.('knowledge')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onOpenModal?.('knowledge');
-              }}
-              aria-label="Inspect Knowledge Challenge"
-            >
-              <div className="card-thumb-wrap ratio-knowledge">
-                <img
-                  src="/images/knowledge-challenge.png"
-                  alt="MERGEVERSE In-Game Knowledge Challenge screenshot"
-                  className="card-thumb-img"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="card-info-pane">
-                <span className="card-kicker">04 · PEDAGOGICAL DESIGN</span>
-                <h4 className="card-title">In-Game Knowledge Challenge</h4>
-                <p className="card-caption">
-                  Milestone challenges testing real historical facts before awarding three-star level completion.
-                </p>
-                <div className="card-action-row">
-                  <span className="card-inspect-btn">
-                    <span className="inspect-icon" aria-hidden="true">⛶</span>
-                    <span>Inspect</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Row */}
+          {/* Action Navigation Strip */}
           <div className="btw-action-strip">
             <a href="#hero" className="btw-nav-btn primary">
               <span>↑ RETURN TO OPENING</span>
             </a>
-            <a href="#four-realms" className="btw-nav-btn secondary">
+            <a href="#four-realms-ocean" className="btw-nav-btn secondary">
               <span>✦ EXPLORE THE FOUR REALMS</span>
             </a>
-            <a href="#gameplay-showcase" className="btw-nav-btn secondary">
+            <a href="#gameplay-progression-showcase" className="btw-nav-btn secondary">
               <span>✦ INSPECT GAMEPLAY MECHANICS</span>
             </a>
           </div>

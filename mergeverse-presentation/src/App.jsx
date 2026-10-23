@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './App.css';
@@ -6,100 +6,8 @@ import BehindTheWorlds from './BehindTheWorlds.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ---------------------------------------------------------------------------
-// Verified Game Data for the Four Realms
-// Grounded strictly in actual project screenshots and verified gameplay items
-// ---------------------------------------------------------------------------
-const REALMS = [
-  {
-    id: 'agriculture',
-    roman: 'I',
-    number: '01',
-    name: 'Agriculture',
-    headline: 'AGRICULTURE',
-    tagline: 'Nurturing the Earth & The Dawn of Settlement',
-    roleTag: 'Active Hub · Level 20 Unlocked',
-    status: 'Unlocked',
-    icon: '🌱',
-    accentColor: '#4ade80',
-    accentGlow: 'rgba(74, 222, 128, 0.32)',
-    hotspot: { x: '24%', y: '25%' },
-    conciseDescription:
-      'The foundational realm of cultivation and harvest. Guided by terraced crop furrows, timber barns, and rustic windmills, explorers master the ancient crafts of the earth to nourish thriving settlements.',
-    structures: [
-      'Two-story red timber barn & towering grain silo',
-      'Rustic wooden windmill with timber sail rotors',
-      'Terraced crop furrows & irrigation bridge',
-      'Cliffside freshwater waterfall cascade into sea',
-    ],
-  },
-  {
-    id: 'food-culinary',
-    roman: 'II',
-    number: '02',
-    name: 'Food & Culinary',
-    headline: 'FOOD & CULINARY',
-    tagline: 'Crafting Nutrition, Fermentation & Gastronomy',
-    roleTag: 'Milestone Locked · Crafting Hub',
-    status: 'Locked',
-    icon: '👨‍🍳',
-    accentColor: '#fb923c',
-    accentGlow: 'rgba(251, 146, 60, 0.32)',
-    hotspot: { x: '74%', y: '25%' },
-    conciseDescription:
-      'The craft of sustenance and community. Centered around bustling cobblestone piazzas, artisanal bakehouses, and market stalls, explorers harness thermal heat and fermentation to feed expanding societies.',
-    structures: [
-      'Alpine stone tavern & cobblestone piazza',
-      'Sunlit market bazaar awnings & produce stalls',
-      'Carved stone freshwater spring fountain',
-      'Timber trading pier extending into open waters',
-    ],
-  },
-  {
-    id: 'healthcare-medicine',
-    roman: 'III',
-    number: '03',
-    name: 'Healthcare & Medicine',
-    headline: 'HEALTHCARE & MEDICINE',
-    tagline: 'Healing, Diagnostics & The Preservation of Life',
-    roleTag: 'Milestone Locked · Sanctuary Hub',
-    status: 'Locked',
-    icon: '🩺',
-    accentColor: '#2dd4bf',
-    accentGlow: 'rgba(45, 212, 191, 0.32)',
-    hotspot: { x: '24%', y: '73%' },
-    conciseDescription:
-      'The sanctuary of healing and vitality. Nestled amid alpine springs and evergreen slopes, clinical pavilions unite ancient herbal wisdom with sterile care and emergency response.',
-    structures: [
-      'Multi-wing clinical pavilion with Red Cross emblem',
-      'Dedicated emergency vehicle bay & transport ambulance',
-      'Mountain stone arch bridge & conifer slopes',
-      'Highland freshwater intake & cliffside cascade',
-    ],
-  },
-  {
-    id: 'assistive-technology',
-    roman: 'IV',
-    number: '04',
-    name: 'Assistive Technology',
-    headline: 'ASSISTIVE TECHNOLOGY',
-    tagline: 'Adaptive Engineering, Ergonomics & Universal Design',
-    roleTag: 'Milestone Locked · Artisan Guildhall',
-    status: 'Locked',
-    icon: '♿',
-    accentColor: '#eab308',
-    accentGlow: 'rgba(234, 179, 8, 0.32)',
-    hotspot: { x: '74%', y: '73%' },
-    conciseDescription:
-      'The workshop of empowering innovation. Driven by timber guildhalls, waterwheels, and accessible ramps, adaptive engineering creates universal tools that uplift every explorer.',
-    structures: [
-      'Heavy timber crafting guildhall & industrial chimney',
-      'Water-driven power tower with mechanical transmission',
-      'Engineered inclined stone access ramps & walkways',
-      'Open-air carpentry workbenches & lumber stores',
-    ],
-  },
-];
+// Note: Original static REALMS constant from Section 3 has been archived in
+// docs/removed-sections-backup.md for future reference. Active realms are defined in OCEAN_REALMS_DATA.
 
 const CREAM_LAPTOP_SLIDES = [
   {
@@ -279,8 +187,8 @@ function App() {
     const sectionIds = [
       'hero',
       'game-intro',
-      'four-realms',
-      'gameplay-showcase',
+      'four-realms-ocean',
+      'gameplay-progression-showcase',
       'explorer-collection',
       'behind-the-worlds',
     ];
@@ -341,14 +249,11 @@ function App() {
     };
   }, []);
 
-  const [activeRealmId, setActiveRealmId] = useState('agriculture');
-  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const [isDashboardModalOpen, setIsDashboardModalOpen] = useState(false);
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
   const [isGameplayModalOpen, setIsGameplayModalOpen] = useState(false);
   const [isKnowledgeModalOpen, setIsKnowledgeModalOpen] = useState(false);
   const heroBackdropRef = useRef(null);
-  const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
   const [isScrolledPast40, setIsScrolledPast40] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -566,11 +471,6 @@ function App() {
     };
   }, []);
 
-  // Active realm computed
-  const activeRealm = useMemo(() => {
-    return REALMS.find((r) => r.id === activeRealmId) || REALMS[0];
-  }, [activeRealmId]);
-
   // Track window scroll for floating pill nav (past 40px) and gentle parallax on hero backdrop
   useEffect(() => {
     let rafId = null;
@@ -749,21 +649,21 @@ function App() {
               Overview
             </a>
             <a
-              href="#four-realms"
-              className={`nav-item-link ${activeNavSection === 'four-realms' ? 'is-active' : ''}`}
+              href="#four-realms-ocean"
+              className={`nav-item-link ${activeNavSection === 'four-realms-ocean' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
-                handleScrollToSection('four-realms');
+                handleScrollToSection('four-realms-ocean');
               }}
             >
               Four Realms
             </a>
             <a
-              href="#gameplay-showcase"
-              className={`nav-item-link ${activeNavSection === 'gameplay-showcase' ? 'is-active' : ''}`}
+              href="#gameplay-progression-showcase"
+              className={`nav-item-link ${activeNavSection === 'gameplay-progression-showcase' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
-                handleScrollToSection('gameplay-showcase');
+                handleScrollToSection('gameplay-progression-showcase');
               }}
             >
               Gameplay
@@ -795,7 +695,7 @@ function App() {
               type="button"
               className="navbar-cta-btn"
               onClick={() => {
-                handleScrollToSection('four-realms');
+                handleScrollToSection('four-realms-ocean');
                 setIsMobileMenuOpen(false);
               }}
               aria-label="Explore the floating archipelago realms"
@@ -835,22 +735,22 @@ function App() {
                 Overview
               </a>
               <a
-                href="#four-realms"
-                className={`mobile-nav-link ${activeNavSection === 'four-realms' ? 'is-active' : ''}`}
+                href="#four-realms-ocean"
+                className={`mobile-nav-link ${activeNavSection === 'four-realms-ocean' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  handleScrollToSection('four-realms');
+                  handleScrollToSection('four-realms-ocean');
                   setIsMobileMenuOpen(false);
                 }}
               >
                 Four Realms
               </a>
               <a
-                href="#gameplay-showcase"
-                className={`mobile-nav-link ${activeNavSection === 'gameplay-showcase' ? 'is-active' : ''}`}
+                href="#gameplay-progression-showcase"
+                className={`mobile-nav-link ${activeNavSection === 'gameplay-progression-showcase' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  handleScrollToSection('gameplay-showcase');
+                  handleScrollToSection('gameplay-progression-showcase');
                   setIsMobileMenuOpen(false);
                 }}
               >
@@ -1172,7 +1072,7 @@ function App() {
           Full-width section with CSS-only animated ocean, floating map & interactive hotspots
           --------------------------------------------------------------------- */}
       <section
-        id="ocean-archipelago"
+        id="four-realms-ocean"
         className="ocean-realms-section"
         aria-label="The Four Realms Archipelago"
       >
@@ -1344,8 +1244,8 @@ function App() {
               <button
                 type="button"
                 className="gameplay-explore-btn"
-                onClick={() => handleScrollToSection('gameplay-showcase')}
-                aria-label="Scroll to detailed Gameplay section"
+                onClick={() => handleScrollToSection('gameplay-progression-showcase')}
+                aria-label="Scroll to Gameplay Progression Showcase"
               >
                 <span>Explore Gameplay Mechanics</span>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1756,223 +1656,6 @@ function App() {
       </section>
 
       {/* ---------------------------------------------------------------------
-          SECTION 3: FOUR REALMS — ART-DIRECTED ARCHIPELAGO COMPOSITION
-          Prominent featured realm alongside an art-directed supporting stack
-          Rich Deep Forest Emerald Tone
-          --------------------------------------------------------------------- */}
-      <section
-        id="four-realms"
-        className="four-realms-section"
-        aria-label="The Four Sovereign Realms of MERGEVERSE"
-      >
-        <div className="editorial-container">
-          {/* Editorial Asymmetric Header */}
-          <div className="realms-editorial-header">
-            <div className="header-left">
-              <div className="editorial-pill">
-                <span className="pill-star">✦</span>
-                <span>THE FLOATING ARCHIPELAGO</span>
-                <span className="pill-star">✦</span>
-              </div>
-              <h2 className="realms-display-headline">The Four Sovereign Realms</h2>
-            </div>
-            <div className="header-right">
-              <p className="realms-header-prose">
-                Suspended above the endless cloud ocean lies the World Map—a constellation of four floating
-                islands charting the foundational advances of human life. At the heart of the archipelago stands
-                Agriculture, anchoring the player journey across the skies.
-              </p>
-            </div>
-          </div>
-
-          {/* Primary Visual Centerpiece: Expansive 16:9 World Map Artwork */}
-          <div
-            className="map-showcase-stage"
-            style={{
-              '--realm-ambient-glow': activeRealm.accentGlow,
-            }}
-          >
-            <div className="map-artwork-container">
-              <img
-                src="/images/world-map.jpg"
-                alt="MERGEVERSE In-Game World Map showing Agriculture, Food & Culinary, Healthcare & Medicine, and Assistive Technology floating islands"
-                className="map-artwork-img"
-                loading="lazy"
-                decoding="async"
-              />
-
-              <div className="map-ambient-vignette" aria-hidden="true" />
-
-              {/* Interactive Island Beacons */}
-              <div className="map-beacons-layer" aria-label="Interactive Island Beacons">
-                {REALMS.map((realm) => {
-                  const isActive = realm.id === activeRealmId;
-                  const isHovered = realm.id === hoveredHotspotId;
-                  return (
-                    <div
-                      key={realm.id}
-                      className={`map-beacon-pin ${isActive ? 'is-active' : ''} ${
-                        isHovered ? 'is-hovered' : ''
-                      }`}
-                      style={{
-                        left: realm.hotspot.x,
-                        top: realm.hotspot.y,
-                        '--beacon-accent': realm.accentColor,
-                        '--beacon-glow': realm.accentGlow,
-                      }}
-                    >
-                      <button
-                        type="button"
-                        className="beacon-trigger"
-                        onClick={() => setActiveRealmId(realm.id)}
-                        onMouseEnter={() => setHoveredHotspotId(realm.id)}
-                        onMouseLeave={() => setHoveredHotspotId(null)}
-                        aria-label={`Select ${realm.name} Realm (${realm.roleTag})`}
-                      >
-                        <span className="beacon-halo" />
-                        <span className="beacon-core">
-                          <span className="beacon-glyph">{realm.icon}</span>
-                        </span>
-                      </button>
-
-                      {/* Beacon Tooltip */}
-                      <div className="beacon-tooltip">
-                        <span className="beacon-tooltip-num">REALM {realm.roman}</span>
-                        <span className="beacon-tooltip-name">{realm.name}</span>
-                        <span className="beacon-tooltip-tag">
-                          {realm.status === 'Unlocked' ? 'Level 20 Hub' : 'Locked'}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Discreet Lightbox Action */}
-              <button
-                type="button"
-                className="map-lightbox-trigger"
-                onClick={() => setIsMapModalOpen(true)}
-                aria-label="View Full Resolution Artwork"
-              >
-                <span className="lightbox-glyph">⛶</span>
-                <span>Full Map Artwork</span>
-              </button>
-            </div>
-          </div>
-
-          {/* ART-DIRECTED ASYMMETRICAL REALM COMPOSITION (NOT identical cards!) */}
-          <div className="realms-asymmetric-layout">
-            {/* Primary Featured Realm Hero (60% width) */}
-            <article
-              className="realm-featured-hero"
-              style={{
-                '--hero-accent': activeRealm.accentColor,
-                '--hero-glow': activeRealm.accentGlow,
-              }}
-            >
-              <div className="featured-hero-top">
-                <div className="featured-hero-meta">
-                  <div className="featured-badge-row">
-                    <span className="featured-chapter-tag">REALM {activeRealm.roman}</span>
-                    <span className="featured-status-pill">{activeRealm.roleTag}</span>
-                  </div>
-                  <h3 className="featured-realm-title">{activeRealm.headline}</h3>
-                  <p className="featured-realm-tagline">{activeRealm.tagline}</p>
-                </div>
-
-                {/* Island Radar Viewfinder Loupe */}
-                <div
-                  className="featured-radar-loupe"
-                  title={`Live Island Coordinates: ${activeRealm.name}`}
-                  aria-hidden="true"
-                >
-                  <div
-                    className="loupe-canvas"
-                    style={{
-                      backgroundImage: 'url(/images/world-map.jpg)',
-                      backgroundPosition: `${activeRealm.hotspot.x} ${activeRealm.hotspot.y}`,
-                    }}
-                  />
-                  <div className="loupe-overlay">
-                    <span className="loupe-crosshair-x" />
-                    <span className="loupe-crosshair-y" />
-                    <span className="loupe-reticle" />
-                    <span className="loupe-badge">{activeRealm.icon} RADAR</span>
-                  </div>
-                </div>
-              </div>
-
-              <p className="featured-realm-description">{activeRealm.conciseDescription}</p>
-
-              {/* Verified Island Features */}
-              <div className="featured-structures-block">
-                <h4 className="structures-title">Verified Island Architecture:</h4>
-                <div className="structures-pills-wrap">
-                  {activeRealm.structures.map((structure, idx) => (
-                    <span key={idx} className="structure-pill">
-                      <span className="pill-bullet">✦</span>
-                      <span>{structure}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </article>
-
-            {/* Supporting Realm Stack: Art-directed domain portfolio (40% width) */}
-            <aside className="realm-supporting-stack" aria-label="Other Floating Realms">
-              <div className="stack-header-bar">
-                <span className="stack-header-title">ARCHIPELAGO DOMAINS</span>
-                <span className="stack-header-hint">Click to Feature</span>
-              </div>
-
-              <div className="stack-cards-list">
-                {REALMS.map((realm) => {
-                  const isSelected = realm.id === activeRealmId;
-                  return (
-                    <div
-                      key={realm.id}
-                      className={`supporting-domain-card ${isSelected ? 'is-active' : ''}`}
-                      onClick={() => setActiveRealmId(realm.id)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') setActiveRealmId(realm.id);
-                      }}
-                      style={{
-                        '--domain-accent': realm.accentColor,
-                        '--domain-glow': realm.accentGlow,
-                      }}
-                    >
-                      <div className="domain-card-left">
-                        <span className="domain-glyph">{realm.icon}</span>
-                        <div className="domain-text-box">
-                          <div className="domain-num-row">
-                            <span className="domain-roman">REALM {realm.roman}</span>
-                            <span className={`domain-status-tag ${realm.status === 'Unlocked' ? 'unlocked' : 'locked'}`}>
-                              {realm.status === 'Unlocked' ? 'Active Hub' : 'Milestone Locked'}
-                            </span>
-                          </div>
-                          <h4 className="domain-name">{realm.name}</h4>
-                          <p className="domain-structures-preview">
-                            {realm.structures[0]}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="domain-card-indicator" aria-hidden="true">
-                        {isSelected ? 'FEATURED ✦' : 'VIEW →'}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------------------
           SECTION 4: GAMEPLAY SHOWCASE — ALTERNATING ASYMMETRIC COMPOSITION
           Large genuine screenshots as visual anchors with alternating placement
           Deep Slate-Emerald Tone
@@ -2261,8 +1944,7 @@ function App() {
           --------------------------------------------------------------------- */}
       <BehindTheWorlds
         onOpenModal={(type) => {
-          if (type === 'map') setIsMapModalOpen(true);
-          else if (type === 'dashboard') setIsDashboardModalOpen(true);
+          if (type === 'dashboard') setIsDashboardModalOpen(true);
           else if (type === 'collection') setIsCollectionModalOpen(true);
           else if (type === 'gameplay') setIsGameplayModalOpen(true);
           else if (type === 'knowledge') setIsKnowledgeModalOpen(true);
@@ -2406,11 +2088,11 @@ function App() {
                 </li>
                 <li>
                   <a
-                    href="#four-realms"
+                    href="#four-realms-ocean"
                     className="footer-nav-anchor"
                     onClick={(e) => {
                       e.preventDefault();
-                      handleScrollToSection('four-realms');
+                      handleScrollToSection('four-realms-ocean');
                     }}
                   >
                     Four Realms
@@ -2418,11 +2100,11 @@ function App() {
                 </li>
                 <li>
                   <a
-                    href="#gameplay-showcase"
+                    href="#gameplay-progression-showcase"
                     className="footer-nav-anchor"
                     onClick={(e) => {
                       e.preventDefault();
-                      handleScrollToSection('gameplay-showcase');
+                      handleScrollToSection('gameplay-progression-showcase');
                     }}
                   >
                     Gameplay
@@ -2500,47 +2182,7 @@ function App() {
       {/* ---------------------------------------------------------------------
           MODAL LIGHTBOXES: HIGH-RESOLUTION AUTHENTIC ASSET INSPECTIONS
           --------------------------------------------------------------------- */}
-      {isMapModalOpen && (
-        <div
-          className="artwork-modal-backdrop"
-          onClick={() => setIsMapModalOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="High Resolution World Map Artwork"
-        >
-          <div className="artwork-modal-dialog" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-top-bar">
-              <div className="modal-title-group">
-                <span className="modal-crest">✦</span>
-                <span className="modal-title">MERGEVERSE WORLD MAP · FLOATING ARCHIPELAGO</span>
-              </div>
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsMapModalOpen(false)}
-                aria-label="Close World Map modal"
-              >
-                ✕ Close
-              </button>
-            </div>
-            <div className="modal-artwork-canvas">
-              <img
-                src="/images/world-map.jpg"
-                alt="Full MERGEVERSE World Map with Four Floating Island Realms"
-                className="modal-full-img"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div className="modal-info-footer">
-              <p>
-                <strong>Authentic In-Game Map:</strong> Features Agriculture (Level 20 Active Hub),
-                Food & Culinary, Healthcare & Medicine, and Assistive Technology floating islands above the sky clouds.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {isDashboardModalOpen && (
         <div
