@@ -168,6 +168,53 @@ const OCEAN_REALMS_DATA = [
   },
 ];
 
+const GAMEPLAY_OVERLAPPING_CARDS = [
+  {
+    id: 'world-map',
+    title: 'World Map Archipelago',
+    caption: 'World Map Archipelago',
+    image: '/images/world-map.jpg',
+    alt: 'Mergeverse World Map Archipelago in-game screenshot',
+    rotation: -4,
+    shiftX: 8,
+    shiftY: 10,
+    isFront: false,
+  },
+  {
+    id: 'harvest-board',
+    title: 'Level 19 Harvest Board',
+    caption: 'Level 19 Harvest Board',
+    image: '/images/gameplay.jpg',
+    alt: 'Level 19 Harvest Board in-game gameplay puzzle screenshot',
+    rotation: 3,
+    shiftX: -10,
+    shiftY: 12,
+    isFront: false,
+  },
+  {
+    id: 'knowledge-challenge',
+    title: 'In-Game Knowledge Challenge',
+    caption: 'In-Game Knowledge Challenge',
+    image: '/images/knowledge-challenge.png',
+    alt: 'In-Game Knowledge Challenge quiz milestone screenshot',
+    rotation: -2,
+    shiftX: 12,
+    shiftY: -8,
+    isFront: false,
+  },
+  {
+    id: 'profile',
+    title: 'Alpine Sanctuary Profile',
+    caption: 'Alpine Sanctuary Profile',
+    image: '/images/home-dashboard.jpg',
+    alt: 'Alpine Sanctuary Basecamp Profile in-game screenshot',
+    rotation: 5,
+    shiftX: -14,
+    shiftY: -10,
+    isFront: true,
+  },
+];
+
 function App() {
   const containerRef = useRef(null);
   const heroViewportRef = useRef(null);
@@ -205,6 +252,89 @@ function App() {
     return false;
   });
   const oceanCardsRef = useRef(null);
+
+  // Gameplay Overlapping Cards State & Handlers
+  const [activeGameplayLightbox, setActiveGameplayLightbox] = useState(null);
+  const [isGameplayCardsInView, setIsGameplayCardsInView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  });
+  const gameplaySectionRef = useRef(null);
+  const gameplayStackContainerRef = useRef(null);
+  const lastActiveCardBtnRef = useRef(null);
+  const lightboxCloseBtnRef = useRef(null);
+
+  const openGameplayLightbox = (card, btnElement) => {
+    lastActiveCardBtnRef.current = btnElement;
+    setActiveGameplayLightbox(card);
+  };
+
+  const closeGameplayLightbox = () => {
+    setActiveGameplayLightbox(null);
+    setTimeout(() => {
+      lastActiveCardBtnRef.current?.focus();
+    }, 50);
+  };
+
+  // Parallax on mouse move over cards stack (desktop only)
+  const handleStackMouseMove = (e) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = gameplayStackContainerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const normX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const normY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    el.style.setProperty('--norm-x', normX.toFixed(3));
+    el.style.setProperty('--norm-y', normY.toFixed(3));
+  };
+
+  const handleStackMouseLeave = () => {
+    const el = gameplayStackContainerRef.current;
+    if (!el) return;
+    el.style.setProperty('--norm-x', '0');
+    el.style.setProperty('--norm-y', '0');
+  };
+
+  // Lightbox keyboard listener (Escape to close, focus trap)
+  useEffect(() => {
+    if (!activeGameplayLightbox) return;
+
+    lightboxCloseBtnRef.current?.focus();
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeGameplayLightbox();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeGameplayLightbox]);
+
+  // Section scroll-into-view observer
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsGameplayCardsInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    const el = gameplaySectionRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
 
   const handleOceanHotspotClick = (realmId) => {
     const cardEl = document.getElementById(`ocean-card-${realmId}`);
@@ -1020,6 +1150,165 @@ function App() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ---------------------------------------------------------------------
+          SECTION 1.9: AUTHENTIC GAMEPLAY & PROGRESSION — OVERLAPPING CARDS
+          Cream Rounded Card with Interactive Staggered Floating Cards & Lightbox
+          --------------------------------------------------------------------- */}
+      <section
+        id="gameplay-progression-showcase"
+        ref={gameplaySectionRef}
+        className={`gameplay-cards-section ${isGameplayCardsInView ? 'is-in-view' : ''}`}
+        aria-label="Authentic Gameplay & Progression Showcase"
+      >
+        <div className="gameplay-cards-outer-card">
+          <div className="gameplay-cards-inner-grid">
+            {/* LEFT COLUMN: Badge, Heading, Narrative, Checkmarks & Gold CTA */}
+            <div className="gameplay-text-col">
+              <div className="gameplay-badge-pill">
+                <span className="badge-star" aria-hidden="true">✦</span>
+                <span>GAMEPLAY</span>
+                <span className="badge-star" aria-hidden="true">✦</span>
+              </div>
+
+              <h2 className="gameplay-section-title">
+                AUTHENTIC GAMEPLAY &amp; PROGRESSION
+              </h2>
+
+              <p className="gameplay-section-lead">
+                Merge, solve and learn. Every level is a new puzzle, and every win unlocks a real piece of history.
+              </p>
+
+              {/* Three short gold-checkmark lines */}
+              <ul className="gameplay-checkmarks-list" aria-label="Key Gameplay Features">
+                <li className="gameplay-check-item">
+                  <span className="check-icon-circle" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                  <span>Merge boards with varied level variants</span>
+                </li>
+                <li className="gameplay-check-item">
+                  <span className="check-icon-circle" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                  <span>Knowledge question after every win</span>
+                </li>
+                <li className="gameplay-check-item">
+                  <span className="check-icon-circle" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                  <span>XP, stars and collection to track progress</span>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                className="gameplay-explore-btn"
+                onClick={() => handleScrollToSection('gameplay-showcase')}
+                aria-label="Scroll to detailed Gameplay section"
+              >
+                <span>Explore Gameplay Mechanics</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </div>
+
+            {/* RIGHT COLUMN: Stack of 4 Screenshot Cards with Absolute Rotations & Parallax */}
+            <div className="gameplay-stack-col">
+              <div
+                ref={gameplayStackContainerRef}
+                className="gameplay-cards-stack-container"
+                onMouseMove={handleStackMouseMove}
+                onMouseLeave={handleStackMouseLeave}
+              >
+                {GAMEPLAY_OVERLAPPING_CARDS.map((card, idx) => (
+                  <button
+                    key={card.id}
+                    type="button"
+                    className={`gameplay-stack-card card-${card.id} ${card.isFront ? 'front-card' : ''}`}
+                    style={{
+                      '--card-rot': `${card.rotation}deg`,
+                      '--shift-x': `${card.shiftX}px`,
+                      '--shift-y': `${card.shiftY}px`,
+                      '--fly-delay': `${idx * 100}ms`,
+                    }}
+                    onClick={(e) => openGameplayLightbox(card, e.currentTarget)}
+                    aria-label={`Inspect full resolution ${card.title} screenshot`}
+                  >
+                    <div className="card-image-wrap">
+                      <img
+                        src={card.image}
+                        alt={card.alt}
+                        className="card-screenshot-img"
+                        loading="lazy"
+                      />
+                      {/* Caption Chip appearing on hover/focus */}
+                      <span className="card-caption-chip">
+                        {card.caption}
+                      </span>
+                    </div>
+
+                    {/* CSS-Only Page Curl folded corner on top-right of front card */}
+                    {card.isFront && (
+                      <span className="card-page-curl-corner" aria-hidden="true" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* LIGHTBOX MODAL */}
+        {activeGameplayLightbox && (
+          <div
+            className="gameplay-lightbox-overlay"
+            onClick={closeGameplayLightbox}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${activeGameplayLightbox.title} Lightbox Preview`}
+          >
+            <div
+              className="gameplay-lightbox-dialog"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                ref={lightboxCloseBtnRef}
+                type="button"
+                className="gameplay-lightbox-close-btn"
+                onClick={closeGameplayLightbox}
+                aria-label="Close image lightbox"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+
+              <div className="gameplay-lightbox-image-wrap">
+                <img
+                  src={activeGameplayLightbox.image}
+                  alt={activeGameplayLightbox.alt}
+                  className="gameplay-lightbox-full-img"
+                />
+              </div>
+
+              <div className="gameplay-lightbox-footer-caption">
+                <span className="lightbox-caption-tag">✦ IN-GAME CAPTURE</span>
+                <span className="lightbox-caption-title">{activeGameplayLightbox.title}</span>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ---------------------------------------------------------------------
