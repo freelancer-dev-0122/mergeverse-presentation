@@ -272,6 +272,75 @@ function App() {
     };
   }, []);
 
+  // Scroll-spy active section tracking
+  const [activeNavSection, setActiveNavSection] = useState('game-intro');
+
+  useEffect(() => {
+    const sectionIds = [
+      'hero',
+      'game-intro',
+      'four-realms',
+      'gameplay-showcase',
+      'explorer-collection',
+      'behind-the-worlds',
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveNavSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: '-20% 0px -55% 0px',
+        threshold: 0,
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Forest Outro Reveal State & IntersectionObserver
+  const [isOutroInView, setIsOutroInView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  });
+  const forestOutroRef = useRef(null);
+
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsOutroInView(true);
+          if (forestOutroRef.current) {
+            observer.unobserve(forestOutroRef.current);
+          }
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    const el = forestOutroRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
+
   const [activeRealmId, setActiveRealmId] = useState('agriculture');
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
   const [isDashboardModalOpen, setIsDashboardModalOpen] = useState(false);
@@ -640,6 +709,11 @@ function App() {
 
   return (
     <div ref={containerRef} className="mergeverse-root">
+      {/* Accessible Skip to Content Link */}
+      <a href="#main-content" className="skip-to-content-link">
+        Skip to main content
+      </a>
+
       {/* ---------------------------------------------------------------------
           Studio Navigation Bar (Precision aligned, compact editorial header)
           --------------------------------------------------------------------- */}
@@ -666,7 +740,7 @@ function App() {
           <nav className="navbar-links-group" aria-label="Main Navigation">
             <a
               href="#game-intro"
-              className="nav-item-link"
+              className={`nav-item-link ${activeNavSection === 'game-intro' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScrollToSection('game-intro');
@@ -676,7 +750,7 @@ function App() {
             </a>
             <a
               href="#four-realms"
-              className="nav-item-link"
+              className={`nav-item-link ${activeNavSection === 'four-realms' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScrollToSection('four-realms');
@@ -686,7 +760,7 @@ function App() {
             </a>
             <a
               href="#gameplay-showcase"
-              className="nav-item-link"
+              className={`nav-item-link ${activeNavSection === 'gameplay-showcase' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScrollToSection('gameplay-showcase');
@@ -696,7 +770,7 @@ function App() {
             </a>
             <a
               href="#explorer-collection"
-              className="nav-item-link"
+              className={`nav-item-link ${activeNavSection === 'explorer-collection' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScrollToSection('explorer-collection');
@@ -706,7 +780,7 @@ function App() {
             </a>
             <a
               href="#behind-the-worlds"
-              className="nav-item-link nav-highlight"
+              className={`nav-item-link nav-highlight ${activeNavSection === 'behind-the-worlds' ? 'is-active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleScrollToSection('behind-the-worlds');
@@ -751,7 +825,7 @@ function App() {
             <nav className="mobile-nav-links" aria-label="Mobile Main Navigation">
               <a
                 href="#game-intro"
-                className="mobile-nav-link"
+                className={`mobile-nav-link ${activeNavSection === 'game-intro' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleScrollToSection('game-intro');
@@ -762,7 +836,7 @@ function App() {
               </a>
               <a
                 href="#four-realms"
-                className="mobile-nav-link"
+                className={`mobile-nav-link ${activeNavSection === 'four-realms' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleScrollToSection('four-realms');
@@ -773,7 +847,7 @@ function App() {
               </a>
               <a
                 href="#gameplay-showcase"
-                className="mobile-nav-link"
+                className={`mobile-nav-link ${activeNavSection === 'gameplay-showcase' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleScrollToSection('gameplay-showcase');
@@ -784,7 +858,7 @@ function App() {
               </a>
               <a
                 href="#explorer-collection"
-                className="mobile-nav-link"
+                className={`mobile-nav-link ${activeNavSection === 'explorer-collection' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleScrollToSection('explorer-collection');
@@ -795,7 +869,7 @@ function App() {
               </a>
               <a
                 href="#behind-the-worlds"
-                className="mobile-nav-link nav-highlight"
+                className={`mobile-nav-link nav-highlight ${activeNavSection === 'behind-the-worlds' ? 'is-active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleScrollToSection('behind-the-worlds');
@@ -808,6 +882,8 @@ function App() {
           </div>
         )}
       </header>
+
+      <main id="main-content">
 
       {/* ---------------------------------------------------------------------
           HERO: CINEMATIC, IMAGE-LED OPENING COMPOSITION
@@ -825,6 +901,9 @@ function App() {
             src="/images/mergeverse-title.jpg"
             alt="MERGEVERSE Alpine Landscape with sunlit peaks and pastoral valley meadows"
             className="hero-backdrop-image"
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
           />
           <div className="hero-vignette-scrim" />
           <div className="hero-sunlight-sweep" />
@@ -1018,6 +1097,7 @@ function App() {
                           alt={slide.alt}
                           className="laptop-slide-image"
                           loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     ))}
@@ -1143,6 +1223,7 @@ function App() {
                 alt="Mergeverse World Map Archipelago"
                 className="ocean-map-image"
                 loading="lazy"
+                decoding="async"
               />
 
               {/* 4 Interactive Hotspot Buttons */}
@@ -1302,6 +1383,7 @@ function App() {
                         alt={card.alt}
                         className="card-screenshot-img"
                         loading="lazy"
+                        decoding="async"
                       />
                       {/* Caption Chip appearing on hover/focus */}
                       <span className="card-caption-chip">
@@ -1351,6 +1433,8 @@ function App() {
                   src={activeGameplayLightbox.image}
                   alt={activeGameplayLightbox.alt}
                   className="gameplay-lightbox-full-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
@@ -1486,6 +1570,7 @@ function App() {
                         alt="Level 19 Harvest Board in-game gameplay screenshot"
                         className={`monitor-screen-img ${isWorldMapShowing ? 'img-hidden' : 'img-active'}`}
                         loading="lazy"
+                        decoding="async"
                       />
 
                       {/* Screenshot 2: World Map (Swapped on hover/tap) */}
@@ -1494,6 +1579,7 @@ function App() {
                         alt="World Map Archipelago in-game screenshot"
                         className={`monitor-screen-img ${isWorldMapShowing ? 'img-active' : 'img-hidden'}`}
                         loading="lazy"
+                        decoding="async"
                       />
 
                       {/* Screen reflection/glare */}
@@ -1615,6 +1701,8 @@ function App() {
                     src="/images/home-dashboard.jpg"
                     alt="MERGEVERSE Alpine Sanctuary & Expedition Basecamp in-game screenshot"
                     className="intro-frame-img"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="frame-overlay-badge">
                     <span className="badge-dot" />
@@ -1709,6 +1797,8 @@ function App() {
                 src="/images/world-map.jpg"
                 alt="MERGEVERSE In-Game World Map showing Agriculture, Food & Culinary, Healthcare & Medicine, and Assistive Technology floating islands"
                 className="map-artwork-img"
+                loading="lazy"
+                decoding="async"
               />
 
               <div className="map-ambient-vignette" aria-hidden="true" />
@@ -1914,6 +2004,8 @@ function App() {
                   src="/images/gameplay.jpg"
                   alt="MERGEVERSE Level 19 live gameplay board showing 5x6 puzzle grid, recipe order fulfillment, item merges, and tactical action tray"
                   className="gameplay-frame-img"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="artwork-corner-badge">Level 19 Harvest Board</div>
                 <button
@@ -2006,6 +2098,8 @@ function App() {
                   src="/images/knowledge-challenge.png"
                   alt="MERGEVERSE In-Game Knowledge Challenge screen testing real agrarian civilization facts"
                   className="gameplay-frame-img"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="artwork-corner-badge">In-Game Knowledge Challenge</div>
                 <button
@@ -2057,6 +2151,8 @@ function App() {
                   src="/images/collection.jpg"
                   alt="MERGEVERSE Explorer Collection in-game interface showing 18 of 80 discoveries unlocked across Agriculture & Earth and Food & Nutrition"
                   className="codex-frame-img"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="codex-badge-label">
                   <span>Archival Codex · 18 / 80 Discoveries</span>
@@ -2174,102 +2270,229 @@ function App() {
       />
 
       {/* ---------------------------------------------------------------------
-          SECTION 7: CINEMATIC CLOSING
-          Forest-and-gold visual identity finale recalling the hero opening
+          SECTION 7: FOREST OUTRO SECTION
+          Full-width section with painted mountain/farm backdrop, mist gradient overlay,
+          soft vignette, slow drifting mist bands, falling leaf shapes,
+          chrome dark green/gold title, tagline, and two action buttons
           --------------------------------------------------------------------- */}
-      <footer
-        id="cinematic-closing"
-        className="cinematic-closing-section"
-        aria-label="MERGEVERSE Cinematic Closing"
+      <section
+        id="forest-outro"
+        ref={forestOutroRef}
+        className={`forest-outro-section ${isOutroInView ? 'is-in-view' : ''}`}
+        aria-label="MERGEVERSE Forest Outro Finale"
       >
-        <div className="closing-backdrop-wrap" aria-hidden="true">
+        <div className="forest-outro-backdrop-wrap" aria-hidden="true">
           <img
             src="/images/mergeverse-title.jpg"
-            alt=""
-            className="closing-backdrop-img"
+            alt="MERGEVERSE painted mountain and farm landscape with mist"
+            className="forest-outro-backdrop-img"
+            loading="lazy"
+            decoding="async"
           />
-          <div className="closing-backdrop-scrim" />
+          {/* Cream-to-transparent misty gradient overlay & soft vignette */}
+          <div className="forest-outro-mist-scrim" />
+          <div className="forest-outro-vignette-scrim" />
 
-          {/* Floating gold embers */}
-          <div className="closing-ambient-motes-layer">
-            {floatingMotes.map((mote) => (
+          {/* Drifting Mist Layers (2 blurred white gradient bands in 40s slow loops) */}
+          <div className="forest-mist-band band-primary" />
+          <div className="forest-mist-band band-secondary" />
+
+          {/* Falling Leaf Shapes (8 CSS leaf-shaped divs with border-radius trick) */}
+          <div className="forest-falling-leaves-layer">
+            {Array.from({ length: 8 }).map((_, i) => (
               <span
-                key={mote.id}
-                className="closing-mote"
+                key={i}
+                className="forest-falling-leaf"
                 style={{
-                  left: mote.left,
-                  bottom: mote.bottom,
-                  width: `${mote.size}px`,
-                  height: `${mote.size}px`,
-                  animationDelay: mote.delay,
-                  animationDuration: mote.duration,
-                  '--drift-x': mote.driftX,
+                  '--leaf-left': `${6 + i * 12}%`,
+                  '--leaf-delay': `${i * 1.6}s`,
+                  '--leaf-duration': `${11 + (i % 4) * 2.5}s`,
+                  '--leaf-scale': `${0.75 + (i % 3) * 0.2}`,
+                  '--leaf-sway': `${18 + (i % 3) * 12}px`,
                 }}
               />
             ))}
           </div>
         </div>
 
-        <div className="closing-cinematic-inner">
-          <div className="closing-crest-accent" aria-hidden="true">
-            <span className="closing-crest-line" />
-            <span className="closing-crest-symbol">✦</span>
-            <span className="closing-crest-line right" />
+        {/* Center Content: Fades up when scrolled into view */}
+        <div className="forest-outro-content-lockup">
+          <div className="outro-gold-ornament" aria-hidden="true">
+            <span className="ornament-line" />
+            <span className="ornament-star">✦</span>
+            <span className="ornament-line right" />
           </div>
 
-          <div className="closing-title-wrap">
-            <h2 className="closing-hero-title">MERGEVERSE</h2>
-            <div className="closing-title-glow" aria-hidden="true" />
+          <h2 className="outro-wordmark-title">MERGEVERSE</h2>
+
+          <div className="outro-tagline-wrap">
+            <p className="outro-tagline-text">EXPLORE. SOLVE. DISCOVER.</p>
           </div>
 
-          <div className="closing-tagline-wrap">
-            <span className="closing-flourish" aria-hidden="true" />
-            <p className="closing-tagline">EXPLORE. SOLVE. DISCOVER.</p>
-            <span className="closing-flourish right" aria-hidden="true" />
-          </div>
-
-          <p className="closing-epilogue-text">
-            From the pioneering soil of early agriculture to the limitless horizons of adaptive ingenuity,
-            every merge charts the monumental story of human civilization.
+          <p className="outro-prose-lead">
+            From the fertile soils of early agriculture to the adaptive horizons of tomorrow,
+            every merge chronicles humanity's greatest milestones.
           </p>
 
-          <div className="closing-actions-wrap">
+          <div className="outro-action-buttons-row">
             <button
               type="button"
-              className="closing-action-btn primary"
-              onClick={() => handleScrollToSection('hero')}
-              aria-label="Replay the cinematic hero opening"
+              className="outro-action-btn primary-gold"
+              onClick={() => handleScrollToSection('game-intro')}
+              aria-label="Enter the Game: Return to Overview"
             >
-              <span className="action-btn-glyph">↺</span>
-              <span>RETURN TO OPENING</span>
+              <span>Enter the Game</span>
+              <span className="btn-arrow" aria-hidden="true">↓</span>
             </button>
-            <a
-              href="#four-realms"
-              className="closing-action-btn secondary"
-              aria-label="Explore the Four Sovereign Realms"
+            <button
+              type="button"
+              className="outro-action-btn secondary-outline"
+              onClick={() => handleScrollToSection('behind-the-worlds')}
+              aria-label="The Creator Story: Jump to Behind the Worlds"
             >
-              <span>✦ FOUR REALMS</span>
-            </a>
-            <a
-              href="#explorer-collection"
-              className="closing-action-btn secondary"
-              aria-label="Inspect Codex Archive"
-            >
-              <span>✦ CODEX ARCHIVE</span>
-            </a>
-            <a
-              href="#behind-the-worlds"
-              className="closing-action-btn secondary"
-              aria-label="Explore Behind the Worlds creator story"
-            >
-              <span>✦ BEHIND THE WORLDS</span>
-            </a>
+              <span>The Creator Story</span>
+              <span className="btn-arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      </main>
+
+      {/* ---------------------------------------------------------------------
+          PART B: FOOTER
+          Dark green footer with thin gold top border, 3 columns on desktop,
+          1 column on mobile, visible focus styles, and smooth back-to-top
+          --------------------------------------------------------------------- */}
+      <footer className="mergeverse-site-footer" id="site-footer" role="contentinfo" aria-label="MERGEVERSE Footer">
+        <div className="footer-inner-shell">
+          <div className="footer-cols-grid">
+            {/* COLUMN 1 (LEFT): Logo + Tagline + Short Line */}
+            <div className="footer-col footer-brand-col">
+              <a
+                href="#hero"
+                className="footer-brand-lockup"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollToSection('hero');
+                }}
+                aria-label="MERGEVERSE — Back to top of page"
+              >
+                <span className="brand-crest-star" aria-hidden="true">✦</span>
+                <span className="brand-title">MERGEVERSE</span>
+              </a>
+              <p className="footer-creator-line">An indie game by Vikas</p>
+              <p className="footer-motto-line">Merge. Solve. Discover.</p>
+              <p className="footer-descriptor-text">
+                Chronicles of human breakthrough reimagined through tactile puzzle synthesis and authentic historical milestones.
+              </p>
+            </div>
+
+            {/* COLUMN 2 (MIDDLE): Explore links to existing page sections */}
+            <div className="footer-col footer-links-col">
+              <h3 className="footer-column-heading">EXPLORE</h3>
+              <ul className="footer-links-list">
+                <li>
+                  <a
+                    href="#game-intro"
+                    className="footer-nav-anchor"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollToSection('game-intro');
+                    }}
+                  >
+                    Overview
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#four-realms"
+                    className="footer-nav-anchor"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollToSection('four-realms');
+                    }}
+                  >
+                    Four Realms
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#gameplay-showcase"
+                    className="footer-nav-anchor"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollToSection('gameplay-showcase');
+                    }}
+                  >
+                    Gameplay
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#explorer-collection"
+                    className="footer-nav-anchor"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollToSection('explorer-collection');
+                    }}
+                  >
+                    Codex
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#behind-the-worlds"
+                    className="footer-nav-anchor"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollToSection('behind-the-worlds');
+                    }}
+                  >
+                    Behind the Worlds
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* COLUMN 3 (RIGHT): The Realms list with active / coming soon badges */}
+            <div className="footer-col footer-realms-col">
+              <h3 className="footer-column-heading">THE REALMS</h3>
+              <ul className="footer-realms-list">
+                <li className="footer-realm-row">
+                  <span className="realm-title">Agriculture</span>
+                  <span className="realm-badge status-active">Active</span>
+                </li>
+                <li className="footer-realm-row">
+                  <span className="realm-title">Food &amp; Culinary</span>
+                  <span className="realm-badge status-coming-soon">Coming soon</span>
+                </li>
+                <li className="footer-realm-row">
+                  <span className="realm-title">Healthcare &amp; Medicine</span>
+                  <span className="realm-badge status-coming-soon">Coming soon</span>
+                </li>
+                <li className="footer-realm-row">
+                  <span className="realm-title">Assistive Technology</span>
+                  <span className="realm-badge status-coming-soon">Coming soon</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          <div className="closing-colophon">
-            <p className="colophon-text">
-              ✦ MERGEVERSE · AN INDIE GAME DIRECTED BY VIKAS · THE CHRONICLE OF HUMAN INNOVATION ✦
+          {/* BOTTOM ROW: Copyright & Smooth Back to Top Button */}
+          <div className="footer-bottom-bar">
+            <p className="footer-copyright-text">
+              © 2026 Mergeverse. All rights reserved.
             </p>
+            <button
+              type="button"
+              className="footer-back-to-top-btn"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              aria-label="Scroll smoothly back to top"
+            >
+              <span>Back to top</span>
+              <span className="top-arrow-icon" aria-hidden="true">↑</span>
+            </button>
           </div>
         </div>
       </footer>
@@ -2305,6 +2528,8 @@ function App() {
                 src="/images/world-map.jpg"
                 alt="Full MERGEVERSE World Map with Four Floating Island Realms"
                 className="modal-full-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="modal-info-footer">
@@ -2345,6 +2570,8 @@ function App() {
                 src="/images/home-dashboard.jpg"
                 alt="Full MERGEVERSE Home Dashboard in-game screenshot"
                 className="modal-full-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="modal-info-footer">
@@ -2386,6 +2613,8 @@ function App() {
                 src="/images/collection.jpg"
                 alt="Full MERGEVERSE Explorer Collection in-game screenshot"
                 className="modal-full-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="modal-info-footer">
@@ -2427,6 +2656,8 @@ function App() {
                 src="/images/gameplay.jpg"
                 alt="Full MERGEVERSE Gameplay Level 19 in-game screenshot"
                 className="modal-full-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="modal-info-footer">
@@ -2468,6 +2699,8 @@ function App() {
                 src="/images/knowledge-challenge.png"
                 alt="Full MERGEVERSE Knowledge Challenge in-game screenshot"
                 className="modal-full-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="modal-info-footer">

@@ -280,6 +280,8 @@ export default function BehindTheWorlds({ onOpenModal }) {
                   src="/images/mergeverse-title.jpg"
                   alt="MERGEVERSE Alpine landscape showing golden hour light across peaks and meadows"
                   className="vision-still-img"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="vision-still-overlay">
                   <span className="still-tag">Approved Director's Mood Reference</span>
@@ -389,6 +391,8 @@ export default function BehindTheWorlds({ onOpenModal }) {
                   src="/images/world-map.jpg"
                   alt="MERGEVERSE In-Game World Map with four floating islands"
                   className="card-thumb-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="card-info-pane">
@@ -422,6 +426,8 @@ export default function BehindTheWorlds({ onOpenModal }) {
                   src="/images/home-dashboard.jpg"
                   alt="MERGEVERSE Home Dashboard screenshot"
                   className="card-thumb-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="card-info-pane">
@@ -455,6 +461,8 @@ export default function BehindTheWorlds({ onOpenModal }) {
                   src="/images/gameplay.jpg"
                   alt="MERGEVERSE Level 19 gameplay board"
                   className="card-thumb-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="card-info-pane">
@@ -488,6 +496,8 @@ export default function BehindTheWorlds({ onOpenModal }) {
                   src="/images/knowledge-challenge.png"
                   alt="MERGEVERSE In-Game Knowledge Challenge screenshot"
                   className="card-thumb-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="card-info-pane">
