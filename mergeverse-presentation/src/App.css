@@ -830,6 +830,558 @@
 }
 
 /* --------------------------------------------------------------------------
+   2.5 SECTION 1.5: CREAM LAPTOP SLIDER SHOWCASE SECTION
+   Warm Cream Card on Dark Green Page, CSS-only Laptop & Synchronized Slider
+   -------------------------------------------------------------------------- */
+.cream-laptop-slider-section {
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 5;
+}
+
+.cream-laptop-slider-section.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Outer Card: max-width 1320px, centered, margin 80px auto, border-radius 36px,
+   background warm cream (#f5efe2) with soft inner shadow & faint paper-grain texture (CSS radial-gradient) */
+.cream-slider-outer-card {
+  max-width: 1320px;
+  margin: 80px auto;
+  border-radius: 36px;
+  background-color: #f5efe2;
+  /* CSS-only paper-grain texture using subtle radial-gradient pattern */
+  background-image:
+    radial-gradient(rgba(18, 61, 43, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(18, 61, 43, 0.03) 1px, #f5efe2 1px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  /* Soft inner shadow combined with atmospheric exterior depth */
+  box-shadow:
+    inset 0 2px 10px rgba(255, 255, 255, 0.85),
+    inset 0 -3px 12px rgba(18, 61, 43, 0.06),
+    0 24px 60px rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(233, 173, 72, 0.35);
+  position: relative;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+/* 3-Column Layout Grid on Desktop */
+.cream-slider-inner-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(360px, 1.45fr) minmax(260px, 1.1fr);
+  align-items: center;
+  gap: 40px;
+  padding: 68px 88px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Round cream arrow buttons on left and right edges of the card */
+.slider-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(18, 61, 43, 0.14);
+  color: #123D2B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slider-nav-arrow:hover {
+  background: #FFFDF8;
+  border-color: #D4973B;
+  color: #D4973B;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 8px 24px rgba(212, 151, 59, 0.28);
+}
+
+.slider-nav-arrow:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.slider-nav-prev {
+  left: 20px;
+}
+
+.slider-nav-next {
+  right: 20px;
+}
+
+/* LEFT COLUMN: Large gold quote mark and 4-line uppercase headline */
+.cream-slider-left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+}
+
+.cream-slider-quote-mark {
+  display: block;
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 5rem;
+  line-height: 0.75;
+  color: #D4973B;
+  margin-bottom: 12px;
+  user-select: none;
+  filter: drop-shadow(0 2px 4px rgba(212, 151, 59, 0.25));
+}
+
+.cream-slider-quote-headline {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: clamp(1.4rem, 2vw, 1.95rem);
+  font-weight: 700;
+  color: #123D2B; /* Dark green */
+  text-transform: uppercase;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cream-slider-quote-headline span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* CENTER COLUMN: Laptop Mockup & Dots */
+.cream-slider-center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 2;
+}
+
+.laptop-mockup-wrapper {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Screen Lid: dark rounded bezel (about 14px) */
+.laptop-screen-lid {
+  width: 100%;
+  background: #12161a;
+  border: 3px solid #2d3338;
+  border-radius: 16px 16px 3px 3px;
+  padding: 14px 14px 14px 14px;
+  position: relative;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+/* Camera notch at top center */
+.laptop-camera-notch {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 6px;
+  background: #0b0e10;
+  border-radius: 0 0 4px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.laptop-camera-lens {
+  width: 4px;
+  height: 4px;
+  background: #202b34;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(78, 157, 134, 0.7);
+}
+
+/* Screen area: 16:10 ratio and overflow hidden */
+.laptop-screen-display {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #000000;
+  position: relative;
+}
+
+/* Slides inside screen: 600ms fade/slide transition, object-fit cover */
+.laptop-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 600ms cubic-bezier(0.25, 1, 0.5, 1), transform 600ms cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.laptop-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.laptop-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Silver base below screen: wide flat trapezoid with small notch */
+.laptop-base-chassis {
+  width: calc(100% + 28px);
+  height: 12px;
+  margin-top: -1px;
+  background: linear-gradient(180deg, #dce1e6 0%, #b8c0c8 45%, #889098 100%);
+  border-radius: 0 0 10px 10px;
+  clip-path: polygon(0.8% 0%, 99.2% 0%, 100% 100%, 0% 100%);
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+  display: flex;
+  justify-content: center;
+}
+
+.laptop-notch-indent {
+  width: 58px;
+  height: 4px;
+  background: #646c73;
+  border-radius: 0 0 4px 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+/* Soft shadow underneath */
+.laptop-bottom-shadow {
+  width: 88%;
+  height: 18px;
+  margin-top: 4px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0) 72%);
+  filter: blur(4px);
+}
+
+/* 3 small dots below the laptop: active dot is gold and wider */
+.laptop-dots-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.laptop-dot-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(18, 61, 43, 0.24);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.laptop-dot-btn:hover {
+  background: rgba(18, 61, 43, 0.5);
+  transform: scale(1.15);
+}
+
+.laptop-dot-btn.is-active {
+  width: 28px;
+  height: 8px;
+  background: var(--sunlit-gold, #E9AD48);
+  box-shadow: 0 0 10px rgba(233, 173, 72, 0.45);
+}
+
+/* RIGHT COLUMN: Gold pill badge, heading, paragraph, gold Read more button */
+.cream-slider-right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+}
+
+.cream-slider-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(233, 173, 72, 0.15);
+  border: 1px solid rgba(212, 151, 59, 0.4);
+  color: #8c5a14;
+  border-radius: 9999px;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.cream-slider-badge-pill .badge-sparkle {
+  color: #D4973B;
+  font-size: 0.85rem;
+}
+
+/* Synchronized slide text stack for seamless crossfade with no layout shift */
+.cream-slider-text-stack {
+  position: relative;
+  width: 100%;
+  min-height: 140px;
+}
+
+.cream-slide-text-item {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 600ms cubic-bezier(0.25, 1, 0.5, 1), transform 600ms cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cream-slide-text-item.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cream-slide-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.4rem, 1.85vw, 1.85rem);
+  font-weight: 700;
+  color: #123D2B;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.cream-slide-description {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.98rem;
+  color: #2C4B3B;
+  line-height: 1.62;
+  margin: 0;
+  max-width: 380px;
+}
+
+/* Gold Read more button */
+.cream-slider-read-more-btn {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #E9AD48 0%, #D4973B 100%);
+  color: #091c14;
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border: 1px solid rgba(255, 244, 208, 0.45);
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(212, 151, 59, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.cream-slider-read-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 151, 59, 0.5);
+  background: linear-gradient(135deg, #f0ba5d 0%, #dc9e40 100%);
+}
+
+.cream-slider-read-more-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .cream-slider-inner-grid {
+    padding: 56px 68px;
+    gap: 28px;
+  }
+  .slider-nav-prev {
+    left: 14px;
+  }
+  .slider-nav-next {
+    right: 14px;
+  }
+}
+
+/* Stack in one column below 900px, with the laptop first, then the text */
+@media (max-width: 900px) {
+  .cream-slider-outer-card {
+    margin: 50px auto;
+    border-radius: 28px;
+  }
+
+  .cream-slider-inner-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 48px 36px 40px;
+    gap: 30px;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 1. Laptop first */
+  .cream-slider-center-col {
+    order: 1;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  /* 2. Left column (headline) second */
+  .cream-slider-left-col {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cream-slider-quote-mark {
+    font-size: 4rem;
+    margin-bottom: 6px;
+  }
+
+  .cream-slider-quote-headline {
+    font-size: 1.55rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 3. Right column third */
+  .cream-slider-right-col {
+    order: 3;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .cream-slider-text-stack {
+    min-height: 125px;
+  }
+
+  .cream-slide-text-item {
+    align-items: center;
+    text-align: center;
+  }
+
+  .cream-slide-description {
+    max-width: 100%;
+  }
+
+  /* Position arrows aligned beside the laptop at top of card, well clear of text */
+  .slider-nav-arrow {
+    top: 170px;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+  }
+
+  .slider-nav-prev {
+    left: 14px;
+  }
+
+  .slider-nav-next {
+    right: 14px;
+  }
+}
+
+@media (max-width: 540px) {
+  .cream-slider-outer-card {
+    border-radius: 24px;
+  }
+
+  .cream-slider-inner-grid {
+    padding: 38px 18px 32px;
+    gap: 24px;
+  }
+
+  .laptop-mockup-wrapper {
+    max-width: calc(100% - 70px);
+  }
+
+  .laptop-screen-lid {
+    padding: 10px 10px 10px 10px;
+    border-radius: 12px 12px 2px 2px;
+  }
+
+  .laptop-base-chassis {
+    width: calc(100% + 18px);
+    height: 10px;
+  }
+
+  .cream-slider-quote-headline {
+    font-size: 1.35rem;
+  }
+
+  .cream-slide-heading {
+    font-size: 1.35rem;
+  }
+
+  .cream-slide-description {
+    font-size: 0.92rem;
+  }
+
+  .slider-nav-arrow {
+    top: 135px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .slider-nav-prev {
+    left: 8px;
+  }
+
+  .slider-nav-next {
+    right: 8px;
+  }
+}
+
+/* Reduced Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .cream-laptop-slider-section {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .laptop-slide,
+  .cream-slide-text-item,
+  .laptop-dot-btn,
+  .slider-nav-arrow,
+  .cream-slider-read-more-btn {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
    3. SECTION 2: INTRODUCTION — EDITORIAL SPLIT COMPOSITION
    Warm Cream & Parchment Editorial Tone
    -------------------------------------------------------------------------- */

@@ -101,6 +101,30 @@ const REALMS = [
   },
 ];
 
+const CREAM_LAPTOP_SLIDES = [
+  {
+    id: 'world-map',
+    image: '/images/world-map.jpg',
+    alt: 'Mergeverse World Map Realm Discovery',
+    heading: 'Match. Merge. Discover.',
+    description: 'Combine objects to evolve inventions, and watch the world grow with every merge.',
+  },
+  {
+    id: 'harvest-board',
+    image: '/images/gameplay.jpg',
+    alt: 'Level 19 Harvest Board Gameplay',
+    heading: 'Solve. Every level a puzzle.',
+    description: 'Every level is built from real harvest, kitchen, clinic and assistive-tech ideas.',
+  },
+  {
+    id: 'knowledge-challenge',
+    image: '/images/knowledge-challenge.png',
+    alt: 'Knowledge Challenge Learning Milestone',
+    heading: 'Learn. Every win teaches.',
+    description: 'After each level, a quick question turns play into a real historical fact.',
+  },
+];
+
 function App() {
   const containerRef = useRef(null);
   const heroViewportRef = useRef(null);
@@ -116,6 +140,90 @@ function App() {
   const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
   const [isScrolledPast40, setIsScrolledPast40] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Cream Laptop Slider Section State & Refs
+  const [creamSlideIndex, setCreamSlideIndex] = useState(0);
+  const [isSliderHovered, setIsSliderHovered] = useState(false);
+  const [isSliderInView, setIsSliderInView] = useState(false);
+  const creamSliderRef = useRef(null);
+  const touchStartXRef = useRef(null);
+
+  const nextCreamSlide = () => {
+    setCreamSlideIndex((prev) => (prev + 1) % CREAM_LAPTOP_SLIDES.length);
+  };
+
+  const prevCreamSlide = () => {
+    setCreamSlideIndex((prev) => (prev - 1 + CREAM_LAPTOP_SLIDES.length) % CREAM_LAPTOP_SLIDES.length);
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartXRef.current - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        nextCreamSlide();
+      } else {
+        prevCreamSlide();
+      }
+    }
+    touchStartXRef.current = null;
+  };
+
+  // Autoplay slider every 5 seconds; pause on hover; respect prefers-reduced-motion
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || isSliderHovered) return;
+
+    const timer = setInterval(() => {
+      setCreamSlideIndex((prev) => (prev + 1) % CREAM_LAPTOP_SLIDES.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [isSliderHovered]);
+
+  // Respond to keyboard arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        prevCreamSlide();
+      } else if (e.key === 'ArrowRight') {
+        nextCreamSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Fade section in when scrolled into view (IntersectionObserver); respect prefers-reduced-motion
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setIsSliderInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsSliderInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    const el = creamSliderRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
 
   // Active realm computed
   const activeRealm = useMemo(() => {
@@ -557,6 +665,151 @@ function App() {
           <div className="scroll-cue-line-wrap" aria-hidden="true">
             <div className="scroll-cue-line-track">
               <span className="scroll-cue-line-runner" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------------
+          SECTION 1.5: CREAM LAPTOP SLIDER SECTION
+          A World Built One Merge At A Time — Interactive Device Showcase
+          --------------------------------------------------------------------- */}
+      <section
+        id="cream-laptop-slider"
+        ref={creamSliderRef}
+        className={`cream-laptop-slider-section ${isSliderInView ? 'is-in-view' : ''}`}
+        aria-label="A World Built One Merge At A Time Showcase"
+      >
+        <div
+          className="cream-slider-outer-card"
+          onMouseEnter={() => setIsSliderHovered(true)}
+          onMouseLeave={() => setIsSliderHovered(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Round cream arrow buttons on left and right edges */}
+          <button
+            type="button"
+            className="slider-nav-arrow slider-nav-prev"
+            onClick={prevCreamSlide}
+            aria-label="Previous slide"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="slider-nav-arrow slider-nav-next"
+            onClick={nextCreamSlide}
+            aria-label="Next slide"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+
+          {/* 3-Column Layout Grid */}
+          <div className="cream-slider-inner-grid">
+            {/* LEFT COLUMN: Large gold quote mark and 4-line serif headline */}
+            <div className="cream-slider-left-col">
+              <span className="cream-slider-quote-mark" aria-hidden="true">“</span>
+              <h2 className="cream-slider-quote-headline">
+                <span>A WORLD</span>
+                <span>BUILT ONE</span>
+                <span>MERGE AT</span>
+                <span>A TIME.</span>
+              </h2>
+            </div>
+
+            {/* CENTER COLUMN: CSS-only Laptop & Dots */}
+            <div className="cream-slider-center-col">
+              <div className="laptop-mockup-wrapper">
+                {/* Dark rounded bezel screen lid */}
+                <div className="laptop-screen-lid">
+                  {/* Camera notch at top center */}
+                  <div className="laptop-camera-notch" aria-hidden="true">
+                    <span className="laptop-camera-lens" />
+                  </div>
+
+                  {/* 16:10 Screen Display Area */}
+                  <div className="laptop-screen-display">
+                    {CREAM_LAPTOP_SLIDES.map((slide, idx) => (
+                      <div
+                        key={slide.id}
+                        className={`laptop-slide ${idx === creamSlideIndex ? 'is-active' : ''}`}
+                        aria-hidden={idx !== creamSlideIndex}
+                      >
+                        <img
+                          src={slide.image}
+                          alt={slide.alt}
+                          className="laptop-slide-image"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Silver base below screen with center notch */}
+                <div className="laptop-base-chassis" aria-hidden="true">
+                  <div className="laptop-notch-indent" />
+                </div>
+
+                {/* Soft shadow underneath */}
+                <div className="laptop-bottom-shadow" aria-hidden="true" />
+              </div>
+
+              {/* 3 Small Dots below the laptop */}
+              <div className="laptop-dots-nav" role="tablist" aria-label="Slide dots">
+                {CREAM_LAPTOP_SLIDES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    role="tab"
+                    aria-selected={idx === creamSlideIndex}
+                    aria-label={`Go to slide ${idx + 1}`}
+                    className={`laptop-dot-btn ${idx === creamSlideIndex ? 'is-active' : ''}`}
+                    onClick={() => setCreamSlideIndex(idx)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Badge, Heading, Paragraph, Gold Read More Button */}
+            <div className="cream-slider-right-col">
+              <div className="cream-slider-badge-pill">
+                <span className="badge-sparkle" aria-hidden="true">✦</span>
+                <span>Mergeverse Resources</span>
+              </div>
+
+              {/* Synchronized slide text with smooth fade/slide transition */}
+              <div className="cream-slider-text-stack">
+                {CREAM_LAPTOP_SLIDES.map((slide, idx) => (
+                  <div
+                    key={slide.id}
+                    className={`cream-slide-text-item ${idx === creamSlideIndex ? 'is-active' : ''}`}
+                    aria-hidden={idx !== creamSlideIndex}
+                  >
+                    <h3 className="cream-slide-heading">{slide.heading}</h3>
+                    <p className="cream-slide-description">{slide.description}</p>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="cream-slider-read-more-btn"
+                onClick={() => handleScrollToSection('game-intro')}
+                aria-label="Read more about Mergeverse chapters"
+              >
+                <span>Read more</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
