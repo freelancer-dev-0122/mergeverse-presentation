@@ -1,0 +1,163 @@
+:root {
+  /* MERGEVERSE Core Brand Palette (Step 2) */
+  --emerald-forest: #123D2B;
+  --emerald-deep: #091c14;
+  --emerald-dark: #0d271c;
+  --emerald-mist: #1d533b;
+  --warm-parchment: #F4EBD8;
+  --parchment-light: #FAF5EB;
+  --parchment-card: #EFE4CE;
+  --parchment-border: #DFD1B5;
+  --sunlit-gold: #E9AD48;
+  --gold-highlight: #FFF4D0;
+  --gold-primary: #E9AD48;
+  --gold-secondary: #C88E30;
+  --gold-shadow: rgba(233, 173, 72, 0.4);
+  --living-teal: #4E9D86;
+  --teal-glow: rgba(78, 157, 134, 0.35);
+  --sky-blue: #83BDEB;
+  --blue-glow: rgba(131, 189, 235, 0.3);
+
+  /* Dark Theme Text Tokens */
+  --text-primary: #F8FAF6;
+  --text-muted: #A3B5AA;
+  --text-gold: #F0D9A6;
+
+  /* Parchment Editorial Text Tokens */
+  --ink-primary: #12281D;
+  --ink-secondary: #2C4B3B;
+  --ink-muted: #567364;
+  --ink-gold: #96671A;
+
+  /* Typography */
+  --font-cinzel: 'Cinzel', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Standardized Layout & Sizing Tokens */
+  --container-max: 1140px;
+  --container-reading: 760px;
+  --section-pad-y: 5.5rem;
+  --section-pad-y-mobile: 3.5rem;
+  --radius-card: 12px;
+  --radius-pill: 28px;
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+::selection {
+  background: var(--sunlit-gold);
+  color: var(--emerald-deep);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--emerald-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Accessibility: respect reduced motion preferences in CSS */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SHARED MERGEVERSE DESIGN SYSTEM UTILITIES
+   -------------------------------------------------------------------------- */
+.editorial-container {
+  max-width: var(--container-max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+.section-parchment {
+  background:
+    radial-gradient(ellipse at 50% 0%, #FAF5EB 0%, #F4EBD8 60%, #EFE5D0 100%),
+    #F4EBD8;
+  color: var(--ink-primary);
+  border-top: 1px solid rgba(233, 173, 72, 0.35);
+  border-bottom: 1px solid rgba(233, 173, 72, 0.35);
+  box-shadow: inset 0 20px 40px rgba(18, 61, 43, 0.04), inset 0 -20px 40px rgba(18, 61, 43, 0.04);
+}
+
+.editorial-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(233, 173, 72, 0.12);
+  border: 1px solid rgba(233, 173, 72, 0.35);
+  font-family: var(--font-cinzel);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fffae0;
+  box-shadow: 0 0 16px rgba(233, 173, 72, 0.12);
+  margin-bottom: 1rem;
+}
+
+.editorial-pill.parchment-pill {
+  background: rgba(18, 61, 43, 0.08) !important;
+  border: 1px solid rgba(18, 61, 43, 0.22) !important;
+  color: var(--emerald-forest) !important;
+  box-shadow: 0 2px 10px rgba(18, 61, 43, 0.06);
+}
+
+.pill-star {
+  color: var(--sunlit-gold);
+  font-size: 0.72rem;
+}
+
+.parchment-card {
+  position: relative;
+  background: #FAF6EE;
+  border: 1.5px solid var(--parchment-border);
+  border-radius: var(--radius-card);
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 6px 20px rgba(18, 61, 43, 0.05);
+  transition: var(--transition-smooth);
+}
+
+.parchment-card:hover {
+  transform: translateY(-2px);
+  background: #FFFFFF;
+  border-color: var(--sunlit-gold);
+  box-shadow: 0 10px 28px rgba(18, 61, 43, 0.08), 0 0 16px rgba(233, 173, 72, 0.12);
+}
+
+.doc-parchment-title {
+  color: var(--emerald-forest) !important;
+}
+
+.doc-parchment-lead {
+  color: var(--ink-secondary) !important;
+}
