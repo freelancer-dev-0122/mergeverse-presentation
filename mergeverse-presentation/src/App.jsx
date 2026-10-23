@@ -125,6 +125,49 @@ const CREAM_LAPTOP_SLIDES = [
   },
 ];
 
+const OCEAN_REALMS_DATA = [
+  {
+    id: 'agriculture',
+    name: 'Agriculture',
+    icon: '🌱',
+    hotspot: { x: '27%', y: '24%' },
+    status: 'Active',
+    tooltipStatus: 'Active - 20 levels',
+    isGoldStatus: true,
+    description: 'Terraced farms, windmills and the first harvests of civilization.',
+  },
+  {
+    id: 'food-culinary',
+    name: 'Food & Culinary',
+    icon: '👨‍🍳',
+    hotspot: { x: '71%', y: '24%' },
+    status: 'Coming soon',
+    tooltipStatus: 'Coming soon',
+    isGoldStatus: false,
+    description: 'Bazaars, kitchens and the craft of feeding a city.',
+  },
+  {
+    id: 'healthcare-medicine',
+    name: 'Healthcare & Medicine',
+    icon: '⚕️',
+    hotspot: { x: '26%', y: '68%' },
+    status: 'Coming soon',
+    tooltipStatus: 'Coming soon',
+    isGoldStatus: false,
+    description: 'Clinics and discoveries that learned to heal.',
+  },
+  {
+    id: 'assistive-technology',
+    name: 'Assistive Technology',
+    icon: '⚙️',
+    hotspot: { x: '69%', y: '68%' },
+    status: 'Coming soon',
+    tooltipStatus: 'Coming soon',
+    isGoldStatus: false,
+    description: 'Tools built so everyone can take part.',
+  },
+];
+
 function App() {
   const containerRef = useRef(null);
   const heroViewportRef = useRef(null);
@@ -144,9 +187,58 @@ function App() {
   // Cream Laptop Slider Section State & Refs
   const [creamSlideIndex, setCreamSlideIndex] = useState(0);
   const [isSliderHovered, setIsSliderHovered] = useState(false);
-  const [isSliderInView, setIsSliderInView] = useState(false);
+  const [isSliderInView, setIsSliderInView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  });
   const creamSliderRef = useRef(null);
   const touchStartXRef = useRef(null);
+
+  // Ocean Four Realms Section State & Handlers
+  const [highlightedOceanCardId, setHighlightedOceanCardId] = useState(null);
+  const [isOceanCardsInView, setIsOceanCardsInView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  });
+  const oceanCardsRef = useRef(null);
+
+  const handleOceanHotspotClick = (realmId) => {
+    const cardEl = document.getElementById(`ocean-card-${realmId}`);
+    if (cardEl) {
+      cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    setHighlightedOceanCardId(realmId);
+    setTimeout(() => {
+      setHighlightedOceanCardId(null);
+    }, 1000);
+  };
+
+  // Staggered reveal for Ocean cards via IntersectionObserver; respect prefers-reduced-motion
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsOceanCardsInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    const el = oceanCardsRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
 
   const nextCreamSlide = () => {
     setCreamSlideIndex((prev) => (prev + 1) % CREAM_LAPTOP_SLIDES.length);
@@ -202,9 +294,7 @@ function App() {
 
   // Fade section in when scrolled into view (IntersectionObserver); respect prefers-reduced-motion
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      setIsSliderInView(true);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
@@ -811,6 +901,123 @@ function App() {
                 </svg>
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------------
+          SECTION 1.8: OCEAN ARCHIPELAGO — THE FOUR REALMS
+          Full-width section with CSS-only animated ocean, floating map & interactive hotspots
+          --------------------------------------------------------------------- */}
+      <section
+        id="ocean-archipelago"
+        className="ocean-realms-section"
+        aria-label="The Four Realms Archipelago"
+      >
+        {/* Animated Ocean Background: Teal/Deep Blue Gradients, Drift Waves, Clouds & Sparkles */}
+        <div className="ocean-bg-canvas" aria-hidden="true">
+          <div className="ocean-gradient-layer" />
+          <div className="ocean-wave-band ocean-wave-1" />
+          <div className="ocean-wave-band ocean-wave-2" />
+          <div className="ocean-wave-band ocean-wave-3" />
+          <div className="ocean-cloud ocean-cloud-1" />
+          <div className="ocean-cloud ocean-cloud-2" />
+          <div className="ocean-cloud ocean-cloud-3" />
+          <div className="ocean-sparkles-field">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <span
+                key={i}
+                className="ocean-sparkle-dot"
+                style={{
+                  top: `${(i * 17 + 9) % 94}%`,
+                  left: `${(i * 23 + 4) % 96}%`,
+                  animationDelay: `${(i * 0.35).toFixed(1)}s`,
+                  animationDuration: `${2.4 + (i % 4) * 0.7}s`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="ocean-content-wrapper">
+          {/* Top of Section: Gold badge, serif headline & centered short line */}
+          <div className="ocean-section-header">
+            <div className="ocean-eyebrow-badge">
+              <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
+              <span>ARCHIPELAGO</span>
+              <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
+            </div>
+            <h2 className="ocean-section-headline">FOUR REALMS. ONE LIVING WORLD.</h2>
+            <p className="ocean-section-subhead">
+              Explore the four sovereign lands of human discovery, united across a boundless living ocean.
+            </p>
+          </div>
+
+          {/* Center: World Map Image with Floating Animation & Interactive Hotspots */}
+          <div className="ocean-map-floating-wrap">
+            <div className="ocean-map-img-frame">
+              <img
+                src="/images/world-map.jpg"
+                alt="Mergeverse World Map Archipelago"
+                className="ocean-map-image"
+                loading="lazy"
+              />
+
+              {/* 4 Interactive Hotspot Buttons */}
+              {OCEAN_REALMS_DATA.map((realm) => (
+                <button
+                  key={realm.id}
+                  type="button"
+                  className="ocean-hotspot-btn"
+                  style={{ left: realm.hotspot.x, top: realm.hotspot.y }}
+                  onClick={() => handleOceanHotspotClick(realm.id)}
+                  aria-label={`${realm.name} realm — ${realm.tooltipStatus}. Click to highlight realm card.`}
+                >
+                  <span className="hotspot-pulse-ring" aria-hidden="true" />
+                  <span className="hotspot-core-dot" aria-hidden="true" />
+
+                  {/* Tooltip Card on Hover / Focus */}
+                  <span className="hotspot-tooltip-card" role="tooltip">
+                    <span className="tooltip-name">{realm.name}</span>
+                    <span
+                      className={`tooltip-status ${realm.isGoldStatus ? 'status-active' : 'status-soon'}`}
+                    >
+                      {realm.tooltipStatus}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Row of 4 Glass Cards (Staggered Animation via IntersectionObserver) */}
+          <div
+            ref={oceanCardsRef}
+            className={`ocean-cards-grid ${isOceanCardsInView ? 'is-in-view' : ''}`}
+          >
+            {OCEAN_REALMS_DATA.map((realm, idx) => (
+              <div
+                key={realm.id}
+                id={`ocean-card-${realm.id}`}
+                className={`ocean-realm-card ${highlightedOceanCardId === realm.id ? 'is-highlighted-card' : ''}`}
+                style={{
+                  transitionDelay: `${idx * 80}ms`,
+                }}
+              >
+                <div className="ocean-card-header">
+                  <span className="ocean-card-icon" aria-hidden="true">
+                    {realm.icon}
+                  </span>
+                  <span
+                    className={`ocean-status-pill ${realm.isGoldStatus ? 'status-active' : 'status-soon'}`}
+                  >
+                    {realm.status}
+                  </span>
+                </div>
+                <h3 className="ocean-card-title">{realm.name}</h3>
+                <p className="ocean-card-desc">{realm.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

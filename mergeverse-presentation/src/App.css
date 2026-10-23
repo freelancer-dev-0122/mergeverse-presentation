@@ -1382,6 +1382,569 @@
 }
 
 /* --------------------------------------------------------------------------
+   2.8 SECTION 1.8: OCEAN ARCHIPELAGO — THE FOUR REALMS
+   Full-width Animated Ocean Background, Floating World Map & Hotspots
+   -------------------------------------------------------------------------- */
+.ocean-realms-section {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px 120px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animated Ocean Canvas (Teal/Deep Blue Gradients, Waves, Clouds & Twinkling Sparkles) */
+.ocean-bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ocean-gradient-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 25%, #0f3e39 0%, #092c27 35%, #051c1c 70%, #020e11 100%);
+  background-image: linear-gradient(180deg, rgba(6, 28, 20, 0.4) 0%, rgba(10, 48, 44, 0.6) 40%, rgba(4, 22, 28, 0.88) 100%);
+}
+
+/* Semi-transparent wave bands drifting sideways slowly in 30-50s loops */
+.ocean-wave-band {
+  position: absolute;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.25;
+  mix-blend-mode: screen;
+}
+
+.ocean-wave-1 {
+  background: radial-gradient(ellipse 1300px 320px at 50% 28%, rgba(78, 157, 134, 0.45) 0%, rgba(19, 93, 83, 0.2) 50%, transparent 75%);
+  animation: oceanWaveDrift1 34s linear infinite;
+}
+
+.ocean-wave-2 {
+  background: radial-gradient(ellipse 1500px 360px at 50% 55%, rgba(131, 189, 235, 0.25) 0%, rgba(78, 157, 134, 0.15) 55%, transparent 80%);
+  animation: oceanWaveDrift2 42s linear infinite reverse;
+}
+
+.ocean-wave-3 {
+  background: radial-gradient(ellipse 1700px 300px at 50% 82%, rgba(22, 114, 102, 0.4) 0%, rgba(5, 24, 33, 0.2) 60%, transparent 75%);
+  animation: oceanWaveDrift3 48s linear infinite;
+}
+
+@keyframes oceanWaveDrift1 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(15%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes oceanWaveDrift2 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-18%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes oceanWaveDrift3 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(12%); }
+  100% { transform: translateX(0); }
+}
+
+/* Soft white cloud shapes drifting across */
+.ocean-cloud {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(50px);
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14) 0%, rgba(180, 230, 220, 0.05) 50%, transparent 75%);
+}
+
+.ocean-cloud-1 {
+  width: 550px;
+  height: 220px;
+  top: 10%;
+  left: -350px;
+  animation: oceanCloudDrift1 60s linear infinite;
+}
+
+.ocean-cloud-2 {
+  width: 680px;
+  height: 260px;
+  top: 45%;
+  left: -400px;
+  animation: oceanCloudDrift2 72s linear infinite 14s;
+}
+
+.ocean-cloud-3 {
+  width: 480px;
+  height: 190px;
+  top: 78%;
+  left: -300px;
+  animation: oceanCloudDrift3 64s linear infinite 28s;
+}
+
+@keyframes oceanCloudDrift1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 600px)); }
+}
+
+@keyframes oceanCloudDrift2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 750px)); }
+}
+
+@keyframes oceanCloudDrift3 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 600px)); }
+}
+
+/* Sparkles field */
+.ocean-sparkles-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ocean-sparkle-dot {
+  position: absolute;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #FFF8E7;
+  box-shadow: 0 0 6px rgba(233, 173, 72, 0.9), 0 0 12px rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  animation: oceanSparkleTwinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes oceanSparkleTwinkle {
+  0% { opacity: 0.15; transform: scale(0.65); }
+  50% { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 0.2; transform: scale(0.75); }
+}
+
+/* Ocean Content Wrapper */
+.ocean-content-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Header Lockup */
+.ocean-section-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.ocean-eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(233, 173, 72, 0.16);
+  border: 1px solid rgba(233, 173, 72, 0.45);
+  color: #FFF0C2;
+  border-radius: 9999px;
+  padding: 5px 16px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  box-shadow: 0 0 16px rgba(233, 173, 72, 0.25);
+}
+
+.ocean-eyebrow-badge .ocean-eyebrow-star {
+  color: var(--sunlit-gold);
+  font-size: 0.75rem;
+}
+
+.ocean-section-headline {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #FFF6D8;
+  margin: 0 0 14px 0;
+  line-height: 1.2;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  word-break: break-word;
+}
+
+.ocean-section-subhead {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: #C0D6CB;
+  line-height: 1.55;
+  margin: 0;
+  font-style: italic;
+  max-width: 660px;
+}
+
+/* World Map Floating Container */
+.ocean-map-floating-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: oceanMapFloat 6s ease-in-out infinite;
+}
+
+@keyframes oceanMapFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.ocean-map-img-frame {
+  position: relative;
+  width: 100%;
+  border-radius: 28px;
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.72),
+    0 0 50px rgba(78, 157, 134, 0.3),
+    0 0 24px rgba(233, 173, 72, 0.22);
+  border: 1px solid rgba(233, 173, 72, 0.38);
+  background: #081d18;
+}
+
+.ocean-map-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 28px;
+  object-fit: contain;
+}
+
+/* 4 Interactive Hotspot Buttons */
+.ocean-hotspot-btn {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.ocean-hotspot-btn:focus-visible {
+  outline: 3px solid #FFF6D8;
+  outline-offset: 4px;
+}
+
+.hotspot-center-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #E9AD48;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 12px rgba(233, 173, 72, 0.95), 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hotspot-pulse-ring {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid rgba(233, 173, 72, 0.7);
+  box-shadow: 0 0 14px rgba(233, 173, 72, 0.5);
+  animation: oceanHotspotPulse 2.4s ease-out infinite;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+@keyframes oceanHotspotPulse {
+  0% { transform: scale(0.6); opacity: 0.95; }
+  75% { transform: scale(1.6); opacity: 0.05; }
+  100% { transform: scale(1.75); opacity: 0; }
+}
+
+.ocean-hotspot-btn:hover,
+.ocean-hotspot-btn:focus-visible {
+  transform: translate(-50%, -50%) scale(1.18);
+}
+
+.ocean-hotspot-btn:hover .hotspot-center-dot,
+.ocean-hotspot-btn:focus-visible .hotspot-center-dot {
+  background: #FFF4D0;
+  box-shadow: 0 0 20px rgba(233, 173, 72, 1), 0 0 32px rgba(233, 173, 72, 0.7);
+  transform: scale(1.2);
+}
+
+.ocean-hotspot-btn:hover .hotspot-pulse-ring,
+.ocean-hotspot-btn:focus-visible .hotspot-pulse-ring {
+  border-color: #FFF6D8;
+  box-shadow: 0 0 24px rgba(233, 173, 72, 0.95);
+}
+
+/* Tooltip Card on Hover / Focus */
+.hotspot-tooltip-card {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(8, 26, 19, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(233, 173, 72, 0.55);
+  border-radius: 12px;
+  padding: 8px 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55), 0 0 18px rgba(233, 173, 72, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 35;
+}
+
+.hotspot-tooltip-card::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(8, 26, 19, 0.95) transparent transparent transparent;
+}
+
+.ocean-hotspot-btn:hover .hotspot-tooltip-card,
+.ocean-hotspot-btn:focus-visible .hotspot-tooltip-card {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-name {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #FFF8E6;
+  letter-spacing: 0.05em;
+}
+
+.tooltip-status {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.tooltip-status.status-active {
+  color: #E9AD48;
+}
+
+.tooltip-status.status-soon {
+  color: #B2C4B9;
+}
+
+/* Row of 4 Glass Cards (Staggered Animation via IntersectionObserver) */
+.ocean-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  max-width: 1100px;
+  margin: 54px auto 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ocean-realm-card {
+  background: rgba(9, 28, 20, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(233, 173, 72, 0.28);
+  border-radius: 20px;
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+.ocean-cards-grid.is-in-view .ocean-realm-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ocean-realm-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(233, 173, 72, 0.55);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(233, 173, 72, 0.25);
+}
+
+.ocean-realm-card.is-highlighted-card {
+  border-color: #E9AD48 !important;
+  background: rgba(16, 48, 34, 0.95) !important;
+  box-shadow:
+    0 0 36px rgba(233, 173, 72, 0.85),
+    inset 0 0 18px rgba(233, 173, 72, 0.4),
+    0 20px 45px rgba(0, 0, 0, 0.65) !important;
+  transform: translateY(-8px) scale(1.03) !important;
+}
+
+.ocean-card-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ocean-card-icon {
+  font-size: 1.85rem;
+  line-height: 1;
+}
+
+.ocean-status-pill {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+.ocean-status-pill.status-active {
+  background: rgba(233, 173, 72, 0.18);
+  border: 1px solid rgba(233, 173, 72, 0.6);
+  color: #FFF0C2;
+  box-shadow: 0 0 10px rgba(233, 173, 72, 0.25);
+}
+
+.ocean-status-pill.status-soon {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #A3B5AA;
+}
+
+.ocean-card-title {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFF6D8;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;
+}
+
+.ocean-card-desc {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.92rem;
+  color: #B2C4B9;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1000px) {
+  .ocean-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .ocean-main-heading {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .ocean-realms-section {
+    padding: 70px 16px 80px;
+  }
+  .ocean-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 36px;
+  }
+  .ocean-main-heading {
+    font-size: 1.65rem;
+  }
+  .ocean-subheading {
+    font-size: 1rem;
+  }
+  .ocean-map-img-frame {
+    border-radius: 18px;
+  }
+  .ocean-map-image {
+    border-radius: 18px;
+  }
+  .hotspot-center-dot {
+    width: 12px;
+    height: 12px;
+  }
+  .hotspot-pulse-ring {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Reduced Motion preferences: stop all drifting, floating and twinkling */
+@media (prefers-reduced-motion: reduce) {
+  .ocean-wave-band,
+  .ocean-cloud,
+  .ocean-sparkle-dot,
+  .ocean-map-floating-wrap,
+  .hotspot-pulse-ring,
+  .ocean-realm-card {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  .ocean-realm-card {
+    opacity: 1 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
    3. SECTION 2: INTRODUCTION — EDITORIAL SPLIT COMPOSITION
    Warm Cream & Parchment Editorial Tone
    -------------------------------------------------------------------------- */
