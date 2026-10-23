@@ -112,8 +112,9 @@ function App() {
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
   const [isGameplayModalOpen, setIsGameplayModalOpen] = useState(false);
   const [isKnowledgeModalOpen, setIsKnowledgeModalOpen] = useState(false);
+  const heroBackdropRef = useRef(null);
   const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
-  const [isStickyNavVisible, setIsStickyNavVisible] = useState(false);
+  const [isScrolledPast40, setIsScrolledPast40] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Active realm computed
@@ -121,11 +122,26 @@ function App() {
     return REALMS.find((r) => r.id === activeRealmId) || REALMS[0];
   }, [activeRealmId]);
 
-  // Track window scroll for sticky navigation
+  // Track window scroll for floating pill nav (past 40px) and gentle parallax on hero backdrop
   useEffect(() => {
+    let rafId = null;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const handleScroll = () => {
-      setIsStickyNavVisible(window.scrollY > 120);
+      const scrollY = window.scrollY;
+      setIsScrolledPast40(scrollY > 40);
+
+      if (!prefersReducedMotion && heroBackdropRef.current) {
+        if (rafId) window.cancelAnimationFrame(rafId);
+        rafId = window.requestAnimationFrame(() => {
+          if (scrollY < 1200 && heroBackdropRef.current) {
+            heroBackdropRef.current.style.transform = `translate3d(0, ${scrollY * 0.32}px, 0)`;
+          }
+        });
+      }
     };
+
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Auto-scroll to hash if present in URL
@@ -140,7 +156,10 @@ function App() {
       }, 200);
     }
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Ambient floating motes drifting across the landscape
@@ -245,7 +264,7 @@ function App() {
           Studio Navigation Bar (Precision aligned, compact editorial header)
           --------------------------------------------------------------------- */}
       <header
-        className={`studio-navbar ${isStickyNavVisible ? 'is-sticky' : 'is-hero'} ${isMobileMenuOpen ? 'menu-open' : ''}`}
+        className={`studio-navbar ${isScrolledPast40 ? 'is-scrolled' : ''} ${isMobileMenuOpen ? 'menu-open' : ''}`}
         aria-label="MERGEVERSE Studio Navigation"
       >
         <div className="navbar-inner">
@@ -420,8 +439,8 @@ function App() {
         className="cinematic-hero-section"
         aria-label="MERGEVERSE Cinematic Hero"
       >
-        {/* Full-bleed authentic landscape visual anchor */}
-        <div className="hero-backdrop-container" aria-hidden="true">
+        {/* Full-bleed authentic landscape visual anchor with gentle parallax */}
+        <div ref={heroBackdropRef} className="hero-backdrop-container" aria-hidden="true">
           <img
             src="/images/mergeverse-title.jpg"
             alt="MERGEVERSE Alpine Landscape with sunlit peaks and pastoral valley meadows"
@@ -452,21 +471,22 @@ function App() {
 
         {/* Hero Structured Typographic Content */}
         <div className="hero-content-wrapper">
-          <div className="hero-eyebrow">
-            <span className="eyebrow-star">✦</span>
-            <span className="eyebrow-text">AN INDIE ODYSSEY OF CIVILIZATION · DIRECTED BY VIKAS</span>
-            <span className="eyebrow-star">✦</span>
+          {/* Small gold ornament above title */}
+          <div className="hero-ornament-crest" aria-hidden="true">
+            <span className="ornament-flourish-line left" />
+            <span className="ornament-star">✦</span>
+            <span className="ornament-flourish-line right" />
           </div>
 
+          {/* Title group with liquid chrome-gold animated blob behind it */}
           <div className="hero-title-group">
+            <div className="hero-liquid-blob" aria-hidden="true" />
             <h1 className="hero-main-title">MERGEVERSE</h1>
-            <div className="hero-title-halo" aria-hidden="true" />
           </div>
 
-          <div className="hero-tagline-wrap">
-            <span className="tagline-flourish" aria-hidden="true" />
-            <p className="hero-tagline">EXPLORE. SOLVE. DISCOVER.</p>
-            <span className="tagline-flourish right" aria-hidden="true" />
+          {/* Tagline in rounded cream glass pill with dark text */}
+          <div className="hero-tagline-pill">
+            <span className="hero-tagline-text">Explore. Solve. Discover.</span>
           </div>
 
           <p className="hero-lead-narrative">
@@ -522,16 +542,23 @@ function App() {
           </div>
         </div>
 
-        {/* Subdued scroll prompter */}
+        {/* Small "Scroll to explore" text with thin animated line at bottom center */}
         <div
           className="hero-scroll-cue"
           onClick={() => handleScrollToSection('game-intro')}
           role="button"
           tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') handleScrollToSection('game-intro');
+          }}
           aria-label="Scroll to overview"
         >
           <span className="scroll-cue-text">SCROLL TO EXPLORE</span>
-          <span className="scroll-cue-chevron">⌄</span>
+          <div className="scroll-cue-line-wrap" aria-hidden="true">
+            <div className="scroll-cue-line-track">
+              <span className="scroll-cue-line-runner" />
+            </div>
+          </div>
         </div>
       </section>
 
