@@ -114,6 +114,7 @@ function App() {
   const [isKnowledgeModalOpen, setIsKnowledgeModalOpen] = useState(false);
   const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
   const [isStickyNavVisible, setIsStickyNavVisible] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Active realm computed
   const activeRealm = useMemo(() => {
@@ -244,7 +245,7 @@ function App() {
           Studio Navigation Bar (Precision aligned, compact editorial header)
           --------------------------------------------------------------------- */}
       <header
-        className={`studio-navbar ${isStickyNavVisible ? 'is-sticky' : 'is-hero'}`}
+        className={`studio-navbar ${isStickyNavVisible ? 'is-sticky' : 'is-hero'} ${isMobileMenuOpen ? 'menu-open' : ''}`}
         aria-label="MERGEVERSE Studio Navigation"
       >
         <div className="navbar-inner">
@@ -254,6 +255,7 @@ function App() {
             onClick={(e) => {
               e.preventDefault();
               handleScrollToSection('hero');
+              setIsMobileMenuOpen(false);
             }}
           >
             <span className="brand-crest-star" aria-hidden="true">✦</span>
@@ -263,11 +265,54 @@ function App() {
           </a>
 
           <nav className="navbar-links-group" aria-label="Main Navigation">
-            <a href="#game-intro" className="nav-item-link">Overview</a>
-            <a href="#four-realms" className="nav-item-link">Four Realms</a>
-            <a href="#gameplay-showcase" className="nav-item-link">Gameplay</a>
-            <a href="#explorer-collection" className="nav-item-link">Codex</a>
-            <a href="#behind-the-worlds" className="nav-item-link nav-highlight">
+            <a
+              href="#game-intro"
+              className="nav-item-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleScrollToSection('game-intro');
+              }}
+            >
+              Overview
+            </a>
+            <a
+              href="#four-realms"
+              className="nav-item-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleScrollToSection('four-realms');
+              }}
+            >
+              Four Realms
+            </a>
+            <a
+              href="#gameplay-showcase"
+              className="nav-item-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleScrollToSection('gameplay-showcase');
+              }}
+            >
+              Gameplay
+            </a>
+            <a
+              href="#explorer-collection"
+              className="nav-item-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleScrollToSection('explorer-collection');
+              }}
+            >
+              Codex
+            </a>
+            <a
+              href="#behind-the-worlds"
+              className="nav-item-link nav-highlight"
+              onClick={(e) => {
+                e.preventDefault();
+                handleScrollToSection('behind-the-worlds');
+              }}
+            >
               Behind the Worlds
             </a>
           </nav>
@@ -276,14 +321,93 @@ function App() {
             <button
               type="button"
               className="navbar-cta-btn"
-              onClick={() => handleScrollToSection('four-realms')}
+              onClick={() => {
+                handleScrollToSection('four-realms');
+                setIsMobileMenuOpen(false);
+              }}
               aria-label="Explore the floating archipelago realms"
             >
               <span>Explore Realms</span>
               <span className="btn-arrow" aria-hidden="true">↓</span>
             </button>
+
+            <button
+              type="button"
+              className={`navbar-hamburger-btn ${isMobileMenuOpen ? 'is-active' : ''}`}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-nav-dropdown"
+            >
+              <span className="hamburger-bar" />
+              <span className="hamburger-bar" />
+              <span className="hamburger-bar" />
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu (below 900px) */}
+        {isMobileMenuOpen && (
+          <div className="navbar-mobile-dropdown" id="mobile-nav-dropdown">
+            <nav className="mobile-nav-links" aria-label="Mobile Main Navigation">
+              <a
+                href="#game-intro"
+                className="mobile-nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollToSection('game-intro');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Overview
+              </a>
+              <a
+                href="#four-realms"
+                className="mobile-nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollToSection('four-realms');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Four Realms
+              </a>
+              <a
+                href="#gameplay-showcase"
+                className="mobile-nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollToSection('gameplay-showcase');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Gameplay
+              </a>
+              <a
+                href="#explorer-collection"
+                className="mobile-nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollToSection('explorer-collection');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Codex
+              </a>
+              <a
+                href="#behind-the-worlds"
+                className="mobile-nav-link nav-highlight"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollToSection('behind-the-worlds');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Behind the Worlds
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* ---------------------------------------------------------------------

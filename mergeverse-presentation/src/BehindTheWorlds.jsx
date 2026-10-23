@@ -384,20 +384,25 @@ export default function BehindTheWorlds({ onOpenModal }) {
               }}
               aria-label="Inspect Full Resolution World Map"
             >
-              <div className="card-thumb-wrap">
+              <div className="card-thumb-wrap ratio-map">
                 <img
                   src="/images/world-map.jpg"
                   alt="MERGEVERSE In-Game World Map with four floating islands"
                   className="card-thumb-img"
                 />
-                <span className="card-inspect-tag">⛶ Inspect Map</span>
               </div>
               <div className="card-info-pane">
                 <span className="card-kicker">01 · ARCHIPELAGO CARTOGRAPHY</span>
                 <h4 className="card-title">The Four Sovereign Sky Realms</h4>
                 <p className="card-caption">
-                  Active Agriculture hub alongside locked Food & Culinary, Healthcare & Medicine, and Assistive Technology.
+                  Active Agriculture hub alongside locked Food &amp; Culinary, Healthcare &amp; Medicine, and Assistive Technology floating archipelagos.
                 </p>
+                <div className="card-action-row">
+                  <span className="card-inspect-btn primary-inspect">
+                    <span className="inspect-icon" aria-hidden="true">⛶</span>
+                    <span>Inspect Map</span>
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -412,13 +417,12 @@ export default function BehindTheWorlds({ onOpenModal }) {
               }}
               aria-label="Inspect Basecamp Sanctuary"
             >
-              <div className="card-thumb-wrap">
+              <div className="card-thumb-wrap ratio-dashboard">
                 <img
                   src="/images/home-dashboard.jpg"
                   alt="MERGEVERSE Home Dashboard screenshot"
                   className="card-thumb-img"
                 />
-                <span className="card-inspect-tag">⛶ Inspect</span>
               </div>
               <div className="card-info-pane">
                 <span className="card-kicker">02 · EXPEDITION BASECAMP</span>
@@ -426,6 +430,12 @@ export default function BehindTheWorlds({ onOpenModal }) {
                 <p className="card-caption">
                   Explorer Level 6 standing (1,395 / 1,400 XP), achievements, and persistent telemetry.
                 </p>
+                <div className="card-action-row">
+                  <span className="card-inspect-btn">
+                    <span className="inspect-icon" aria-hidden="true">⛶</span>
+                    <span>Inspect</span>
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -440,13 +450,12 @@ export default function BehindTheWorlds({ onOpenModal }) {
               }}
               aria-label="Inspect Level 19 Gameplay"
             >
-              <div className="card-thumb-wrap">
+              <div className="card-thumb-wrap ratio-gameplay">
                 <img
                   src="/images/gameplay.jpg"
                   alt="MERGEVERSE Level 19 gameplay board"
                   className="card-thumb-img"
                 />
-                <span className="card-inspect-tag">⛶ Inspect</span>
               </div>
               <div className="card-info-pane">
                 <span className="card-kicker">03 · PUZZLE BOARD</span>
@@ -454,6 +463,12 @@ export default function BehindTheWorlds({ onOpenModal }) {
                 <p className="card-caption">
                   5×6 cascade merge board fulfilling artisanal bread recipes with double merge bonuses.
                 </p>
+                <div className="card-action-row">
+                  <span className="card-inspect-btn">
+                    <span className="inspect-icon" aria-hidden="true">⛶</span>
+                    <span>Inspect</span>
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -468,13 +483,12 @@ export default function BehindTheWorlds({ onOpenModal }) {
               }}
               aria-label="Inspect Knowledge Challenge"
             >
-              <div className="card-thumb-wrap">
+              <div className="card-thumb-wrap ratio-knowledge">
                 <img
                   src="/images/knowledge-challenge.png"
                   alt="MERGEVERSE In-Game Knowledge Challenge screenshot"
                   className="card-thumb-img"
                 />
-                <span className="card-inspect-tag">⛶ Inspect</span>
               </div>
               <div className="card-info-pane">
                 <span className="card-kicker">04 · PEDAGOGICAL DESIGN</span>
@@ -482,6 +496,12 @@ export default function BehindTheWorlds({ onOpenModal }) {
                 <p className="card-caption">
                   Milestone challenges testing real historical facts before awarding three-star level completion.
                 </p>
+                <div className="card-action-row">
+                  <span className="card-inspect-btn">
+                    <span className="inspect-icon" aria-hidden="true">⛶</span>
+                    <span>Inspect</span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
