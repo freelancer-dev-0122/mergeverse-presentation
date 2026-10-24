@@ -132,6 +132,12 @@ A single source of truth for design tokens and reusable utility classes across t
 | `.footer-cols-grid` | Responsive 3-column desktop layout (Brand, Explore, Realms) collapsing to 1 column on mobile. | Use inside `.site-footer` for main navigation and info columns. |
 | `.footer-nav-anchor` | Fluid navigation link with `--gold-500` hover shift and accessible `:focus-visible` ring. | Use for section navigation links in the footer. |
 | `.footer-bottom-bar` | Horizontal credits row separated by a subtle top border, featuring copyright, designer credit, and back-to-top button. | Use at the base of `.site-footer`. |
+| `.global-scroll-progress-bar` | Fixed 3px line at top of viewport, driven by `requestAnimationFrame`, positioned above nav (`z-index: 10002`). | Use for site-wide reading scroll progress tracking. |
+| `.section-seam` | Responsive 48px soft transition divider (curved SVG arch or gradient fade in neighbour colors). | Placed between sections so dark never touches dark with a visible seam and cream never touches cream. |
+| `.section-seam--wood-to-cream` | Seam divider bridging Timber Wood (`#0d0805`) to Warm Cream (`--cream-100`). | Used between `#notebook-build-story` and `#game-intro`. |
+| `.section-seam--cream-to-dark` | Seam divider bridging Warm Cream (`--cream-100`) to Deep Forest Emerald (`--green-900`). | Used between Cream and Dark sections. |
+| `.section-seam--dark-to-cream` | Seam divider bridging Deep Forest Emerald (`--green-900`) to Warm Cream (`--cream-100`). | Used between Dark and Cream sections. |
+| `.section-seam--dark-to-mist` | Seam divider bridging Deep Forest Emerald (`--green-900`) to Atmospheric Mist Outro. | Used between `#behind-the-worlds` and `#forest-outro`. |
 | `.reveal` | Initial hidden state (`opacity: 0; transform: translateY(28px)`). | Use on any element or section container that should smoothly fade and slide up when scrolled into view. |
 | `.reveal.is-visible` | Animated visible state (`opacity: 1; transform: translateY(0)`). | Applied automatically by `initScrollReveal()` IntersectionObserver once the element enters the viewport. |
 
@@ -141,3 +147,6 @@ A single source of truth for design tokens and reusable utility classes across t
 
 - **`:focus-visible`**: Uniform accessible outline in `--gold-500` with 3px offset across all links, buttons, and inputs.
 - **`@media (prefers-reduced-motion: reduce)`**: Instantly forces animation and transition durations to `0.01ms` and sets all `.reveal` elements to fully visible with no transform.
+- **`text-wrap: balance`**: Automatically balances headings (`h1` through `h4`) to prevent orphan words.
+- **Off-Screen Animation Pausing**: Background mist, falling leaves, liquid blobs, and ocean waves are paused via `animation-play-state: paused` when their parent section is not intersecting.
+

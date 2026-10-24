@@ -1441,4 +1441,121 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   20. SCROLL-PROGRESS BAR (STEP 7)
+   Fixed 3px line at the top of the viewport, driven by requestAnimationFrame.
+   Positioned above floating nav (z-index 10002) and non-blocking (pointer-events none).
+   -------------------------------------------------------------------------- */
+.global-scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-600) 0%, var(--gold-400) 50%, var(--gold-200) 100%);
+  box-shadow: 0 0 10px rgba(233, 173, 72, 0.7), 0 0 4px rgba(233, 173, 72, 0.9);
+  z-index: 10002;
+  pointer-events: none;
+  will-change: width;
+  transform: translateZ(0);
+}
+
+/* --------------------------------------------------------------------------
+   21. SECTION SEAM TRANSITION DIVIDERS (STEP 7)
+   CSS-only soft curved edges & gradient fades between sections.
+   Ensures dark never touches dark with a visible seam, and cream never touches cream.
+   -------------------------------------------------------------------------- */
+.section-seam {
+  width: 100%;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 4;
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+.section-seam svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.section-seam--wood-to-cream {
+  background-color: #0d0805;
+}
+
+.section-seam--cream-to-dark {
+  background-color: var(--cream-100);
+}
+
+.section-seam--dark-to-cream {
+  background-color: var(--green-900);
+}
+
+.section-seam--dark-to-mist {
+  background-color: var(--green-900);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-seam--dark-to-mist .seam-mist-glow {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, var(--green-900) 0%, rgba(13, 40, 28, 0.7) 50%, var(--green-900) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   22. PERFORMANCE: OFF-SCREEN ANIMATION PAUSING (STEP 7)
+   Pause heavy GPU/CPU animations when their parent section is not visible.
+   -------------------------------------------------------------------------- */
+.cinematic-hero-section:not(.is-in-view) .hero-liquid-blob,
+.cinematic-hero-section:not(.is-in-view) .hero-mote,
+.cinematic-hero-section:not(.is-in-view) .scroll-cue-line-runner {
+  animation-play-state: paused !important;
+}
+
+.ocean-realms-section:not(.is-in-view) .ocean-wave-band,
+.ocean-realms-section:not(.is-in-view) .ocean-cloud,
+.ocean-realms-section:not(.is-in-view) .ocean-sparkle-dot,
+.ocean-realms-section:not(.is-in-view) .ocean-map-floating-wrap,
+.ocean-realms-section:not(.is-in-view) .hotspot-pulse-ring {
+  animation-play-state: paused !important;
+}
+
+.outro-section:not(.is-intersecting) .outro-backdrop-img,
+.outro-section:not(.is-intersecting) .outro-mist-band,
+.outro-section:not(.is-intersecting) .outro-falling-leaf {
+  animation-play-state: paused !important;
+}
+
+/* --------------------------------------------------------------------------
+   23. TYPOGRAPHY & FOCUS POLISH (STEP 7)
+   Text-wrap balance on all headings, body text scale safety, visible gold focus.
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4,
+.section-title,
+.hero-main-title,
+.ocean-main-heading,
+.gameplay-section-title,
+.desk-main-heading,
+.outro-wordmark-title {
+  text-wrap: balance;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold-500) !important;
+  outline-offset: 3px !important;
+}
+
 

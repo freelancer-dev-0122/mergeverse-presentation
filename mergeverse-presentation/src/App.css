@@ -29,7 +29,9 @@
   margin-inline: auto;
   width: min(var(--container), calc(100% - 48px));
   z-index: 100;
-  transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-radius 0.3s ease;
@@ -43,10 +45,11 @@
 }
 
 .studio-navbar.is-scrolled {
-  top: 16px;
+  top: 10px;
   background: rgba(7, 22, 16, 0.94);
   border-color: rgba(233, 173, 72, 0.45);
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.6), 0 0 24px rgba(233, 173, 72, 0.15);
+  transform: scale(0.985);
 }
 
 .studio-navbar.menu-open {
@@ -61,10 +64,11 @@
   justify-content: space-between;
   padding: 10px 14px 10px 22px;
   flex-wrap: nowrap;
+  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .studio-navbar.is-scrolled .navbar-inner {
-  padding: 10px 14px 10px 22px;
+  padding: 6px 14px 6px 20px;
 }
 
 .navbar-brand-lockup {
@@ -1390,12 +1394,36 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  padding: 100px 24px 120px;
+  padding: var(--section-pad) 24px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.ocean-realms-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(180deg, var(--green-900) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ocean-realms-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(0deg, var(--green-900) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Animated Ocean Canvas (Teal/Deep Blue Gradients, Waves, Clouds & Twinkling Sparkles) */
@@ -2545,7 +2573,7 @@
 .desk-build-story-section {
   width: 100%;
   min-height: 90vh;
-  padding: 96px 24px;
+  padding: var(--section-pad) 24px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
@@ -2568,6 +2596,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.desk-build-story-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(180deg, var(--green-900) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Decorative Desk Props: Coffee-ring stain & pencil (non-clickable, behind content) */

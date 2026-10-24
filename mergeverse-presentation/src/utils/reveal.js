@@ -45,15 +45,45 @@ export function initScrollReveal() {
     }
   });
 
-  // Safety net: after short delay, reveal any elements that entered viewport
+  // Safety net 1: after short delay, reveal any elements that entered viewport
   const safetyTimer = setTimeout(() => {
     document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
       const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 1.2) {
+      if (rect.top < window.innerHeight * 1.3) {
         el.classList.add('is-visible');
       }
     });
-  }, 500);
+  }, 450);
+
+  // Safety net 2: scroll listener fallback in case observer misses tall sections
+  const handleScrollFallback = () => {
+    const unrevealed = document.querySelectorAll('.reveal:not(.is-visible)');
+    if (unrevealed.length === 0) {
+      window.removeEventListener('scroll', handleScrollFallback);
+      return;
+    }
+    const wh = window.innerHeight;
+    unrevealed.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < wh * 1.15 && rect.bottom > -50) {
+        el.classList.add('is-visible');
+      }
+    });
+  };
+
+  window.addEventListener('scroll', handleScrollFallback, { passive: true });
+
+  // Safety net 3: timeout fallback guaranteeing elements are never stuck
+  setTimeout(() => {
+    handleScrollFallback();
+  }, 1000);
+
+  // Safety net 4: absolute timeout fallback guaranteeing 100% visibility for all elements
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
+      el.classList.add('is-visible');
+    });
+  }, 2200);
 
   return observer;
 }

@@ -190,38 +190,28 @@ function App() {
   }, []);
 
   // Scroll-spy active section tracking
-  const [activeNavSection, setActiveNavSection] = useState('game-intro');
+  const [activeNavSection, setActiveNavSection] = useState('hero');
+  const scrollProgressRef = useRef(null);
+  const oceanSectionRef = useRef(null);
+  const [isHeroInView, setIsHeroInView] = useState(true);
+  const [isOceanInView, setIsOceanInView] = useState(false);
 
+  // Performance: Intersection observers to pause heavy off-screen animations
   useEffect(() => {
-    const sectionIds = [
-      'hero',
-      'game-intro',
-      'four-realms-ocean',
-      'gameplay-progression-showcase',
-      'explorer-collection',
-      'behind-the-worlds',
-    ];
+    const heroObserver = new IntersectionObserver(([entry]) => {
+      setIsHeroInView(entry.isIntersecting);
+    }, { threshold: 0 });
+    if (heroViewportRef.current) heroObserver.observe(heroViewportRef.current);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveNavSection(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: '-20% 0px -55% 0px',
-        threshold: 0,
-      }
-    );
+    const oceanObserver = new IntersectionObserver(([entry]) => {
+      setIsOceanInView(entry.isIntersecting);
+    }, { threshold: 0 });
+    if (oceanSectionRef.current) oceanObserver.observe(oceanSectionRef.current);
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
+    return () => {
+      heroObserver.disconnect();
+      oceanObserver.disconnect();
+    };
   }, []);
 
   // Forest Outro Reveal State & IntersectionObserver
@@ -231,21 +221,21 @@ function App() {
     }
     return false;
   });
+  const [isOutroIntersecting, setIsOutroIntersecting] = useState(false);
   const forestOutroRef = useRef(null);
 
   useEffect(() => {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
       setIsOutroInView(true);
+      setIsOutroIntersecting(true);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        setIsOutroIntersecting(entry.isIntersecting);
         if (entry.isIntersecting) {
           setIsOutroInView(true);
-          if (forestOutroRef.current) {
-            observer.unobserve(forestOutroRef.current);
-          }
         }
       },
       { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
@@ -487,23 +477,63 @@ function App() {
     };
   }, []);
 
-  // Track window scroll for floating pill nav (past 40px) and gentle parallax on hero backdrop
+  // Track window scroll for:
+  // 1. Thin gold scroll-progress bar (requestAnimationFrame)
+  // 2. Floating pill nav shrunk state (past 40px)
+  // 3. Accurate nav link scroll-spy highlight across all sections
+  // 4. Gentle parallax on hero backdrop (reduced-motion safe)
   useEffect(() => {
     let rafId = null;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const sectionsForSpy = [
+      { id: 'hero', navKey: 'hero' },
+      { id: 'cream-laptop-slider', navKey: 'hero' },
+      { id: 'four-realms-ocean', navKey: 'four-realms-ocean' },
+      { id: 'gameplay-progression-showcase', navKey: 'gameplay-progression-showcase' },
+      { id: 'notebook-build-story', navKey: 'gameplay-progression-showcase' },
+      { id: 'game-intro', navKey: 'game-intro' },
+      { id: 'gameplay-showcase', navKey: 'gameplay-progression-showcase' },
+      { id: 'explorer-collection', navKey: 'explorer-collection' },
+      { id: 'behind-the-worlds', navKey: 'behind-the-worlds' },
+      { id: 'forest-outro', navKey: 'behind-the-worlds' },
+    ];
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
       setIsScrolledPast40(scrollY > 40);
 
-      if (!prefersReducedMotion && heroBackdropRef.current) {
-        if (rafId) window.cancelAnimationFrame(rafId);
-        rafId = window.requestAnimationFrame(() => {
-          if (scrollY < 1200 && heroBackdropRef.current) {
-            heroBackdropRef.current.style.transform = `translate3d(0, ${scrollY * 0.32}px, 0)`;
+      if (rafId) window.cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(() => {
+        // 1. Update gold scroll-progress bar
+        const docEl = document.documentElement;
+        const maxScroll = docEl.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? Math.min(Math.max((scrollY / maxScroll) * 100, 0), 100) : 0;
+        if (scrollProgressRef.current) {
+          scrollProgressRef.current.style.width = `${progress}%`;
+        }
+
+        // 2. Gentle hero parallax (if motion enabled)
+        if (!prefersReducedMotion && heroBackdropRef.current && scrollY < 1200) {
+          heroBackdropRef.current.style.transform = `translate3d(0, ${scrollY * 0.32}px, 0)`;
+        }
+
+        // 3. Accurate scroll-spy
+        if (window.innerHeight + scrollY >= docEl.scrollHeight - 60) {
+          setActiveNavSection('behind-the-worlds');
+          return;
+        }
+
+        const triggerY = scrollY + window.innerHeight * 0.35;
+        let currentNav = 'hero';
+        for (let i = 0; i < sectionsForSpy.length; i++) {
+          const sectionEl = document.getElementById(sectionsForSpy[i].id);
+          if (sectionEl && sectionEl.offsetTop <= triggerY) {
+            currentNav = sectionsForSpy[i].navKey;
           }
-        });
-      }
+        }
+        setActiveNavSection(currentNav);
+      });
     };
 
     handleScroll();
@@ -546,70 +576,19 @@ function App() {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      // Subtle luxury entrance reveals
-      gsap.from('.hero-eyebrow', { y: 15, duration: 0.8, ease: 'power2.out' });
-      gsap.from('.hero-main-title', { y: 20, duration: 0.9, ease: 'power3.out' });
-      gsap.from('.hero-tagline-wrap', { y: 15, duration: 0.8, ease: 'power2.out' });
-      gsap.from('.hero-lead-narrative', { y: 15, duration: 0.8, ease: 'power2.out' });
-      gsap.from('.hero-action-row', { y: 15, duration: 0.8, ease: 'power2.out' });
-      gsap.from('.hero-telemetry-strip', { y: 15, duration: 0.85, ease: 'power2.out' });
-
-      // Editorial Introduction Split Reveal
-      gsap.from('.intro-narrative-col', {
-        x: -25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      gsap.from('.intro-artwork-col', {
-        x: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      // Four Realms reveals
-      gsap.from('.realms-editorial-header', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      gsap.from('.map-showcase-stage', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      gsap.from('.realm-featured-hero', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      gsap.from('.realm-supporting-stack', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      // Gameplay alternating spreads
-      gsap.from('.gameplay-alt-row-1', {
-        y: 30,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      gsap.from('.gameplay-alt-row-2', {
-        y: 30,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
-
-      // Codex Folio reveal
-      gsap.from('.codex-folio-spread', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
+      // Subtle luxury entrance reveals on Hero elements
+      const heroSelectors = [
+        '.hero-ornament-crest',
+        '.hero-main-title',
+        '.hero-tagline-pill',
+        '.hero-lead-narrative',
+        '.hero-action-row',
+        '.hero-telemetry-strip',
+      ];
+      heroSelectors.forEach((selector) => {
+        if (document.querySelector(selector)) {
+          gsap.from(selector, { y: 16, duration: 0.85, ease: 'power2.out' });
+        }
       });
     }, containerRef);
 
@@ -625,6 +604,9 @@ function App() {
 
   return (
     <div ref={containerRef} className="mergeverse-root">
+      {/* Thin Gold Scroll-Progress Bar (requestAnimationFrame driven) */}
+      <div ref={scrollProgressRef} className="global-scroll-progress-bar" aria-hidden="true" />
+
       {/* Accessible Skip to Content Link */}
       <a href="#main-content" className="skip-to-content-link">
         Skip to main content
@@ -808,7 +790,7 @@ function App() {
       <section
         id="hero"
         ref={heroViewportRef}
-        className="cinematic-hero-section"
+        className={`cinematic-hero-section ${isHeroInView ? 'is-in-view' : ''}`}
         aria-label="MERGEVERSE Cinematic Hero"
       >
         {/* Full-bleed authentic landscape visual anchor with gentle parallax */}
@@ -1089,7 +1071,8 @@ function App() {
           --------------------------------------------------------------------- */}
       <section
         id="four-realms-ocean"
-        className="ocean-realms-section"
+        ref={oceanSectionRef}
+        className={`ocean-realms-section ${isOceanInView ? 'is-in-view' : ''}`}
         aria-label="The Four Realms Archipelago"
       >
         {/* Animated Ocean Background: Teal/Deep Blue Gradients, Drift Waves, Clouds & Sparkles */}
@@ -1535,6 +1518,13 @@ function App() {
         </div>
       </section>
 
+      {/* Soft Seam Divider: Wood Atelier Desk to Warm Cream Parchment */}
+      <div className="section-seam section-seam--wood-to-cream" aria-hidden="true">
+        <svg viewBox="0 0 1440 48" fill="none" preserveAspectRatio="none">
+          <path d="M0,0 C480,36 960,36 1440,0 L1440,48 L0,48 Z" fill="var(--cream-100)" />
+        </svg>
+      </div>
+
       {/* ---------------------------------------------------------------------
           SECTION 2: INTRODUCTION — EDITORIAL SPLIT COMPOSITION
           Meaningful text on one side, genuine game artwork on the other
@@ -1667,6 +1657,13 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Soft Seam Divider: Warm Cream Parchment to Deep Forest Emerald */}
+      <div className="section-seam section-seam--cream-to-dark" aria-hidden="true">
+        <svg viewBox="0 0 1440 48" fill="none" preserveAspectRatio="none">
+          <path d="M0,0 C480,36 960,36 1440,0 L1440,48 L0,48 Z" fill="var(--green-900)" />
+        </svg>
+      </div>
 
       {/* ---------------------------------------------------------------------
           SECTION 4: GAMEPLAY SHOWCASE — ALTERNATING ASYMMETRIC COMPOSITION
@@ -1819,6 +1816,13 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Soft Seam Divider: Deep Forest Emerald to Warm Cream Archival Codex */}
+      <div className="section-seam section-seam--dark-to-cream" aria-hidden="true">
+        <svg viewBox="0 0 1440 48" fill="none" preserveAspectRatio="none">
+          <path d="M0,0 C480,36 960,36 1440,0 L1440,48 L0,48 Z" fill="var(--cream-100)" />
+        </svg>
+      </div>
 
       {/* ---------------------------------------------------------------------
           SECTION 5: COLLECTION & PROGRESSION — ARCHIVAL FOLIO CODEX
@@ -1975,6 +1979,13 @@ function App() {
         </div>
       </section>
 
+      {/* Soft Seam Divider: Warm Cream Archival Codex to Deep Forest Emerald */}
+      <div className="section-seam section-seam--cream-to-dark" aria-hidden="true">
+        <svg viewBox="0 0 1440 48" fill="none" preserveAspectRatio="none">
+          <path d="M0,0 C480,36 960,36 1440,0 L1440,48 L0,48 Z" fill="var(--green-900)" />
+        </svg>
+      </div>
+
       {/* ---------------------------------------------------------------------
           SECTION 6: BEHIND THE WORLDS — PREMIUM CREATOR STORY
           Visual documentary narrative with varied compositions & authentic workflow
@@ -1988,6 +1999,11 @@ function App() {
         }}
       />
 
+      {/* Soft Seam Divider: Deep Forest Emerald to Atmospheric Mist Outro */}
+      <div className="section-seam section-seam--dark-to-mist" aria-hidden="true">
+        <div className="seam-mist-glow" />
+      </div>
+
       {/* ---------------------------------------------------------------------
           SECTION 7: FOREST OUTRO SECTION (STEP 6)
           Full-width section, min-height about 90vh, generous padding.
@@ -1999,7 +2015,7 @@ function App() {
       <section
         id="forest-outro"
         ref={forestOutroRef}
-        className="section section--dark outro-section"
+        className={`section section--dark outro-section ${isOutroIntersecting ? 'is-intersecting' : ''}`}
         aria-label="MERGEVERSE Finale"
       >
         <div className="outro-backdrop-wrap" aria-hidden="true">
