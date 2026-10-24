@@ -1,3 +1,6 @@
+@import './styles/tokens.css';
+@import './styles/shared.css';
+
 :root {
   /* MERGEVERSE Core Brand Palette (Step 2) */
   --emerald-forest: #123D2B;

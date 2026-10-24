@@ -1,0 +1,87 @@
+:root {
+  /* ==========================================================================
+     MERGEVERSE DESIGN SYSTEM — DESIGN TOKENS (STEP 3)
+     Derived strictly from real values extracted across all page compositions
+     ========================================================================== */
+
+  /* --------------------------------------------------------------------------
+     1. COLOR PALETTE
+     -------------------------------------------------------------------------- */
+  /* Dark Green Spectrum */
+  --green-950: #07150e; /* Deepest dark green base (site footer, base atmosphere) */
+  --green-900: #091c14; /* Deep emerald page background, hero vignette base */
+  --green-800: #0d281a; /* Forest outro backdrop, deep container background */
+
+  /* Gold Spectrum */
+  --gold-500: #e9ad48;  /* Primary sunlit gold (brand crests, stars, CTA buttons, active accents) */
+  --gold-300: #fff4d0;  /* Light gold highlight (ambient motes, badge text, light glints) */
+
+  /* Cream / Parchment Spectrum */
+  --cream-50: #faf6ee;  /* Lighter cream card interior, notebook paper, card highlights */
+  --cream-100: #f5efe2; /* Signature warm cream outer card background */
+
+  /* Editorial Ink Spectrum (Dark text on Cream backgrounds) */
+  --ink-900: #123d2b;   /* Deep dark-green headline ink for cream sections */
+  --ink-600: #2c4b3b;   /* Muted dark-green lead & description ink for cream sections */
+
+  /* Thematic Accent & Status */
+  --ocean-500: #4e9d86; /* Living teal for ocean realm waves and glowing accents */
+  --success: #4ade80;   /* Vibrant green active indicators and live status pills */
+  --muted: #a3b5aa;     /* Secondary muted typography on dark backgrounds */
+
+  /* --------------------------------------------------------------------------
+     2. TYPOGRAPHY
+     -------------------------------------------------------------------------- */
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-hand: 'Caveat', cursive, sans-serif; /* Used ONLY in the notebook build story */
+
+  /* --------------------------------------------------------------------------
+     3. TYPE SCALE (FLUID WITH CLAMP)
+     -------------------------------------------------------------------------- */
+  --text-hero: clamp(3.2rem, 7.8vw, 6.2rem);
+  --text-h1: clamp(1.8rem, 3.4vw, 3.1rem);
+  --text-h2: clamp(1.4rem, 2.2vw, 2.25rem);
+  --text-h3: clamp(1.15rem, 1.6vw, 1.45rem);
+  --text-body: clamp(0.95rem, 1.15vw, 1.05rem);
+  --text-small: clamp(0.8rem, 0.9vw, 0.88rem);
+  --text-eyebrow: clamp(0.72rem, 0.85vw, 0.8rem);
+
+  /* --------------------------------------------------------------------------
+     4. SPACING SCALE & LAYOUT
+     -------------------------------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --section-pad: clamp(64px, 8vw, 120px);
+  --container: 1320px;
+
+  /* --------------------------------------------------------------------------
+     5. BORDER RADII
+     -------------------------------------------------------------------------- */
+  --radius-card: 24px;
+  --radius-lg: 36px;
+  --radius-pill: 999px;
+
+  /* --------------------------------------------------------------------------
+     6. ELEVATION & SHADOWS
+     -------------------------------------------------------------------------- */
+  --shadow-soft: 0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 20px 50px rgba(0, 0, 0, 0.4);
+  --shadow-glow-gold: 0 0 24px rgba(233, 173, 72, 0.35);
+
+  /* --------------------------------------------------------------------------
+     7. MOTION & TRANSITIONS
+     -------------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 200ms;
+  --dur-med: 400ms;
+  --dur-slow: 700ms;
+}

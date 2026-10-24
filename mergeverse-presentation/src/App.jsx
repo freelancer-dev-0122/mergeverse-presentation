@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './App.css';
 import BehindTheWorlds from './BehindTheWorlds.jsx';
+import { initScrollReveal } from './utils/reveal.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -136,6 +137,14 @@ function App() {
   const containerRef = useRef(null);
   const heroViewportRef = useRef(null);
   const presentationRef = useRef(null);
+
+  // Initialize shared scroll reveal observer
+  useEffect(() => {
+    const observer = initScrollReveal();
+    return () => {
+      if (observer) observer.disconnect();
+    };
+  }, []);
 
   // Story Notebook & Desk Section State & Handlers
   const [isNotebookInView, setIsNotebookInView] = useState(() => {

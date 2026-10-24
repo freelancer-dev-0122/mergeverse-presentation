@@ -1,0 +1,278 @@
+/* ==========================================================================
+   MERGEVERSE DESIGN SYSTEM — SHARED REUSABLE CLASSES (STEP 3)
+   Built purely from tokens defined in tokens.css
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. SECTIONS & CONTAINERS
+   -------------------------------------------------------------------------- */
+.section {
+  position: relative;
+  width: 100%;
+  padding-top: var(--section-pad);
+  padding-bottom: var(--section-pad);
+  scroll-margin-top: 100px; /* Accounts for floating pill navbar offset */
+  box-sizing: border-box;
+}
+
+.section-container,
+.section__container {
+  max-width: var(--container);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+  box-sizing: border-box;
+}
+
+/* Background Variations */
+.section--dark {
+  background-color: var(--green-900);
+  color: var(--cream-50);
+}
+
+.section--cream {
+  background-color: var(--cream-100);
+  color: var(--ink-900);
+}
+
+/* --------------------------------------------------------------------------
+   2. TYPOGRAPHY: EYEBROW, SECTION-TITLE & SECTION-LEAD
+   -------------------------------------------------------------------------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  margin-bottom: var(--space-3);
+}
+
+.eyebrow .eyebrow-star {
+  color: var(--gold-500);
+  font-size: 0.85em;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  word-break: break-word;
+}
+
+.section--cream .section-title {
+  color: var(--ink-900);
+}
+
+.section--dark .section-title {
+  color: var(--cream-50);
+}
+
+.section-lead {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  text-align: center;
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: var(--space-6);
+}
+
+.section--cream .section-lead {
+  color: var(--ink-600);
+}
+
+.section--dark .section-lead {
+  color: var(--muted);
+}
+
+/* Left-aligned modifier for split layouts */
+.section-title.is-left,
+.section-lead.is-left {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. BUTTONS (.btn, .btn--gold, .btn--ghost)
+   All share identical height, radius, font, and hover lift
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+}
+
+/* Filled Gold CTA */
+.btn--gold {
+  background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-500) 50%, #c48520 100%);
+  color: var(--green-900);
+  border: 1px solid rgba(255, 244, 208, 0.6);
+  box-shadow: 0 6px 20px rgba(233, 173, 72, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn--gold:hover {
+  box-shadow: 0 10px 28px rgba(233, 173, 72, 0.5), var(--shadow-glow-gold);
+}
+
+/* Ghost / Glass Outline CTA */
+.btn--ghost {
+  background: rgba(9, 28, 20, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--cream-50);
+  border: 1.5px solid rgba(233, 173, 72, 0.55);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn--ghost:hover {
+  background: rgba(233, 173, 72, 0.18);
+  border-color: var(--gold-500);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+/* --------------------------------------------------------------------------
+   4. CARDS (.card--glass, .card--cream)
+   -------------------------------------------------------------------------- */
+/* Glassmorphism Dark Card */
+.card--glass {
+  background: rgba(9, 28, 20, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(233, 173, 72, 0.28);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  transition: transform var(--dur-med) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-med) var(--ease-out);
+}
+
+.card--glass:hover {
+  transform: translateY(-4px);
+  border-color: rgba(233, 173, 72, 0.55);
+  box-shadow: var(--shadow-card), var(--shadow-glow-gold);
+}
+
+/* Cream Raised Card */
+.card--cream {
+  background-color: var(--cream-100);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(233, 173, 72, 0.35);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  color: var(--ink-900);
+}
+
+/* --------------------------------------------------------------------------
+   5. BADGES (.badge, .badge--gold, .badge--muted)
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.badge--gold {
+  background: rgba(233, 173, 72, 0.18);
+  border: 1px solid rgba(233, 173, 72, 0.6);
+  color: var(--gold-500);
+}
+
+.badge--muted {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   6. SCROLL REVEAL (.reveal, .reveal.is-visible)
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   7. GLOBAL FOCUS-VISIBLE & PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

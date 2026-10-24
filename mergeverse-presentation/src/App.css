@@ -27,7 +27,7 @@
   left: 0;
   right: 0;
   margin-inline: auto;
-  width: min(1320px, calc(100% - 48px));
+  width: min(var(--container), calc(100% - 48px));
   z-index: 100;
   transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
@@ -37,7 +37,7 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(233, 173, 72, 0.28);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.42), 0 0 20px rgba(233, 173, 72, 0.08);
   box-sizing: border-box;
 }
@@ -86,7 +86,7 @@
 }
 
 .brand-title {
-  font-family: var(--font-cinzel);
+  font-family: var(--font-display);
   font-size: 1.02rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -134,7 +134,7 @@
   transition: var(--transition-smooth);
   position: relative;
   padding: 0.35rem 0.65rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -167,7 +167,7 @@
   padding: 0.42rem 0.95rem;
   background: rgba(233, 173, 72, 0.12);
   border: 1px solid rgba(233, 173, 72, 0.45);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 700;
@@ -180,8 +180,8 @@
 }
 
 .navbar-cta-btn:hover {
-  background: var(--sunlit-gold);
-  color: var(--emerald-deep);
+  background: var(--gold-500);
+  color: var(--green-900);
   box-shadow: 0 0 16px rgba(233, 173, 72, 0.4);
 }
 
@@ -320,7 +320,7 @@
     font-weight: 700;
     background: linear-gradient(135deg, #FFF2BD 0%, #E9AD48 50%, #C48520 100%);
     box-shadow: 0 2px 10px rgba(233, 173, 72, 0.4);
-    border-radius: 9999px;
+    border-radius: var(--radius-pill);
   }
 }
 
@@ -423,7 +423,7 @@
   inset: 0;
   background:
     radial-gradient(circle at 50% 48%, rgba(9, 28, 20, 0.08) 0%, rgba(9, 28, 20, 0.68) 72%, rgba(9, 28, 20, 0.96) 100%),
-    linear-gradient(to bottom, rgba(7, 22, 16, 0.4) 0%, transparent 30%, rgba(9, 28, 20, 0.65) 75%, var(--emerald-deep) 100%);
+    linear-gradient(to bottom, rgba(7, 22, 16, 0.4) 0%, transparent 30%, rgba(9, 28, 20, 0.65) 75%, var(--green-900) 100%);
 }
 
 .hero-sunlight-sweep {
@@ -446,7 +446,7 @@
 .hero-mote {
   position: absolute;
   border-radius: 50%;
-  background: #FFF4D0;
+  background: var(--gold-300);
   box-shadow: 0 0 8px rgba(233, 173, 72, 0.8), 0 0 16px rgba(233, 173, 72, 0.4);
   opacity: 0.65;
   animation: floatMote linear infinite;
@@ -564,8 +564,8 @@
 
 /* Very large MERGEVERSE title with animated chrome-gold gradient text */
 .hero-main-title {
-  font-family: var(--font-cinzel);
-  font-size: clamp(3.2rem, 7.8vw, 6.2rem);
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
   font-weight: 800;
   letter-spacing: 0.22em;
   text-indent: 0.22em;
@@ -614,18 +614,18 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(233, 173, 72, 0.55);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35), 0 0 16px rgba(255, 246, 220, 0.25);
   margin-bottom: 1.25rem;
 }
 
 .hero-tagline-text {
-  font-family: var(--font-cinzel);
+  font-family: var(--font-display);
   font-size: clamp(0.78rem, 1.2vw, 0.95rem);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-indent: 0.22em;
-  color: #12281D;
+  color: var(--ink-900);
   text-transform: uppercase;
 }
 
@@ -656,10 +656,10 @@
   gap: 0.65rem;
   padding: 0.85rem 2.1rem;
   background: linear-gradient(135deg, #F3C368 0%, #E9AD48 50%, #C48520 100%);
-  color: var(--emerald-deep);
+  color: var(--green-900);
   border: 1px solid rgba(255, 244, 208, 0.6);
-  border-radius: 9999px;
-  font-family: var(--font-cinzel);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
   font-size: 0.88rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -680,7 +680,7 @@
   padding: 0.85rem 1.85rem;
   background: rgba(9, 28, 20, 0.6);
   border: 1.5px solid rgba(233, 173, 72, 0.55);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-body);
   font-size: 0.86rem;
   font-weight: 700;
@@ -694,7 +694,7 @@
 
 .hero-secondary-cta:hover {
   background: rgba(233, 173, 72, 0.18);
-  border-color: var(--sunlit-gold);
+  border-color: var(--gold-500);
   transform: translateY(-2px);
   box-shadow: 0 0 16px rgba(233, 173, 72, 0.25);
 }
@@ -725,12 +725,12 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--sunlit-gold);
+  background: var(--gold-500);
 }
 
 .telemetry-pill .pill-dot.active {
-  background: #4ade80;
-  box-shadow: 0 0 6px #4ade80;
+  background: var(--success);
+  box-shadow: 0 0 6px var(--success);
 }
 
 .telemetry-pill .pill-bold {
@@ -852,14 +852,14 @@
 /* Outer Card: max-width 1320px, centered, margin 80px auto, border-radius 36px,
    background warm cream (#f5efe2) with soft inner shadow & faint paper-grain texture (CSS radial-gradient) */
 .cream-slider-outer-card {
-  max-width: 1320px;
+  max-width: var(--container);
   margin: 80px auto;
-  border-radius: 36px;
-  background-color: #f5efe2;
+  border-radius: var(--radius-lg);
+  background-color: var(--cream-100);
   /* CSS-only paper-grain texture using subtle radial-gradient pattern */
   background-image:
     radial-gradient(rgba(18, 61, 43, 0.04) 1px, transparent 1px),
-    radial-gradient(rgba(18, 61, 43, 0.03) 1px, #f5efe2 1px);
+    radial-gradient(rgba(18, 61, 43, 0.03) 1px, var(--cream-100) 1px);
   background-size: 16px 16px;
   background-position: 0 0, 8px 8px;
   /* Soft inner shadow combined with atmospheric exterior depth */
@@ -894,13 +894,13 @@
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid rgba(18, 61, 43, 0.14);
-  color: #123D2B;
+  color: var(--ink-900);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-soft);
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -934,7 +934,7 @@
 
 .cream-slider-quote-mark {
   display: block;
-  font-family: var(--font-cinzel), Georgia, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: 5rem;
   line-height: 0.75;
   color: #D4973B;
@@ -944,10 +944,10 @@
 }
 
 .cream-slider-quote-headline {
-  font-family: var(--font-cinzel), Georgia, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1.4rem, 2vw, 1.95rem);
   font-weight: 700;
-  color: #123D2B; /* Dark green */
+  color: var(--ink-900); /* Dark green */
   text-transform: uppercase;
   line-height: 1.25;
   letter-spacing: 0.05em;
@@ -1130,7 +1130,7 @@
   background: rgba(233, 173, 72, 0.15);
   border: 1px solid rgba(212, 151, 59, 0.4);
   color: #8c5a14;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 5px 14px;
   font-size: 0.8rem;
   font-weight: 700;
@@ -1173,7 +1173,7 @@
   font-family: var(--font-serif), Georgia, serif;
   font-size: clamp(1.4rem, 1.85vw, 1.85rem);
   font-weight: 700;
-  color: #123D2B;
+  color: var(--ink-900);
   line-height: 1.25;
   margin: 0;
 }
@@ -1181,7 +1181,7 @@
 .cream-slide-description {
   font-family: var(--font-body), sans-serif;
   font-size: 0.98rem;
-  color: #2C4B3B;
+  color: var(--ink-600);
   line-height: 1.62;
   margin: 0;
   max-width: 380px;
@@ -1194,13 +1194,13 @@
   align-items: center;
   gap: 8px;
   background: linear-gradient(135deg, #E9AD48 0%, #D4973B 100%);
-  color: #091c14;
+  color: var(--green-900);
   font-family: var(--font-body), sans-serif;
   font-size: 0.92rem;
   font-weight: 700;
   padding: 10px 22px;
   border: 1px solid rgba(255, 244, 208, 0.45);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(212, 151, 59, 0.35);
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -1568,7 +1568,7 @@
   background: rgba(233, 173, 72, 0.16);
   border: 1px solid rgba(233, 173, 72, 0.45);
   color: #FFF0C2;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 5px 16px;
   font-family: var(--font-body), sans-serif;
   font-size: 0.8rem;
@@ -1580,13 +1580,13 @@
 }
 
 .ocean-eyebrow-badge .ocean-eyebrow-star {
-  color: var(--sunlit-gold);
+  color: var(--gold-500);
   font-size: 0.75rem;
 }
 
 .ocean-section-headline {
-  font-family: var(--font-cinzel), Georgia, serif;
-  font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #FFF6D8;
@@ -1793,7 +1793,7 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(233, 173, 72, 0.28);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   padding: 26px 22px;
   display: flex;
   flex-direction: column;
@@ -1852,7 +1852,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 4px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
 }
 
 .ocean-status-pill.status-active {
@@ -1865,11 +1865,11 @@
 .ocean-status-pill.status-soon {
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #A3B5AA;
+  color: var(--muted);
 }
 
 .ocean-card-title {
-  font-family: var(--font-cinzel), Georgia, serif;
+  font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 700;
   color: #FFF6D8;
@@ -1966,14 +1966,14 @@
 
 /* Outer Card: max-width 1320px, centered, margin 80px auto, border-radius 36px, warm cream #f5efe2 */
 .gameplay-cards-outer-card {
-  max-width: 1320px;
+  max-width: var(--container);
   margin: 80px auto;
-  border-radius: 36px;
-  background-color: #f5efe2;
+  border-radius: var(--radius-lg);
+  background-color: var(--cream-100);
   /* CSS-only paper-grain texture using subtle radial-gradient pattern */
   background-image:
     radial-gradient(rgba(18, 61, 43, 0.04) 1px, transparent 1px),
-    radial-gradient(rgba(18, 61, 43, 0.03) 1px, #f5efe2 1px);
+    radial-gradient(rgba(18, 61, 43, 0.03) 1px, var(--cream-100) 1px);
   background-size: 16px 16px;
   background-position: 0 0, 8px 8px;
   box-shadow:
@@ -2020,7 +2020,7 @@
   background: rgba(233, 173, 72, 0.15);
   border: 1px solid rgba(212, 151, 59, 0.42);
   color: #8c5a14;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 5px 15px;
   font-family: var(--font-body), sans-serif;
   font-size: 0.8rem;
@@ -2036,10 +2036,10 @@
 }
 
 .gameplay-section-title {
-  font-family: var(--font-cinzel), Georgia, serif;
-  font-size: clamp(1.8rem, 2.6vw, 2.65rem);
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
   font-weight: 700;
-  color: #123D2B; /* Dark green */
+  color: var(--ink-900); /* Dark green */
   letter-spacing: 0.04em;
   line-height: 1.22;
   margin: 0 0 16px 0;
@@ -2048,7 +2048,7 @@
 .gameplay-section-lead {
   font-family: var(--font-body), sans-serif;
   font-size: 1.02rem;
-  color: #2C4B3B;
+  color: var(--ink-600);
   line-height: 1.62;
   margin: 0 0 24px 0;
   max-width: 480px;
@@ -2080,7 +2080,7 @@
   height: 24px;
   border-radius: 50%;
   background: #E9AD48;
-  color: #091c14;
+  color: var(--green-900);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2093,13 +2093,13 @@
   align-items: center;
   gap: 9px;
   background: linear-gradient(135deg, #E9AD48 0%, #D4973B 100%);
-  color: #091c14;
+  color: var(--green-900);
   font-family: var(--font-body), sans-serif;
   font-size: 0.94rem;
   font-weight: 700;
   padding: 12px 26px;
   border: 1px solid rgba(255, 244, 208, 0.45);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(212, 151, 59, 0.35);
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -2648,8 +2648,8 @@
 }
 
 .desk-main-heading {
-  font-family: var(--font-cinzel), Georgia, serif;
-  font-size: clamp(1.7rem, 3.2vw, 2.7rem);
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
   font-weight: 700;
   color: #FFF6D8;
   letter-spacing: 0.06em;
@@ -2686,7 +2686,7 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(233, 173, 72, 0.35);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 6px 18px;
   font-family: var(--font-body), sans-serif;
   font-size: 0.82rem;
@@ -2697,7 +2697,7 @@
 }
 
 .desk-tool-chip .chip-sparkle {
-  color: #E9AD48;
+  color: var(--gold-500);
   font-size: 0.75rem;
 }
 
@@ -2860,7 +2860,7 @@
 }
 
 .notebook-line-text {
-  font-family: var(--font-handwriting, 'Caveat', 'Patrick Hand', cursive, sans-serif);
+  font-family: var(--font-hand);
   font-size: clamp(1.22rem, 1.8vw, 1.48rem);
   font-weight: 600;
   color: #173259; /* Dark blue ink */
@@ -2891,7 +2891,7 @@
 }
 
 .doodle-note-text {
-  font-family: var(--font-handwriting, 'Caveat', cursive, sans-serif);
+  font-family: var(--font-hand);
   font-size: 1.15rem;
   font-weight: 700;
   color: #d97706;
@@ -3100,7 +3100,7 @@
 }
 
 .sticky-note-handwriting {
-  font-family: var(--font-handwriting, 'Caveat', cursive, sans-serif);
+  font-family: var(--font-hand);
   font-size: 1.15rem;
   font-weight: 700;
   color: #713f12;
@@ -4889,8 +4889,8 @@ footer[id],
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 12px 22px;
-  border-radius: 9999px;
-  border: 1.5px solid #d4af37;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--gold-500);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   transition: top 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
@@ -4905,7 +4905,7 @@ footer[id],
 /* Visible Keyboard Focus Styles across Interactive Elements */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid #d4af37;
+  outline: 2px solid var(--gold-500);
   outline-offset: 3px;
 }
 
@@ -4958,9 +4958,9 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 24px;
+  padding: var(--section-pad) var(--space-5);
   overflow: hidden;
-  background-color: #0d281a;
+  background-color: var(--green-800);
 }
 
 /* Painted Mountain/Farm Background Anchor */
@@ -5159,7 +5159,7 @@ button:focus-visible {
 
 /* Wordmark in Dark Green / Gold Chrome Gradient style */
 .outro-wordmark-title {
-  font-family: var(--font-title, 'Cinzel', serif);
+  font-family: var(--font-display);
   font-size: clamp(2.6rem, 6.2vw, 4.6rem);
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -5183,23 +5183,23 @@ button:focus-visible {
 }
 
 .outro-tagline-text {
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: clamp(0.95rem, 1.8vw, 1.25rem);
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #123422;
+  color: var(--ink-900);
   margin: 0;
   text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
 }
 
 /* Narrative epilogue line */
 .outro-prose-lead {
-  font-family: var(--font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-family: var(--font-serif);
   font-size: clamp(1.15rem, 2.1vw, 1.45rem);
   font-style: italic;
   line-height: 1.6;
-  color: #1c3b28;
+  color: var(--ink-600);
   max-width: 660px;
   margin: 0 0 38px;
   text-shadow: 0 1px 6px rgba(255, 255, 255, 0.5);
@@ -5220,8 +5220,8 @@ button:focus-visible {
   justify-content: center;
   gap: 10px;
   padding: 14px 28px;
-  border-radius: 9999px;
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -5236,7 +5236,7 @@ button:focus-visible {
 
 .outro-action-btn.primary-gold {
   background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #b89332 100%);
-  color: #0b2416;
+  color: var(--green-900);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 6px 22px rgba(184, 147, 50, 0.38);
 }
@@ -5248,7 +5248,7 @@ button:focus-visible {
 .outro-action-btn.secondary-outline {
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
-  color: #0d2a1b;
+  color: var(--green-800);
   border: 1.5px solid #17442b;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
@@ -5279,7 +5279,7 @@ button:focus-visible {
   position: relative;
   z-index: 5;
   width: 100%;
-  background: #07150e;
+  background: var(--green-950);
   border-top: 1px solid rgba(212, 175, 55, 0.35);
   padding: 80px 24px 36px;
   color: #e5ede7;
@@ -5313,13 +5313,13 @@ button:focus-visible {
 }
 
 .footer-brand-lockup .brand-crest-star {
-  color: #d4af37;
+  color: var(--gold-500);
   font-size: 18px;
   text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
 }
 
 .footer-brand-lockup .brand-title {
-  font-family: var(--font-title, 'Cinzel', serif);
+  font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -5327,26 +5327,26 @@ button:focus-visible {
 }
 
 .footer-creator-line {
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 600;
-  color: #d4af37;
+  color: var(--gold-500);
   margin: 0 0 6px;
   letter-spacing: 0.04em;
 }
 
 .footer-motto-line {
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.88rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #9eb8a7;
+  color: var(--muted);
   margin: 0 0 16px;
 }
 
 .footer-descriptor-text {
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.9rem;
   line-height: 1.6;
   color: #879f90;
@@ -5356,11 +5356,11 @@ button:focus-visible {
 
 /* Headings for Column 2 & 3 */
 .footer-column-heading {
-  font-family: var(--font-title, 'Cinzel', serif);
+  font-family: var(--font-display);
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  color: #d4af37;
+  color: var(--gold-500);
   margin: 0 0 20px;
   text-transform: uppercase;
 }
@@ -5376,7 +5376,7 @@ button:focus-visible {
 }
 
 .footer-nav-anchor {
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.92rem;
   color: #cfddd3;
   text-decoration: none;
@@ -5404,7 +5404,7 @@ button:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.92rem;
   color: #cfddd3;
 }
@@ -5412,7 +5412,7 @@ button:focus-visible {
 .realm-badge {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -5421,13 +5421,13 @@ button:focus-visible {
 
 .realm-badge.status-active {
   background: rgba(34, 197, 94, 0.18);
-  color: #4ade80;
+  color: var(--success);
   border: 1px solid rgba(74, 222, 128, 0.4);
 }
 
 .realm-badge.status-coming-soon {
   background: rgba(255, 255, 255, 0.08);
-  color: #9cb3a4;
+  color: var(--muted);
   border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -5442,7 +5442,7 @@ button:focus-visible {
 }
 
 .footer-copyright-text {
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.88rem;
   color: #799182;
   margin: 0;
@@ -5455,9 +5455,9 @@ button:focus-visible {
   background: rgba(212, 175, 55, 0.1);
   color: #f3e5ab;
   border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 8px 18px;
-  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-body);
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
