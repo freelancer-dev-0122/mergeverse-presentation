@@ -247,7 +247,8 @@
   will-change: opacity, transform;
 }
 
-.reveal.is-visible {
+.reveal.is-visible,
+.reveal.is-active {
   opacity: 1;
   transform: translateY(0);
 }
@@ -638,6 +639,12 @@
   margin-bottom: var(--space-8);
   padding: var(--space-5) 0;
   z-index: 2;
+}
+
+.story-chapter.is-active,
+.story-chapter.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 .story-chapter:last-child {

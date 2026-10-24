@@ -105,14 +105,20 @@ const ATELIER_TIMELINE = [
 export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} } = {}) {
   const containerRef = useRef(null);
   const timelineRef = useRef(null);
-  const [timelineProgress, setTimelineProgress] = useState(0);
-  const [activeMarkers, setActiveMarkers] = useState({ 1: false, 2: false, 3: false });
+  const [visibleMarkers, setVisibleMarkers] = useState({ 1: false, 2: false, 3: false });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      setTimelineProgress(100);
-      setActiveMarkers({ 1: true, 2: true, 3: true });
+      if (timelineRef.current) {
+        timelineRef.current.style.setProperty('--timeline-progress', '100%');
+      }
+      setVisibleMarkers({ 1: true, 2: true, 3: true });
+      if (containerRef.current) {
+        containerRef.current.querySelectorAll('.reveal').forEach((el) => {
+          el.classList.add('is-visible');
+        });
+      }
       return;
     }
 
@@ -125,23 +131,35 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
           const rect = timelineRef.current.getBoundingClientRect();
           const windowHeight = window.innerHeight;
           const totalHeight = rect.height;
-          // Calculate progress as the timeline scrolls across the viewport center
-          const currentPos = windowHeight * 0.55 - rect.top;
-          const progress = Math.min(Math.max((currentPos / totalHeight) * 100, 0), 100);
-          setTimelineProgress(progress);
 
-          const isNodeActive = (id) => {
+          // Compute timeline line progress and update directly on style property
+          const currentPos = windowHeight * 0.6 - rect.top;
+          const progress = Math.min(Math.max((currentPos / totalHeight) * 100, 0), 100);
+          timelineRef.current.style.setProperty('--timeline-progress', `${progress}%`);
+
+          // Check chapter node activations (once active, remain active)
+          const isNodeInView = (id) => {
             const el = document.getElementById(id);
             if (!el) return false;
             const r = el.getBoundingClientRect();
-            return r.top < windowHeight * 0.6;
+            return r.top < windowHeight * 0.82;
           };
 
-          setActiveMarkers({
-            1: isNodeActive('chapter-node-1'),
-            2: isNodeActive('chapter-node-2'),
-            3: isNodeActive('chapter-node-3'),
-          });
+          setVisibleMarkers((prev) => ({
+            1: prev[1] || isNodeInView('chapter-node-1'),
+            2: prev[2] || isNodeInView('chapter-node-2'),
+            3: prev[3] || isNodeInView('chapter-node-3'),
+          }));
+
+          // Reveal any .reveal elements within view
+          if (containerRef.current) {
+            containerRef.current.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
+              const r = el.getBoundingClientRect();
+              if (r.top < windowHeight * 0.9) {
+                el.classList.add('is-visible');
+              }
+            });
+          }
 
           ticking = false;
         });
@@ -152,7 +170,24 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Safety net fallback: ensure all chapters and headers become visible even if scroll is missed
+    const safetyTimer = setTimeout(() => {
+      if (containerRef.current) {
+        containerRef.current.querySelectorAll('.reveal').forEach((el) => {
+          el.classList.add('is-visible');
+        });
+      }
+      setVisibleMarkers((prev) => ({
+        1: prev[1] || true,
+        2: prev[2] || true,
+        3: prev[3] || true,
+      }));
+    }, 450);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(safetyTimer);
+    };
   }, []);
 
   return (
@@ -164,7 +199,7 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
     >
       <div className="section-container">
         {/* 1. OVERARCHING SECTION HEADER */}
-        <div className="reveal" style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
+        <div className="reveal is-visible" style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
           <div className="eyebrow">
             <span className="eyebrow-star">✦</span>
             <span>BEHIND THE WORLDS · THE CREATOR STORY</span>
@@ -180,7 +215,7 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
         <div
           ref={timelineRef}
           className="story-timeline"
-          style={{ '--timeline-progress': `${timelineProgress}%` }}
+          style={{ '--timeline-progress': '0%' }}
         >
           {/* Scroll-driven gold timeline track */}
           <div className="story-timeline__track" aria-hidden="true">
@@ -193,7 +228,7 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
               ----------------------------------------------------------------- */}
           <article
             id="chapter-node-1"
-            className={`story-chapter reveal ${activeMarkers[1] ? 'is-active' : ''}`}
+            className={`story-chapter reveal ${visibleMarkers[1] ? 'is-visible is-active' : ''}`}
             aria-label="Chapter I: The Vision"
           >
             <div className="story-chapter__marker" aria-hidden="true">
@@ -264,7 +299,7 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
               ----------------------------------------------------------------- */}
           <article
             id="chapter-node-2"
-            className={`story-chapter story-chapter--reverse reveal ${activeMarkers[2] ? 'is-active' : ''}`}
+            className={`story-chapter story-chapter--reverse reveal ${visibleMarkers[2] ? 'is-visible is-active' : ''}`}
             aria-label="Chapter II: The Visual Direction"
           >
             <div className="story-chapter__marker" aria-hidden="true">
@@ -354,7 +389,7 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
               ----------------------------------------------------------------- */}
           <article
             id="chapter-node-3"
-            className={`story-chapter reveal ${activeMarkers[3] ? 'is-active' : ''}`}
+            className={`story-chapter reveal ${visibleMarkers[3] ? 'is-visible is-active' : ''}`}
             aria-label="Chapter III: From Thought to Playable"
           >
             <div className="story-chapter__marker" aria-hidden="true">
@@ -427,7 +462,7 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
         </div>
 
         {/* 3. CLOSING ACTION NAVIGATION STRIP */}
-        <div className="btw-action-strip reveal">
+        <div className="btw-action-strip reveal is-visible">
           <a href="#hero" className="btn btn--gold">
             <span>↑ RETURN TO OPENING</span>
           </a>
