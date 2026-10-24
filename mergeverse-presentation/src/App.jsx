@@ -2,9 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './App.css';
+import './styles/scrollScene.css';
 import BehindTheWorlds from './BehindTheWorlds.jsx';
 import CinematicOpening from './CinematicOpening.jsx';
 import { initScrollReveal } from './utils/reveal.js';
+import { useScrollScene } from './utils/scrollScene.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -317,6 +319,19 @@ function App() {
   });
   const creamSliderRef = useRef(null);
   const touchStartXRef = useRef(null);
+  const gameplaySectionRef = useRef(null);
+
+  // Scroll-Pinned Scenes (STEP 9)
+  const laptopScene = useScrollScene(creamSliderRef, { stages: 3 });
+  const oceanScene = useScrollScene(oceanSectionRef, { stages: 4 });
+  const gameplayScene = useScrollScene(gameplaySectionRef, { stages: 4 });
+
+  // Synchronize Cream Laptop Slide with active scene stage
+  useEffect(() => {
+    if (laptopScene.isSceneActive) {
+      setCreamSlideIndex(laptopScene.stage);
+    }
+  }, [laptopScene.isSceneActive, laptopScene.stage]);
 
   // Ocean Four Realms Section State & Handlers
   const [highlightedOceanCardId, setHighlightedOceanCardId] = useState(null);
@@ -336,7 +351,6 @@ function App() {
     }
     return false;
   });
-  const gameplaySectionRef = useRef(null);
   const gameplayStackContainerRef = useRef(null);
   const lastActiveCardBtnRef = useRef(null);
   const lightboxCloseBtnRef = useRef(null);
@@ -446,11 +460,29 @@ function App() {
   }, []);
 
   const nextCreamSlide = () => {
-    setCreamSlideIndex((prev) => (prev + 1) % CREAM_LAPTOP_SLIDES.length);
+    if (laptopScene.isSceneActive) {
+      const nextIdx = (laptopScene.stage + 1) % CREAM_LAPTOP_SLIDES.length;
+      laptopScene.scrollToStage(nextIdx);
+    } else {
+      setCreamSlideIndex((prev) => (prev + 1) % CREAM_LAPTOP_SLIDES.length);
+    }
   };
 
   const prevCreamSlide = () => {
-    setCreamSlideIndex((prev) => (prev - 1 + CREAM_LAPTOP_SLIDES.length) % CREAM_LAPTOP_SLIDES.length);
+    if (laptopScene.isSceneActive) {
+      const prevIdx = (laptopScene.stage - 1 + CREAM_LAPTOP_SLIDES.length) % CREAM_LAPTOP_SLIDES.length;
+      laptopScene.scrollToStage(prevIdx);
+    } else {
+      setCreamSlideIndex((prev) => (prev - 1 + CREAM_LAPTOP_SLIDES.length) % CREAM_LAPTOP_SLIDES.length);
+    }
+  };
+
+  const handleDotClick = (idx) => {
+    if (laptopScene.isSceneActive) {
+      laptopScene.scrollToStage(idx);
+    } else {
+      setCreamSlideIndex(idx);
+    }
   };
 
   const handleTouchStart = (e) => {
@@ -471,17 +503,17 @@ function App() {
     touchStartXRef.current = null;
   };
 
-  // Autoplay slider every 5 seconds; pause on hover; respect prefers-reduced-motion
+  // Autoplay slider every 5 seconds; pause on hover; pause when scene is active; respect prefers-reduced-motion
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion || isSliderHovered) return;
+    if (prefersReducedMotion || isSliderHovered || laptopScene.isSceneActive) return;
 
     const timer = setInterval(() => {
       setCreamSlideIndex((prev) => (prev + 1) % CREAM_LAPTOP_SLIDES.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [isSliderHovered]);
+  }, [isSliderHovered, laptopScene.isSceneActive]);
 
   // Respond to keyboard arrow keys
   useEffect(() => {
@@ -973,384 +1005,427 @@ function App() {
       </section>
 
       {/* ---------------------------------------------------------------------
-          SECTION 1.5: CREAM LAPTOP SLIDER SECTION
+          SECTION 1.5: CREAM LAPTOP SLIDER SECTION (SCENE 1: 3 STAGES)
           A World Built One Merge At A Time — Interactive Device Showcase
           --------------------------------------------------------------------- */}
       <section
         id="cream-laptop-slider"
         ref={creamSliderRef}
-        className={`cream-laptop-slider-section ${isSliderInView ? 'is-in-view' : ''}`}
+        className={`cream-scene-wrapper ${laptopScene.isSceneActive ? 'is-scene' : ''} cream-laptop-slider-section ${isSliderInView ? 'is-in-view' : ''}`}
         aria-label="A World Built One Merge At A Time Showcase"
       >
-        <div
-          className="cream-slider-outer-card"
-          onMouseEnter={() => setIsSliderHovered(true)}
-          onMouseLeave={() => setIsSliderHovered(false)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Round cream arrow buttons on left and right edges */}
-          <button
-            type="button"
-            className="slider-nav-arrow slider-nav-prev"
-            onClick={prevCreamSlide}
-            aria-label="Previous slide"
+        <div className="scene-sticky-inner cream-scene-sticky-inner">
+          <div
+            className="cream-slider-outer-card"
+            onMouseEnter={() => setIsSliderHovered(true)}
+            onMouseLeave={() => setIsSliderHovered(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
+            {/* Round cream arrow buttons on left and right edges */}
+            <button
+              type="button"
+              className="slider-nav-arrow slider-nav-prev"
+              onClick={prevCreamSlide}
+              aria-label="Previous slide"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
 
-          <button
-            type="button"
-            className="slider-nav-arrow slider-nav-next"
-            onClick={nextCreamSlide}
-            aria-label="Next slide"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
+            <button
+              type="button"
+              className="slider-nav-arrow slider-nav-next"
+              onClick={nextCreamSlide}
+              aria-label="Next slide"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
 
-          {/* 3-Column Layout Grid */}
-          <div className="cream-slider-inner-grid">
-            {/* LEFT COLUMN: Large gold quote mark and 4-line serif headline */}
-            <div className="cream-slider-left-col">
-              <span className="cream-slider-quote-mark" aria-hidden="true">“</span>
-              <h2 className="cream-slider-quote-headline">
-                <span>A WORLD</span>
-                <span>BUILT ONE</span>
-                <span>MERGE AT</span>
-                <span>A TIME.</span>
-              </h2>
-            </div>
+            {/* 3-Column Layout Grid */}
+            <div className="cream-slider-inner-grid">
+              {/* LEFT COLUMN: Large gold quote mark and 4-line serif headline */}
+              <div className="cream-slider-left-col">
+                <span className="cream-slider-quote-mark" aria-hidden="true">“</span>
+                <h2 className="cream-slider-quote-headline">
+                  <span>A WORLD</span>
+                  <span>BUILT ONE</span>
+                  <span>MERGE AT</span>
+                  <span>A TIME.</span>
+                </h2>
+              </div>
 
-            {/* CENTER COLUMN: CSS-only Laptop & Dots */}
-            <div className="cream-slider-center-col">
-              <div className="laptop-mockup-wrapper">
-                {/* Dark rounded bezel screen lid */}
-                <div className="laptop-screen-lid">
-                  {/* Camera notch at top center */}
-                  <div className="laptop-camera-notch" aria-hidden="true">
-                    <span className="laptop-camera-lens" />
+              {/* CENTER COLUMN: CSS-only Laptop & Dots */}
+              <div className="cream-slider-center-col">
+                <div className="laptop-mockup-wrapper">
+                  {/* Dark rounded bezel screen lid */}
+                  <div className="laptop-screen-lid">
+                    {/* Camera notch at top center */}
+                    <div className="laptop-camera-notch" aria-hidden="true">
+                      <span className="laptop-camera-lens" />
+                    </div>
+
+                    {/* 16:10 Screen Display Area */}
+                    <div className="laptop-screen-display">
+                      {CREAM_LAPTOP_SLIDES.map((slide, idx) => (
+                        <div
+                          key={slide.id}
+                          data-scene-stage={idx}
+                          className={`laptop-slide ${idx === creamSlideIndex ? 'is-active' : ''}`}
+                          aria-hidden={idx !== creamSlideIndex}
+                        >
+                          <img
+                            src={slide.image}
+                            alt={slide.alt}
+                            className="laptop-slide-image"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* 16:10 Screen Display Area */}
-                  <div className="laptop-screen-display">
-                    {CREAM_LAPTOP_SLIDES.map((slide, idx) => (
-                      <div
-                        key={slide.id}
-                        className={`laptop-slide ${idx === creamSlideIndex ? 'is-active' : ''}`}
-                        aria-hidden={idx !== creamSlideIndex}
-                      >
-                        <img
-                          src={slide.image}
-                          alt={slide.alt}
-                          className="laptop-slide-image"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                    ))}
+                  {/* Silver base below screen with center notch */}
+                  <div className="laptop-base-chassis" aria-hidden="true">
+                    <div className="laptop-notch-indent" />
                   </div>
+
+                  {/* Soft shadow underneath */}
+                  <div className="laptop-bottom-shadow" aria-hidden="true" />
                 </div>
 
-                {/* Silver base below screen with center notch */}
-                <div className="laptop-base-chassis" aria-hidden="true">
-                  <div className="laptop-notch-indent" />
+                {/* 3 Small Dots below the laptop */}
+                <div className="laptop-dots-nav" role="tablist" aria-label="Slide dots">
+                  {CREAM_LAPTOP_SLIDES.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      role="tab"
+                      aria-selected={idx === creamSlideIndex}
+                      aria-label={`Go to slide ${idx + 1}`}
+                      className={`laptop-dot-btn ${idx === creamSlideIndex ? 'is-active' : ''}`}
+                      onClick={() => handleDotClick(idx)}
+                      data-scene-stage={idx}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: Badge, Heading, Paragraph, Gold Read More Button */}
+              <div className="cream-slider-right-col">
+                <div className="cream-slider-badge-pill">
+                  <span className="badge-sparkle" aria-hidden="true">✦</span>
+                  <span>Mergeverse Resources</span>
                 </div>
 
-                {/* Soft shadow underneath */}
-                <div className="laptop-bottom-shadow" aria-hidden="true" />
-              </div>
+                {/* Synchronized slide text with smooth fade/slide transition */}
+                <div className="cream-slider-text-stack">
+                  {CREAM_LAPTOP_SLIDES.map((slide, idx) => (
+                    <div
+                      key={slide.id}
+                      data-scene-stage={idx}
+                      className={`cream-slide-text-item ${idx === creamSlideIndex ? 'is-active' : ''}`}
+                      aria-hidden={idx !== creamSlideIndex}
+                    >
+                      <h3 className="cream-slide-heading">{slide.heading}</h3>
+                      <p className="cream-slide-description">{slide.description}</p>
+                    </div>
+                  ))}
+                </div>
 
-              {/* 3 Small Dots below the laptop */}
-              <div className="laptop-dots-nav" role="tablist" aria-label="Slide dots">
-                {CREAM_LAPTOP_SLIDES.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    role="tab"
-                    aria-selected={idx === creamSlideIndex}
-                    aria-label={`Go to slide ${idx + 1}`}
-                    className={`laptop-dot-btn ${idx === creamSlideIndex ? 'is-active' : ''}`}
-                    onClick={() => setCreamSlideIndex(idx)}
-                  />
-                ))}
+                <button
+                  type="button"
+                  className="cream-slider-read-more-btn"
+                  onClick={() => handleScrollToSection('game-intro')}
+                  aria-label="Read more about Mergeverse chapters"
+                >
+                  <span>Read more</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
               </div>
             </div>
+          </div>
 
-            {/* RIGHT COLUMN: Badge, Heading, Paragraph, Gold Read More Button */}
-            <div className="cream-slider-right-col">
-              <div className="cream-slider-badge-pill">
-                <span className="badge-sparkle" aria-hidden="true">✦</span>
-                <span>Mergeverse Resources</span>
-              </div>
-
-              {/* Synchronized slide text with smooth fade/slide transition */}
-              <div className="cream-slider-text-stack">
-                {CREAM_LAPTOP_SLIDES.map((slide, idx) => (
-                  <div
-                    key={slide.id}
-                    className={`cream-slide-text-item ${idx === creamSlideIndex ? 'is-active' : ''}`}
-                    aria-hidden={idx !== creamSlideIndex}
-                  >
-                    <h3 className="cream-slide-heading">{slide.heading}</h3>
-                    <p className="cream-slide-description">{slide.description}</p>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                className="cream-slider-read-more-btn"
-                onClick={() => handleScrollToSection('game-intro')}
-                aria-label="Read more about Mergeverse chapters"
-              >
-                <span>Read more</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-            </div>
+          {/* Right Edge Stage Indicator (aria-hidden, decorative) */}
+          <div className="scene-stage-indicator" aria-hidden="true">
+            {CREAM_LAPTOP_SLIDES.map((_, i) => (
+              <span key={i} className={`scene-stage-dot ${i === creamSlideIndex ? 'is-active' : ''}`} />
+            ))}
           </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------------------------
-          SECTION 1.8: OCEAN ARCHIPELAGO — THE FOUR REALMS
+          SECTION 1.8: OCEAN ARCHIPELAGO — THE FOUR REALMS (SCENE 2: 4 STAGES)
           Full-width section with CSS-only animated ocean, floating map & interactive hotspots
           --------------------------------------------------------------------- */}
       <section
         id="four-realms-ocean"
         ref={oceanSectionRef}
-        className={`ocean-realms-section ${isOceanInView ? 'is-in-view' : ''}`}
+        className={`ocean-scene-wrapper ${oceanScene.isSceneActive ? 'is-scene' : ''} ocean-realms-section ${isOceanInView ? 'is-in-view' : ''}`}
         aria-label="The Four Realms Archipelago"
       >
-        {/* Animated Ocean Background: Teal/Deep Blue Gradients, Drift Waves, Clouds & Sparkles */}
-        <div className="ocean-bg-canvas" aria-hidden="true">
-          <div className="ocean-gradient-layer" />
-          <div className="ocean-wave-band ocean-wave-1" />
-          <div className="ocean-wave-band ocean-wave-2" />
-          <div className="ocean-wave-band ocean-wave-3" />
-          <div className="ocean-cloud ocean-cloud-1" />
-          <div className="ocean-cloud ocean-cloud-2" />
-          <div className="ocean-cloud ocean-cloud-3" />
-          <div className="ocean-sparkles-field">
-            {Array.from({ length: 24 }).map((_, i) => (
-              <span
-                key={i}
-                className="ocean-sparkle-dot"
-                style={{
-                  top: `${(i * 17 + 9) % 94}%`,
-                  left: `${(i * 23 + 4) % 96}%`,
-                  animationDelay: `${(i * 0.35).toFixed(1)}s`,
-                  animationDuration: `${2.4 + (i % 4) * 0.7}s`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="ocean-content-wrapper">
-          {/* Top of Section: Gold badge, serif headline & centered short line */}
-          <div className="ocean-section-header">
-            <div className="ocean-eyebrow-badge">
-              <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
-              <span>ARCHIPELAGO</span>
-              <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
-            </div>
-            <h2 className="ocean-section-headline">FOUR REALMS. ONE LIVING WORLD.</h2>
-            <p className="ocean-section-subhead">
-              Explore the four sovereign lands of human discovery, united across a boundless living ocean.
-            </p>
-          </div>
-
-          {/* Center: World Map Image with Floating Animation & Interactive Hotspots */}
-          <div className="ocean-map-floating-wrap">
-            <div className="ocean-map-img-frame">
-              <img
-                src="/images/world-map.jpg"
-                alt="Mergeverse World Map Archipelago"
-                className="ocean-map-image"
-                loading="lazy"
-                decoding="async"
-              />
-
-              {/* 4 Interactive Hotspot Buttons */}
-              {OCEAN_REALMS_DATA.map((realm) => (
-                <button
-                  key={realm.id}
-                  type="button"
-                  className="ocean-hotspot-btn"
-                  style={{ left: realm.hotspot.x, top: realm.hotspot.y }}
-                  onClick={() => handleOceanHotspotClick(realm.id)}
-                  aria-label={`${realm.name} realm — ${realm.tooltipStatus}. Click to highlight realm card.`}
-                >
-                  <span className="hotspot-pulse-ring" aria-hidden="true" />
-                  <span className="hotspot-core-dot" aria-hidden="true" />
-
-                  {/* Tooltip Card on Hover / Focus */}
-                  <span className="hotspot-tooltip-card" role="tooltip">
-                    <span className="tooltip-name">{realm.name}</span>
-                    <span
-                      className={`tooltip-status ${realm.isGoldStatus ? 'status-active' : 'status-soon'}`}
-                    >
-                      {realm.tooltipStatus}
-                    </span>
-                  </span>
-                </button>
+        <div className="scene-sticky-inner ocean-scene-sticky-inner">
+          {/* Animated Ocean Background: Teal/Deep Blue Gradients, Drift Waves, Clouds & Sparkles */}
+          <div className="ocean-bg-canvas" aria-hidden="true">
+            <div className="ocean-gradient-layer" />
+            <div className="ocean-wave-band ocean-wave-1" />
+            <div className="ocean-wave-band ocean-wave-2" />
+            <div className="ocean-wave-band ocean-wave-3" />
+            <div className="ocean-cloud ocean-cloud-1" />
+            <div className="ocean-cloud ocean-cloud-2" />
+            <div className="ocean-cloud ocean-cloud-3" />
+            <div className="ocean-sparkles-field">
+              {Array.from({ length: 24 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="ocean-sparkle-dot"
+                  style={{
+                    top: `${(i * 17 + 9) % 94}%`,
+                    left: `${(i * 23 + 4) % 96}%`,
+                    animationDelay: `${(i * 0.35).toFixed(1)}s`,
+                    animationDuration: `${2.4 + (i % 4) * 0.7}s`,
+                  }}
+                />
               ))}
             </div>
           </div>
 
-          {/* Row of 4 Glass Cards (Staggered Animation via IntersectionObserver) */}
-          <div
-            ref={oceanCardsRef}
-            className={`ocean-cards-grid ${isOceanCardsInView ? 'is-in-view' : ''}`}
-          >
-            {OCEAN_REALMS_DATA.map((realm, idx) => (
-              <div
-                key={realm.id}
-                id={`ocean-card-${realm.id}`}
-                className={`ocean-realm-card ${highlightedOceanCardId === realm.id ? 'is-highlighted-card' : ''}`}
-                style={{
-                  transitionDelay: `${idx * 80}ms`,
-                }}
-              >
-                <div className="ocean-card-header">
-                  <span className="ocean-card-icon" aria-hidden="true">
-                    {realm.icon}
-                  </span>
-                  <span
-                    className={`ocean-status-pill ${realm.isGoldStatus ? 'status-active' : 'status-soon'}`}
-                  >
-                    {realm.status}
-                  </span>
-                </div>
-                <h3 className="ocean-card-title">{realm.name}</h3>
-                <p className="ocean-card-desc">{realm.description}</p>
+          <div className="ocean-content-wrapper">
+            {/* Top of Section: Gold badge, serif headline & centered short line */}
+            <div className="ocean-section-header">
+              <div className="ocean-eyebrow-badge">
+                <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
+                <span>ARCHIPELAGO</span>
+                <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
               </div>
+              <h2 className="ocean-section-headline">FOUR REALMS. ONE LIVING WORLD.</h2>
+              <p className="ocean-section-subhead">
+                Explore the four sovereign lands of human discovery, united across a boundless living ocean.
+              </p>
+            </div>
+
+            {/* Center: World Map Image with Floating Animation & Interactive Hotspots */}
+            <div className="ocean-map-floating-wrap">
+              <div className="ocean-map-img-frame">
+                <img
+                  src="/images/world-map.jpg"
+                  alt="Mergeverse World Map Archipelago"
+                  className="ocean-map-image"
+                  loading="lazy"
+                  decoding="async"
+                />
+
+                {/* 4 Interactive Hotspot Buttons */}
+                {OCEAN_REALMS_DATA.map((realm, idx) => (
+                  <button
+                    key={realm.id}
+                    type="button"
+                    className={`ocean-hotspot-btn hotspot-${realm.id}`}
+                    style={{ left: realm.hotspot.x, top: realm.hotspot.y }}
+                    onClick={() => handleOceanHotspotClick(realm.id)}
+                    data-scene-stage={idx}
+                    aria-label={`${realm.name} realm — ${realm.tooltipStatus}. Click to highlight realm card.`}
+                  >
+                    <span className="hotspot-pulse-ring" aria-hidden="true" />
+                    <span className="hotspot-core-dot" aria-hidden="true" />
+
+                    {/* Tooltip Card on Hover / Focus */}
+                    <span className="hotspot-tooltip-card" role="tooltip">
+                      <span className="tooltip-name">{realm.name}</span>
+                      <span
+                        className={`tooltip-status ${realm.isGoldStatus ? 'status-active' : 'status-soon'}`}
+                      >
+                        {realm.tooltipStatus}
+                      </span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Row of 4 Glass Cards (Staggered Animation via IntersectionObserver) */}
+            <div
+              ref={oceanCardsRef}
+              className={`ocean-cards-grid ${isOceanCardsInView ? 'is-in-view' : ''}`}
+            >
+              {OCEAN_REALMS_DATA.map((realm, idx) => (
+                <div
+                  key={realm.id}
+                  id={`ocean-card-${realm.id}`}
+                  data-scene-stage={idx}
+                  tabIndex={0}
+                  className={`ocean-realm-card ${highlightedOceanCardId === realm.id ? 'is-highlighted-card' : ''}`}
+                  style={{
+                    transitionDelay: `${idx * 80}ms`,
+                  }}
+                >
+                  <div className="ocean-card-header">
+                    <span className="ocean-card-icon" aria-hidden="true">
+                      {realm.icon}
+                    </span>
+                    <span
+                      className={`ocean-status-pill ${realm.isGoldStatus ? 'status-active' : 'status-soon'}`}
+                    >
+                      {realm.status}
+                    </span>
+                  </div>
+                  <h3 className="ocean-card-title">{realm.name}</h3>
+                  <p className="ocean-card-desc">{realm.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Edge Stage Indicator (aria-hidden, decorative) */}
+          <div className="scene-stage-indicator" aria-hidden="true">
+            {OCEAN_REALMS_DATA.map((_, i) => (
+              <span key={i} className={`scene-stage-dot ${i === oceanScene.stage ? 'is-active' : ''}`} />
             ))}
           </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------------------------
-          SECTION 1.9: AUTHENTIC GAMEPLAY & PROGRESSION — OVERLAPPING CARDS
+          SECTION 1.9: AUTHENTIC GAMEPLAY & PROGRESSION — OVERLAPPING CARDS (SCENE 3: 4 STAGES)
           Cream Rounded Card with Interactive Staggered Floating Cards & Lightbox
           --------------------------------------------------------------------- */}
       <section
         id="gameplay-progression-showcase"
         ref={gameplaySectionRef}
-        className={`gameplay-cards-section ${isGameplayCardsInView ? 'is-in-view' : ''}`}
+        className={`gameplay-scene-wrapper ${gameplayScene.isSceneActive ? 'is-scene' : ''} gameplay-cards-section ${isGameplayCardsInView ? 'is-in-view' : ''}`}
         aria-label="Authentic Gameplay & Progression Showcase"
       >
-        <div className="gameplay-cards-outer-card">
-          <div className="gameplay-cards-inner-grid">
-            {/* LEFT COLUMN: Badge, Heading, Narrative, Checkmarks & Gold CTA */}
-            <div className="gameplay-text-col">
-              <div className="gameplay-badge-pill">
-                <span className="badge-star" aria-hidden="true">✦</span>
-                <span>GAMEPLAY</span>
-                <span className="badge-star" aria-hidden="true">✦</span>
-              </div>
+        <div className="scene-sticky-inner gameplay-scene-sticky-inner">
+          <div className="gameplay-cards-outer-card">
+            <div className="gameplay-cards-inner-grid">
+              {/* LEFT COLUMN: Badge, Heading, Narrative, Checkmarks & Gold CTA */}
+              <div className="gameplay-text-col">
+                <div className="gameplay-badge-pill">
+                  <span className="badge-star" aria-hidden="true">✦</span>
+                  <span>GAMEPLAY</span>
+                  <span className="badge-star" aria-hidden="true">✦</span>
+                </div>
 
-              <h2 className="gameplay-section-title">
-                AUTHENTIC GAMEPLAY &amp; PROGRESSION
-              </h2>
+                <h2 className="gameplay-section-title">
+                  AUTHENTIC GAMEPLAY &amp; PROGRESSION
+                </h2>
 
-              <p className="gameplay-section-lead">
-                Merge, solve and learn. Every level is a new puzzle, and every win unlocks a real piece of history.
-              </p>
+                <p className="gameplay-section-lead">
+                  Merge, solve and learn. Every level is a new puzzle, and every win unlocks a real piece of history.
+                </p>
 
-              {/* Three short gold-checkmark lines */}
-              <ul className="gameplay-checkmarks-list" aria-label="Key Gameplay Features">
-                <li className="gameplay-check-item">
-                  <span className="check-icon-circle" aria-hidden="true">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                  <span>Merge boards with varied level variants</span>
-                </li>
-                <li className="gameplay-check-item">
-                  <span className="check-icon-circle" aria-hidden="true">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                  <span>Knowledge question after every win</span>
-                </li>
-                <li className="gameplay-check-item">
-                  <span className="check-icon-circle" aria-hidden="true">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                  <span>XP, stars and collection to track progress</span>
-                </li>
-              </ul>
-
-              <button
-                type="button"
-                className="gameplay-explore-btn"
-                onClick={() => handleScrollToSection('gameplay-progression-showcase')}
-                aria-label="Scroll to Gameplay Progression Showcase"
-              >
-                <span>Explore Gameplay Mechanics</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-            </div>
-
-            {/* RIGHT COLUMN: Stack of 4 Screenshot Cards with Absolute Rotations & Parallax */}
-            <div className="gameplay-stack-col">
-              <div
-                ref={gameplayStackContainerRef}
-                className="gameplay-cards-stack-container"
-                onMouseMove={handleStackMouseMove}
-                onMouseLeave={handleStackMouseLeave}
-              >
-                {GAMEPLAY_OVERLAPPING_CARDS.map((card, idx) => (
-                  <button
-                    key={card.id}
-                    type="button"
-                    className={`gameplay-stack-card card-${card.id} ${card.isFront ? 'front-card' : ''}`}
-                    style={{
-                      '--card-rot': `${card.rotation}deg`,
-                      '--shift-x': `${card.shiftX}px`,
-                      '--shift-y': `${card.shiftY}px`,
-                      '--fly-delay': `${idx * 100}ms`,
-                    }}
-                    onClick={(e) => openGameplayLightbox(card, e.currentTarget)}
-                    aria-label={`Inspect full resolution ${card.title} screenshot`}
+                {/* Three short gold-checkmark lines */}
+                <ul className="gameplay-checkmarks-list" aria-label="Key Gameplay Features">
+                  <li
+                    className={`gameplay-check-item ${!gameplayScene.isSceneActive || gameplayScene.stage >= 0 ? 'is-checked' : ''}`}
+                    data-scene-stage={0}
                   >
-                    <div className="card-image-wrap">
-                      <img
-                        src={card.image}
-                        alt={card.alt}
-                        className="card-screenshot-img"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      {/* Caption Chip appearing on hover/focus */}
-                      <span className="card-caption-chip">
-                        {card.caption}
-                      </span>
-                    </div>
+                    <span className="check-icon-circle" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </span>
+                    <span>Merge boards with varied level variants</span>
+                  </li>
+                  <li
+                    className={`gameplay-check-item ${!gameplayScene.isSceneActive || gameplayScene.stage >= 1 ? 'is-checked' : ''}`}
+                    data-scene-stage={1}
+                  >
+                    <span className="check-icon-circle" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </span>
+                    <span>Knowledge question after every win</span>
+                  </li>
+                  <li
+                    className={`gameplay-check-item ${!gameplayScene.isSceneActive || gameplayScene.stage >= 2 ? 'is-checked' : ''}`}
+                    data-scene-stage={2}
+                  >
+                    <span className="check-icon-circle" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </span>
+                    <span>XP, stars and collection to track progress</span>
+                  </li>
+                </ul>
 
-                    {/* CSS-Only Page Curl folded corner on top-right of front card */}
-                    {card.isFront && (
-                      <span className="card-page-curl-corner" aria-hidden="true" />
-                    )}
-                  </button>
-                ))}
+                <button
+                  type="button"
+                  className="gameplay-explore-btn"
+                  onClick={() => handleScrollToSection('gameplay-progression-showcase')}
+                  aria-label="Scroll to Gameplay Progression Showcase"
+                >
+                  <span>Explore Gameplay Mechanics</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* RIGHT COLUMN: Stack of 4 Screenshot Cards with Absolute Rotations & Parallax */}
+              <div className="gameplay-stack-col">
+                <div
+                  ref={gameplayStackContainerRef}
+                  className="gameplay-cards-stack-container"
+                  onMouseMove={handleStackMouseMove}
+                  onMouseLeave={handleStackMouseLeave}
+                >
+                  {GAMEPLAY_OVERLAPPING_CARDS.map((card, idx) => (
+                    <button
+                      key={card.id}
+                      type="button"
+                      data-scene-stage={idx}
+                      className={`gameplay-stack-card card-${card.id} ${card.isFront ? 'front-card' : ''}`}
+                      style={{
+                        '--card-rot': `${card.rotation}deg`,
+                        '--shift-x': `${card.shiftX}px`,
+                        '--shift-y': `${card.shiftY}px`,
+                        '--fly-delay': `${idx * 100}ms`,
+                      }}
+                      onClick={(e) => openGameplayLightbox(card, e.currentTarget)}
+                      aria-label={`Inspect full resolution ${card.title} screenshot`}
+                    >
+                      <div className="card-image-wrap">
+                        <img
+                          src={card.image}
+                          alt={card.alt}
+                          className="card-screenshot-img"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        {/* Caption Chip appearing on hover/focus */}
+                        <span className="card-caption-chip">
+                          {card.caption}
+                        </span>
+                      </div>
+
+                      {/* CSS-Only Page Curl folded corner on top-right of front card */}
+                      {card.isFront && (
+                        <span className="card-page-curl-corner" aria-hidden="true" />
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Right Edge Stage Indicator (aria-hidden, decorative) */}
+          <div className="scene-stage-indicator" aria-hidden="true">
+            {GAMEPLAY_OVERLAPPING_CARDS.map((_, i) => (
+              <span key={i} className={`scene-stage-dot ${i === gameplayScene.stage ? 'is-active' : ''}`} />
+            ))}
           </div>
         </div>
 

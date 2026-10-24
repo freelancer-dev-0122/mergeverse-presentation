@@ -1,0 +1,386 @@
+/* ==========================================================================
+   SCROLL-PINNED SCENES STYLES (STEP 9)
+   - Cream Laptop Slider (#cream-laptop-slider) - 3 Stages
+   - Ocean Four Realms (#four-realms-ocean) - 4 Stages
+   - Overlapping Gameplay Cards (#gameplay-progression-showcase) - 4 Stages
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BASE SCENE WRAPPER & STICKY CONTAINER
+   -------------------------------------------------------------------------- */
+.cream-scene-wrapper,
+.ocean-scene-wrapper,
+.gameplay-scene-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  scroll-margin-top: 80px;
+}
+
+/* When .is-scene is active (>= 1024px, no reduced-motion) */
+.cream-scene-wrapper.is-scene,
+.ocean-scene-wrapper.is-scene,
+.gameplay-scene-wrapper.is-scene {
+  height: calc(var(--scene-stages, 3) * 90vh + 100vh);
+  will-change: transform;
+}
+
+/* Inner sticky container: sticks to viewport while user scrolls through outer height */
+.scene-sticky-inner {
+  position: relative;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+.cream-scene-wrapper.is-scene .scene-sticky-inner,
+.ocean-scene-wrapper.is-scene .scene-sticky-inner,
+.gameplay-scene-wrapper.is-scene .scene-sticky-inner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. PAGE-TURNING SCENE TRANSITIONS & STACKING ORDER
+   -------------------------------------------------------------------------- */
+.cream-scene-wrapper {
+  z-index: 2;
+}
+
+.ocean-scene-wrapper {
+  z-index: 3;
+}
+
+.gameplay-scene-wrapper {
+  z-index: 4;
+}
+
+#notebook-build-story {
+  z-index: 5;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .ocean-scene-wrapper.is-scene {
+    border-top-left-radius: var(--radius-lg, 36px);
+    border-top-right-radius: var(--radius-lg, 36px);
+    box-shadow: 0 -24px 50px rgba(0, 0, 0, 0.45);
+  }
+
+  .gameplay-scene-wrapper.is-scene {
+    border-top-left-radius: var(--radius-lg, 36px);
+    border-top-right-radius: var(--radius-lg, 36px);
+    box-shadow: 0 -24px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .gameplay-scene-wrapper.is-scene + #notebook-build-story {
+    border-top-left-radius: var(--radius-lg, 36px);
+    border-top-right-radius: var(--radius-lg, 36px);
+    box-shadow: 0 -24px 50px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. STAGE INDICATOR DOTS (Right Edge, Aria-Hidden)
+   -------------------------------------------------------------------------- */
+.scene-stage-indicator {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.is-scene .scene-stage-indicator {
+  display: flex;
+}
+
+.scene-stage-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(233, 173, 72, 0.3);
+  border: 1px solid rgba(233, 173, 72, 0.45);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scene-stage-dot.is-active {
+  background: var(--gold-500, #e9ad48);
+  border-color: #fff4d0;
+  height: 18px;
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(233, 173, 72, 0.85);
+  transform: scale(1.15);
+}
+
+/* --------------------------------------------------------------------------
+   4. SCENE 1 - CREAM LAPTOP SLIDER (3 STAGES)
+   -------------------------------------------------------------------------- */
+.cream-scene-wrapper.is-scene .cream-slider-outer-card {
+  margin: 0 auto;
+  max-height: calc(100vh - 44px);
+}
+
+.cream-scene-wrapper.is-scene .cream-slider-inner-grid {
+  padding: clamp(32px, 4.5vh, 60px) clamp(44px, 4.5vw, 88px);
+}
+
+/* --------------------------------------------------------------------------
+   5. SCENE 2 - OCEAN FOUR REALMS (4 STAGES)
+   -------------------------------------------------------------------------- */
+.ocean-scene-wrapper.is-scene .ocean-content-wrapper {
+  margin: 0 auto;
+  max-height: calc(100vh - 36px);
+  padding: 0 20px;
+}
+
+.ocean-scene-wrapper.is-scene .ocean-section-header {
+  margin: 0 auto 14px;
+}
+
+.ocean-scene-wrapper.is-scene .ocean-map-floating-wrap {
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.ocean-scene-wrapper.is-scene .ocean-map-image {
+  max-height: 44vh;
+  width: auto;
+  margin: 0 auto;
+}
+
+.ocean-scene-wrapper.is-scene .ocean-cards-grid {
+  margin: 16px auto 0;
+  gap: 16px;
+  max-width: 1040px;
+}
+
+.ocean-scene-wrapper.is-scene .ocean-realm-card {
+  padding: 16px 16px;
+  opacity: 0.4;
+  transform: translateY(0);
+  transition:
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    background 0.45s ease;
+}
+
+/* Stage 0: Agriculture highlighted */
+.ocean-scene-wrapper.is-scene[data-stage="0"]:not([data-all-normal="true"]) #ocean-card-agriculture {
+  opacity: 1;
+  transform: translateY(-8px) scale(1.02);
+  border-color: #E9AD48 !important;
+  background: rgba(16, 48, 34, 0.95) !important;
+  box-shadow: 0 0 32px rgba(233, 173, 72, 0.8), inset 0 0 16px rgba(233, 173, 72, 0.35);
+}
+
+.ocean-scene-wrapper.is-scene[data-stage="0"]:not([data-all-normal="true"]) .hotspot-agriculture .hotspot-pulse-ring {
+  border-color: #FFF6D8;
+  box-shadow: 0 0 24px rgba(233, 173, 72, 1);
+  animation: oceanHotspotPulse 1.4s ease-out infinite;
+}
+
+/* Stage 1: Food & Culinary highlighted */
+.ocean-scene-wrapper.is-scene[data-stage="1"]:not([data-all-normal="true"]) #ocean-card-food-culinary {
+  opacity: 1;
+  transform: translateY(-8px) scale(1.02);
+  border-color: #E9AD48 !important;
+  background: rgba(16, 48, 34, 0.95) !important;
+  box-shadow: 0 0 32px rgba(233, 173, 72, 0.8), inset 0 0 16px rgba(233, 173, 72, 0.35);
+}
+
+.ocean-scene-wrapper.is-scene[data-stage="1"]:not([data-all-normal="true"]) .hotspot-food-culinary .hotspot-pulse-ring {
+  border-color: #FFF6D8;
+  box-shadow: 0 0 24px rgba(233, 173, 72, 1);
+  animation: oceanHotspotPulse 1.4s ease-out infinite;
+}
+
+/* Stage 2: Healthcare & Medicine highlighted */
+.ocean-scene-wrapper.is-scene[data-stage="2"]:not([data-all-normal="true"]) #ocean-card-healthcare-medicine {
+  opacity: 1;
+  transform: translateY(-8px) scale(1.02);
+  border-color: #E9AD48 !important;
+  background: rgba(16, 48, 34, 0.95) !important;
+  box-shadow: 0 0 32px rgba(233, 173, 72, 0.8), inset 0 0 16px rgba(233, 173, 72, 0.35);
+}
+
+.ocean-scene-wrapper.is-scene[data-stage="2"]:not([data-all-normal="true"]) .hotspot-healthcare-medicine .hotspot-pulse-ring {
+  border-color: #FFF6D8;
+  box-shadow: 0 0 24px rgba(233, 173, 72, 1);
+  animation: oceanHotspotPulse 1.4s ease-out infinite;
+}
+
+/* Stage 3: Assistive Technology highlighted */
+.ocean-scene-wrapper.is-scene[data-stage="3"]:not([data-all-normal="true"]) #ocean-card-assistive-technology {
+  opacity: 1;
+  transform: translateY(-8px) scale(1.02);
+  border-color: #E9AD48 !important;
+  background: rgba(16, 48, 34, 0.95) !important;
+  box-shadow: 0 0 32px rgba(233, 173, 72, 0.8), inset 0 0 16px rgba(233, 173, 72, 0.35);
+}
+
+.ocean-scene-wrapper.is-scene[data-stage="3"]:not([data-all-normal="true"]) .hotspot-assistive-technology .hotspot-pulse-ring {
+  border-color: #FFF6D8;
+  box-shadow: 0 0 24px rgba(233, 173, 72, 1);
+  animation: oceanHotspotPulse 1.4s ease-out infinite;
+}
+
+/* End of Scene: All 4 cards return to normal brightness */
+.ocean-scene-wrapper.is-scene[data-all-normal="true"] .ocean-realm-card {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. SCENE 3 - GAMEPLAY CARDS (4 STAGES)
+   -------------------------------------------------------------------------- */
+.gameplay-scene-wrapper.is-scene .gameplay-cards-outer-card {
+  margin: 0 auto;
+  max-height: calc(100vh - 44px);
+}
+
+.gameplay-scene-wrapper.is-scene .gameplay-cards-inner-grid {
+  padding: clamp(32px, 4.5vh, 60px) clamp(40px, 4.5vw, 84px);
+}
+
+/* Sequential Fly-In for Overlapping Screenshot Cards */
+.gameplay-scene-wrapper.is-scene .gameplay-stack-card {
+  opacity: 0;
+  transform: rotate(var(--card-rot)) translateY(120px) scale(0.85);
+  pointer-events: none;
+  transition:
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease;
+}
+
+/* Card 1 (World Map): Settled from stage 0 onwards */
+.gameplay-scene-wrapper.is-scene[data-stage="0"] .card-world-map,
+.gameplay-scene-wrapper.is-scene[data-stage="1"] .card-world-map,
+.gameplay-scene-wrapper.is-scene[data-stage="2"] .card-world-map,
+.gameplay-scene-wrapper.is-scene[data-stage="3"] .card-world-map {
+  opacity: 1;
+  transform:
+    rotate(var(--card-rot))
+    translate(calc(var(--norm-x, 0) * var(--shift-x, 0px)), calc(var(--norm-y, 0) * var(--shift-y, 0px)));
+  pointer-events: auto;
+}
+
+/* Card 2 (Harvest Board): Settled from stage 1 onwards */
+.gameplay-scene-wrapper.is-scene[data-stage="1"] .card-harvest-board,
+.gameplay-scene-wrapper.is-scene[data-stage="2"] .card-harvest-board,
+.gameplay-scene-wrapper.is-scene[data-stage="3"] .card-harvest-board {
+  opacity: 1;
+  transform:
+    rotate(var(--card-rot))
+    translate(calc(var(--norm-x, 0) * var(--shift-x, 0px)), calc(var(--norm-y, 0) * var(--shift-y, 0px)));
+  pointer-events: auto;
+}
+
+/* Card 3 (Knowledge Challenge): Settled from stage 2 onwards */
+.gameplay-scene-wrapper.is-scene[data-stage="2"] .card-knowledge-challenge,
+.gameplay-scene-wrapper.is-scene[data-stage="3"] .card-knowledge-challenge {
+  opacity: 1;
+  transform:
+    rotate(var(--card-rot))
+    translate(calc(var(--norm-x, 0) * var(--shift-x, 0px)), calc(var(--norm-y, 0) * var(--shift-y, 0px)));
+  pointer-events: auto;
+}
+
+/* Card 4 (Profile Sanctuary): Settled at stage 3 */
+.gameplay-scene-wrapper.is-scene[data-stage="3"] .card-profile {
+  opacity: 1;
+  transform:
+    rotate(var(--card-rot))
+    translate(calc(var(--norm-x, 0) * var(--shift-x, 0px)), calc(var(--norm-y, 0) * var(--shift-y, 0px)));
+  pointer-events: auto;
+}
+
+/* Sequential Checkmarks in Gameplay Left Column */
+.gameplay-scene-wrapper.is-scene .gameplay-check-item .check-icon-circle {
+  background: transparent;
+  border: 1.5px solid rgba(18, 61, 43, 0.25);
+  color: transparent;
+  box-shadow: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gameplay-scene-wrapper.is-scene .gameplay-check-item.is-checked .check-icon-circle {
+  background: #E9AD48;
+  border-color: #E9AD48;
+  color: var(--green-900);
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(212, 151, 59, 0.55);
+}
+
+/* --------------------------------------------------------------------------
+   7. SAFE DEFAULTS (Viewport < 1024px or Prefers-Reduced-Motion)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .cream-scene-wrapper,
+  .ocean-scene-wrapper,
+  .gameplay-scene-wrapper {
+    height: auto !important;
+  }
+
+  .scene-sticky-inner {
+    position: relative !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .scene-stage-indicator {
+    display: none !important;
+  }
+
+  .ocean-realm-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .gameplay-stack-card {
+    opacity: 1 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cream-scene-wrapper,
+  .ocean-scene-wrapper,
+  .gameplay-scene-wrapper {
+    height: auto !important;
+  }
+
+  .scene-sticky-inner {
+    position: relative !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .scene-stage-indicator {
+    display: none !important;
+  }
+
+  .ocean-realm-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .gameplay-stack-card {
+    opacity: 1 !important;
+  }
+}
