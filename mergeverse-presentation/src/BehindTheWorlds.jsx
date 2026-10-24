@@ -1,9 +1,5 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useRef, useState } from 'react';
 import './BehindTheWorlds.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const CREATIVE_THEMES = [
   {
@@ -33,6 +29,33 @@ const CREATIVE_THEMES = [
     icon: '♿',
     theme: 'Universal Design & Empowerment',
     desc: 'Inclined stone ramps, timber guildhalls, waterwheels, and adaptive engineering mechanisms.',
+  },
+];
+
+const COLOR_PALETTE = [
+  {
+    name: 'Deep Forest Emerald',
+    hex: '#091c14',
+    token: 'var(--green-900)',
+    border: 'rgba(233, 173, 72, 0.4)',
+  },
+  {
+    name: 'Warm Parchment',
+    hex: '#faf6ee',
+    token: 'var(--cream-50)',
+    border: 'rgba(233, 173, 72, 0.4)',
+  },
+  {
+    name: 'Sunlit Gold',
+    hex: '#e9ad48',
+    token: 'var(--gold-500)',
+    border: 'rgba(255, 244, 208, 0.6)',
+  },
+  {
+    name: 'Living Alpine Teal',
+    hex: '#4e9d86',
+    token: 'var(--ocean-500)',
+    border: 'rgba(233, 173, 72, 0.4)',
   },
 ];
 
@@ -81,282 +104,339 @@ const ATELIER_TIMELINE = [
 
 export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} } = {}) {
   const containerRef = useRef(null);
+  const timelineRef = useRef(null);
+  const [timelineProgress, setTimelineProgress] = useState(0);
+  const [activeMarkers, setActiveMarkers] = useState({ 1: false, 2: false, 3: false });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      setTimelineProgress(100);
+      setActiveMarkers({ 1: true, 2: true, 3: true });
+      return;
+    }
 
-    const ctx = gsap.context(() => {
-      // Documentary Masthead
-      gsap.from('.btw-masthead', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
+    let ticking = false;
+    const handleScroll = () => {
+      if (!timelineRef.current) return;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!timelineRef.current) return;
+          const rect = timelineRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          const totalHeight = rect.height;
+          // Calculate progress as the timeline scrolls across the viewport center
+          const currentPos = windowHeight * 0.55 - rect.top;
+          const progress = Math.min(Math.max((currentPos / totalHeight) * 100, 0), 100);
+          setTimelineProgress(progress);
 
-      // Chapter 1 visual narrative split
-      gsap.from('.manifesto-narrative-col', {
-        x: -20,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
+          const isNodeActive = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return false;
+            const r = el.getBoundingClientRect();
+            return r.top < windowHeight * 0.6;
+          };
 
-      gsap.from('.manifesto-themes-col', {
-        x: 20,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
+          setActiveMarkers({
+            1: isNodeActive('chapter-node-1'),
+            2: isNodeActive('chapter-node-2'),
+            3: isNodeActive('chapter-node-3'),
+          });
 
-      // Visual vision banner
-      gsap.from('.btw-vision-editorial', {
-        y: 25,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
-      // Timeline nodes
-      gsap.from('.timeline-step-node', {
-        y: 20,
-        stagger: 0.08,
-        duration: 0.7,
-        ease: 'power2.out',
-      });
-    }, containerRef);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
-    return () => ctx.revert();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <section
       id="behind-the-worlds"
-      className="behind-the-worlds-container"
+      className="section section--dark"
       ref={containerRef}
       aria-label="Behind the Worlds — The Making of MERGEVERSE"
     >
-      {/* =====================================================================
-          CHAPTER 01: THE CREATOR MANIFESTO (WARM PARCHMENT EDITORIAL)
-          Asymmetric documentary spread: personal philosophy + themes index
-          ===================================================================== */}
-      <div className="btw-chapter-section section-parchment">
-        <div className="editorial-container">
-          <header className="btw-masthead">
-            <div className="editorial-pill parchment-pill">
-              <span className="pill-star">✦</span>
-              <span>BEHIND THE WORLDS · THE CREATOR STORY</span>
-              <span className="pill-star">✦</span>
-            </div>
-            <h2 className="btw-lead-title">Every World Starts with an Idea</h2>
-            <p className="btw-lead-sub">
-              Discover the creative direction, authentic tools, and human vision behind the making of MERGEVERSE.
-            </p>
-          </header>
-
-          <div className="btw-manifesto-split">
-            {/* Left: The Creator Narrative */}
-            <div className="manifesto-narrative-col">
-              <div className="manifesto-chapter-tag">
-                <span className="chapter-tag-num">01</span>
-                <span className="chapter-tag-sep">/</span>
-                <span className="chapter-tag-title">THE GENESIS</span>
-              </div>
-
-              <h3 className="manifesto-headline">
-                Rethinking the Merge Genre as Human Heritage
-              </h3>
-
-              <p className="manifesto-prose">
-                Traditional puzzle-merge games rely on match-3 tropes: abstract candies, glittering diamonds, or fantasy critters.
-                With <strong className="ink-bold">MERGEVERSE</strong>, creator and director <strong>Vikas</strong> committed to a fundamentally
-                different artistic ethos: transforming the historical milestones of human civilization into a tactile, thoughtful puzzle adventure.
-              </p>
-
-              <p className="manifesto-prose">
-                Guided by the studio tagline <em className="ink-italic">“EXPLORE. SOLVE. DISCOVER.”</em>, players progress through the tangible
-                evolution of human ingenuity. Combining wild grasses and hearthstone ovens yields harvest nutrition; synthesizing apothecary
-                herbs advances clinical medicine; crafting timber wheels establishes universal accessibility.
-              </p>
-
-              <blockquote className="creator-manifesto-quote">
-                <span className="quote-mark">“</span>
-                <p className="quote-body">
-                  I wanted every merge to feel like an authentic breakthrough of human resilience—connecting ancient soil to universal adaptive design.
-                </p>
-                <cite className="quote-signature">— Vikas, Creator & Director</cite>
-              </blockquote>
-
-              <div className="creator-signature-row">
-                <span className="sig-badge">💡 Planning & Lore: GPT / ChatGPT</span>
-                <span className="sig-badge">🎨 Art Direction: Gemini & Stitch</span>
-              </div>
-            </div>
-
-            {/* Right: The Four Civilizational Pillars (Asymmetrical Matrix) */}
-            <div className="manifesto-themes-col">
-              <div className="themes-box-header">
-                <span className="box-title">FOUR PILLARS OF HUMAN ADVANCE</span>
-                <span className="box-note">Curated Historical Themes</span>
-              </div>
-
-              <div className="themes-cards-stack">
-                {CREATIVE_THEMES.map((theme) => (
-                  <div key={theme.roman} className="theme-manifesto-card">
-                    <div className="theme-card-left">
-                      <span className="theme-roman">REALM {theme.roman}</span>
-                      <span className="theme-icon">{theme.icon}</span>
-                    </div>
-                    <div className="theme-card-right">
-                      <h4 className="theme-name">{theme.name}</h4>
-                      <span className="theme-sub">{theme.theme}</span>
-                      <p className="theme-desc">{theme.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+      <div className="section-container">
+        {/* 1. OVERARCHING SECTION HEADER */}
+        <div className="reveal" style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
+          <div className="eyebrow">
+            <span className="eyebrow-star">✦</span>
+            <span>BEHIND THE WORLDS · THE CREATOR STORY</span>
+            <span className="eyebrow-star">✦</span>
           </div>
+          <h2 className="section-title">Every World Starts with an Idea</h2>
+          <p className="section-lead">
+            Discover the creative direction, authentic tools, and human vision behind the making of MERGEVERSE.
+          </p>
         </div>
-      </div>
 
-      {/* =====================================================================
-          CHAPTER 02: THE VISUAL VISION (RICH FOREST EMERALD)
-          Panoramic visual feature: Gemini atmospheric inspiration & Stitch layouts
-          ===================================================================== */}
-      <div className="btw-chapter-section btw-vision-section">
-        <div className="editorial-container">
-          <div className="btw-vision-editorial">
-            <div className="vision-text-side">
-              <div className="editorial-pill">
-                <span className="pill-star">✦</span>
-                <span>CHAPTER 02 · VISUAL DIRECTION</span>
-                <span className="pill-star">✦</span>
+        {/* 2. STORY TIMELINE */}
+        <div
+          ref={timelineRef}
+          className="story-timeline"
+          style={{ '--timeline-progress': `${timelineProgress}%` }}
+        >
+          {/* Scroll-driven gold timeline track */}
+          <div className="story-timeline__track" aria-hidden="true">
+            <div className="story-timeline__progress" />
+          </div>
+
+          {/* -----------------------------------------------------------------
+              CHAPTER I: THE VISION
+              2-Column: Text Left, Four Pillars Matrix Right
+              ----------------------------------------------------------------- */}
+          <article
+            id="chapter-node-1"
+            className={`story-chapter reveal ${activeMarkers[1] ? 'is-active' : ''}`}
+            aria-label="Chapter I: The Vision"
+          >
+            <div className="story-chapter__marker" aria-hidden="true">
+              <span>I</span>
+            </div>
+
+            <div className="story-chapter__grid">
+              {/* Text Column */}
+              <div className="story-chapter__content">
+                <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>
+                  CHAPTER I · THE GENESIS & ARTISTIC VISION
+                </div>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h2)', fontWeight: 700, lineHeight: 1.25, color: 'var(--cream-50)', margin: '0 0 var(--space-3)' }}>
+                  Rethinking the Merge Genre as Human Heritage
+                </h3>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-3)' }}>
+                  Traditional puzzle-merge games rely on match-3 tropes: abstract candies, glittering diamonds, or fantasy critters. With <strong style={{ color: 'var(--cream-50)' }}>MERGEVERSE</strong>, creator and director <strong style={{ color: 'var(--cream-50)' }}>Vikas</strong> committed to a fundamentally different artistic ethos: transforming the historical milestones of human civilization into a tactile, thoughtful puzzle adventure.
+                </p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-4)' }}>
+                  Guided by the studio tagline <em style={{ fontStyle: 'italic', color: 'var(--gold-300)' }}>“EXPLORE. SOLVE. DISCOVER.”</em>, players progress through the tangible evolution of human ingenuity. Combining wild grasses and hearthstone ovens yields harvest nutrition; synthesizing apothecary herbs advances clinical medicine; crafting timber wheels establishes universal accessibility.
+                </p>
+
+                <blockquote className="creator-manifesto-quote">
+                  <span className="quote-mark">“</span>
+                  <p className="quote-body">
+                    I wanted every merge to feel like an authentic breakthrough of human resilience—connecting ancient soil to universal adaptive design.
+                  </p>
+                  <cite className="quote-signature">— Vikas, Creator & Director</cite>
+                </blockquote>
+
+                <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-4)' }}>
+                  <span className="badge badge--muted">💡 Planning & Lore: GPT / ChatGPT</span>
+                  <span className="badge badge--muted">🎨 Art Direction: Gemini & Stitch</span>
+                </div>
               </div>
 
-              <h3 className="vision-headline">Alpine Horizons & Cinematic Lighting</h3>
-
-              <p className="vision-prose">
-                The visual identity of MERGEVERSE was inspired by cinematic concepts explored through <strong>Gemini</strong>.
-                Rather than flat, hyper-saturated mobile graphics, Vikas established an atmospheric palette of{' '}
-                <strong className="text-emerald-light">deep forest emerald</strong>,{' '}
-                <strong className="text-parchment-light">warm parchment</strong>,{' '}
-                <strong className="text-gold-light">sunlit gold</strong>, and{' '}
-                <strong className="text-teal-light">living alpine teal</strong>.
-              </p>
-
-              <p className="vision-prose">
-                Screen wireframes and tactical puzzle trays were iteratively tested in <strong>Stitch</strong> to ensure
-                spatial balance, legibility, and satisfying tactile proportions before engineering frontend components.
-              </p>
-
-              <div className="vision-tool-chips">
-                <div className="vision-tool-chip">
-                  <span className="tool-chip-icon">🌌</span>
-                  <div className="tool-chip-body">
-                    <span className="tool-chip-name">Gemini</span>
-                    <span className="tool-chip-desc">Cinematic Lighting & World References</span>
-                  </div>
+              {/* Visual Anchor: Four Pillars of Human Advance */}
+              <div className="story-chapter__visuals">
+                <div style={{ marginBottom: 'var(--space-3)' }}>
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.12em', color: 'var(--gold-500)', textTransform: 'uppercase' }}>
+                    FOUR PILLARS OF HUMAN ADVANCE
+                  </span>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: 'var(--muted)', margin: '2px 0 0' }}>
+                    Curated Historical Themes
+                  </p>
                 </div>
 
-                <div className="vision-tool-chip">
-                  <span className="tool-chip-icon">📐</span>
-                  <div className="tool-chip-body">
-                    <span className="tool-chip-name">Stitch</span>
-                    <span className="tool-chip-desc">UI Screen Hierarchy & Tactical Trays</span>
-                  </div>
+                <div className="pillars-grid">
+                  {CREATIVE_THEMES.map((theme) => (
+                    <div key={theme.roman} className="card--glass pillar-card">
+                      <div className="pillar-card__header">
+                        <span className="pillar-card__roman">REALM {theme.roman}</span>
+                        <span className="pillar-card__icon" aria-hidden="true">{theme.icon}</span>
+                      </div>
+                      <h4 className="pillar-card__title">{theme.name}</h4>
+                      <span className="pillar-card__sub">{theme.theme}</span>
+                      <p className="pillar-card__desc">{theme.desc}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
+          </article>
 
-            <div className="vision-image-side">
-              <div className="vision-still-frame">
-                <img
-                  src="/images/mergeverse-title.jpg"
-                  alt="MERGEVERSE Alpine landscape showing golden hour light across peaks and meadows"
-                  className="vision-still-img"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="vision-still-overlay">
-                  <span className="still-tag">Approved Director's Mood Reference</span>
-                  <p className="still-caption">
+          {/* -----------------------------------------------------------------
+              CHAPTER II: THE VISUAL DIRECTION
+              2-Column: Image Left, Text & Palette Right (Reversed on desktop)
+              ----------------------------------------------------------------- */}
+          <article
+            id="chapter-node-2"
+            className={`story-chapter story-chapter--reverse reveal ${activeMarkers[2] ? 'is-active' : ''}`}
+            aria-label="Chapter II: The Visual Direction"
+          >
+            <div className="story-chapter__marker" aria-hidden="true">
+              <span>II</span>
+            </div>
+
+            <div className="story-chapter__grid">
+              {/* Image Side (Left on Desktop, Top on Mobile) */}
+              <div className="story-chapter__visuals">
+                <div className="media-frame" style={{ aspectRatio: '16 / 10' }}>
+                  <img
+                    src="/images/mergeverse-title.jpg"
+                    alt="MERGEVERSE Alpine landscape showing golden hour light across peaks and meadows"
+                    className="media-frame__img"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="media-frame__badge badge badge--gold" style={{ background: 'rgba(9, 28, 20, 0.88)' }}>
+                    Approved Director's Mood Reference
+                  </div>
+                </div>
+                <div style={{ padding: 'var(--space-3) var(--space-2) 0' }}>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-small)', lineHeight: 1.55, color: 'var(--muted)', margin: 0 }}>
                     Golden hour backlighting, alpine conifer slopes, and pastoral valley meadows establishing the environmental tone.
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* =====================================================================
-          CHAPTER 03: THE ATELIER TIMELINE (WARM CREAM PARCHMENT)
-          Restrained chronological narrative timeline (NOT generic software cards)
-          ===================================================================== */}
-      <div className="btw-chapter-section section-parchment">
-        <div className="editorial-container">
-          <header className="btw-timeline-header">
-            <div className="editorial-pill parchment-pill">
-              <span className="pill-star">✦</span>
-              <span>CHAPTER 03 · THE DEVELOPMENT ATELIER</span>
-              <span className="pill-star">✦</span>
-            </div>
-            <h3 className="timeline-section-title doc-parchment-title">
-              From Thought to Playable Reality
-            </h3>
-            <p className="timeline-section-sub doc-parchment-lead">
-              A disciplined, transparent chronicle of how AI reasoning copilots and human creative vision converged.
-            </p>
-          </header>
+              {/* Text Side (Right on Desktop, Bottom on Mobile) */}
+              <div className="story-chapter__content">
+                <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>
+                  CHAPTER II · VISUAL DIRECTION
+                </div>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h2)', fontWeight: 700, lineHeight: 1.25, color: 'var(--cream-50)', margin: '0 0 var(--space-3)' }}>
+                  Alpine Horizons & Cinematic Lighting
+                </h3>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-3)' }}>
+                  The visual identity of MERGEVERSE was inspired by cinematic concepts explored through <strong style={{ color: 'var(--cream-50)' }}>Gemini</strong>. Rather than flat, hyper-saturated mobile graphics, Vikas established an atmospheric palette of deep forest emerald, warm parchment, sunlit gold, and living alpine teal.
+                </p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-4)' }}>
+                  Screen wireframes and tactical puzzle trays were iteratively tested in <strong style={{ color: 'var(--cream-50)' }}>Stitch</strong> to ensure spatial balance, legibility, and satisfying tactile proportions before engineering frontend components.
+                </p>
 
-          {/* Stepped Horizontal/Continuous Narrative Timeline */}
-          <div className="atelier-stepped-timeline" aria-label="Development Timeline">
-            <div className="timeline-track-line" aria-hidden="true" />
-
-            <div className="timeline-steps-grid">
-              {ATELIER_TIMELINE.map((step) => (
-                <div key={step.phase} className="timeline-step-node">
-                  <div className="step-node-marker">
-                    <span className="step-node-number">{step.phase}</span>
-                    <span className="step-node-halo" />
-                  </div>
-
-                  <div className="step-node-card">
-                    <div className="step-card-meta">
-                      <span className="step-badge">{step.badge}</span>
-                    </div>
-                    <h4 className="step-tool-name">{step.tool}</h4>
-                    <span className="step-stage-title">{step.stage}</span>
-                    <p className="step-summary-text">{step.summary}</p>
+                {/* 4 Circular Palette Swatches */}
+                <div style={{ marginBottom: 'var(--space-4)' }}>
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--gold-500)', textTransform: 'uppercase' }}>
+                    CURATED COLOR SYSTEM
+                  </span>
+                  <div className="palette-swatches-grid">
+                    {COLOR_PALETTE.map((swatch) => (
+                      <div key={swatch.name} className="palette-swatch-item">
+                        <div
+                          className="palette-swatch-item__circle"
+                          style={{ backgroundColor: swatch.token, borderColor: swatch.border }}
+                          title={swatch.name}
+                        />
+                        <span className="palette-swatch-item__name">{swatch.name}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Transparent AI-Assisted Workflow Manifesto */}
-          <div className="atelier-manifesto-banner">
-            <div className="manifesto-emblem">✦</div>
-            <div className="manifesto-content">
-              <h4 className="manifesto-heading">Transparent AI-Assisted Direction</h4>
-              <p className="manifesto-text">
-                MERGEVERSE was directed by Vikas through an open, transparent workflow. Rather than manually writing boilerplate code in isolation,
-                Vikas orchestrated AI reasoning copilots, creative prompt architectures, and UI prototypes to build a high-production indie-game experience.
-                Every decision, mechanic, and line of code was reviewed, refined, and validated against the authentic vision.
-              </p>
+                {/* Small Glass Tool Chips */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+                  <div className="card--glass" style={{ padding: 'var(--space-3)', display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🌌</span>
+                    <div>
+                      <strong style={{ display: 'block', fontFamily: 'var(--font-display)', fontSize: 'var(--text-small)', color: 'var(--cream-50)' }}>Gemini</strong>
+                      <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--muted)' }}>Cinematic Lighting & World References</span>
+                    </div>
+                  </div>
+                  <div className="card--glass" style={{ padding: 'var(--space-3)', display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                    <span style={{ fontSize: '1.4rem' }}>📐</span>
+                    <div>
+                      <strong style={{ display: 'block', fontFamily: 'var(--font-display)', fontSize: 'var(--text-small)', color: 'var(--cream-50)' }}>Stitch</strong>
+                      <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--muted)' }}>UI Screen Hierarchy & Tactical Trays</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </article>
 
-          {/* Action Navigation Strip */}
-          <div className="btw-action-strip">
-            <a href="#hero" className="btw-nav-btn primary">
-              <span>↑ RETURN TO OPENING</span>
-            </a>
-            <a href="#four-realms-ocean" className="btw-nav-btn secondary">
-              <span>✦ EXPLORE THE FOUR REALMS</span>
-            </a>
-            <a href="#gameplay-progression-showcase" className="btw-nav-btn secondary">
-              <span>✦ INSPECT GAMEPLAY MECHANICS</span>
-            </a>
-          </div>
+          {/* -----------------------------------------------------------------
+              CHAPTER III: FROM THOUGHT TO PLAYABLE
+              2-Column: Development Steps Left, AI Direction Manifesto Right
+              ----------------------------------------------------------------- */}
+          <article
+            id="chapter-node-3"
+            className={`story-chapter reveal ${activeMarkers[3] ? 'is-active' : ''}`}
+            aria-label="Chapter III: From Thought to Playable"
+          >
+            <div className="story-chapter__marker" aria-hidden="true">
+              <span>III</span>
+            </div>
+
+            <div className="story-chapter__grid">
+              {/* Development Steps Side */}
+              <div className="story-chapter__content">
+                <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>
+                  CHAPTER III · THE DEVELOPMENT ATELIER
+                </div>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h2)', fontWeight: 700, lineHeight: 1.25, color: 'var(--cream-50)', margin: '0 0 var(--space-3)' }}>
+                  From Thought to Playable Reality
+                </h3>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-4)' }}>
+                  A disciplined, transparent chronicle of how AI reasoning copilots and human creative vision converged.
+                </p>
+
+                <div className="atelier-steps-stack">
+                  {ATELIER_TIMELINE.map((step) => (
+                    <div key={step.phase} className="card--glass atelier-step-card">
+                      <div className="atelier-step-card__top">
+                        <span className="badge badge--gold" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
+                          Phase {step.phase}
+                        </span>
+                        <span className="atelier-step-card__stage">{step.stage}</span>
+                        <span className="badge badge--muted" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
+                          {step.badge}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-2)' }}>
+                        <span className="atelier-step-card__tool">{step.tool}:</span>
+                        <p className="atelier-step-card__desc">{step.summary}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Manifesto & Architecture Side */}
+              <div className="story-chapter__visuals">
+                <div className="card--glass" style={{ padding: 'var(--space-5)', borderRadius: 'var(--radius-card)', border: '1.5px solid rgba(233, 173, 72, 0.45)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
+                    <span style={{ color: 'var(--gold-500)', fontSize: '1.4rem' }}>✦</span>
+                    <h4 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h3)', fontWeight: 700, color: 'var(--cream-50)', margin: 0 }}>
+                      Transparent AI-Assisted Direction
+                    </h4>
+                  </div>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-small)', lineHeight: 1.65, color: 'var(--muted)', margin: '0 0 var(--space-4)' }}>
+                    MERGEVERSE was directed by Vikas through an open, transparent workflow. Rather than manually writing boilerplate code in isolation, Vikas orchestrated AI reasoning copilots, creative prompt architectures, and UI prototypes to build a high-production indie-game experience. Every decision, mechanic, and line of code was reviewed, refined, and validated against the authentic vision.
+                  </p>
+
+                  <div style={{ paddingTop: 'var(--space-3)', borderTop: '1px solid rgba(233, 173, 72, 0.2)' }}>
+                    <span style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--gold-500)', textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+                      Production Architecture Stack
+                    </span>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+                      <span className="badge badge--gold">React 18</span>
+                      <span className="badge badge--gold">Vite 8</span>
+                      <span className="badge badge--muted">GSAP Motion</span>
+                      <span className="badge badge--muted">Vanilla CSS Tokens</span>
+                      <span className="badge badge--gold">Google Antigravity</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        {/* 3. CLOSING ACTION NAVIGATION STRIP */}
+        <div className="btw-action-strip reveal">
+          <a href="#hero" className="btn btn--gold">
+            <span>↑ RETURN TO OPENING</span>
+          </a>
+          <a href="#four-realms-ocean" className="btn btn--ghost">
+            <span>✦ EXPLORE THE FOUR REALMS</span>
+          </a>
+          <a href="#gameplay-progression-showcase" className="btn btn--ghost">
+            <span>✦ INSPECT GAMEPLAY MECHANICS</span>
+          </a>
         </div>
       </div>
     </section>

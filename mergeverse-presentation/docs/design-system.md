@@ -119,6 +119,12 @@ A single source of truth for design tokens and reusable utility classes across t
 | `.folio-card` | Archival folio card featuring signature thin gold double border (border + outline with offset). | Use for the historical collection progression spread in the codex. |
 | `.progress-bar` | Fluid progress track with glowing gold gradient fill (`.progress-bar__fill`). | Use for milestone telemetry and collection completion bars. |
 | `.codex-entries-grid` | Responsive grid (3 cols desktop, 2 cols tablet, 1 col mobile) for discovery ledger items. | Use for milestone lists and entry chips inside archival folios. |
+| `.story-timeline` | Container for documentary narrative with dynamic scroll-driven vertical progress track. | Use for the Behind the Worlds creator timeline section. |
+| `.story-chapter` | Chapter block positioned along the timeline with alternating 2-column layout. | Use for individual chapters inside `.story-timeline`. |
+| `.story-chapter__marker` | Circular numbered node (I, II, III) anchored on the timeline track with gold glow. | Use as the milestone anchor for each story chapter. |
+| `.pillars-grid` | Responsive 2x2 grid of `.card--glass` cards for realm pillars. | Use for the 4 civilizational pillars in Chapter I. |
+| `.palette-swatches-grid` | 4-column responsive grid displaying circular color tokens and labels. | Use for the director's visual palette swatches in Chapter II. |
+| `.atelier-steps-stack` | Vertical stack of `.atelier-step-card` cards detailing development phases. | Use for the chronological atelier copilot phases in Chapter III. |
 | `.reveal` | Initial hidden state (`opacity: 0; transform: translateY(28px)`). | Use on any element or section container that should smoothly fade and slide up when scrolled into view. |
 | `.reveal.is-visible` | Animated visible state (`opacity: 1; transform: translateY(0)`). | Applied automatically by `initScrollReveal()` IntersectionObserver once the element enters the viewport. |
 
