@@ -1,0 +1,5 @@
+{
+  "installCommand": "npm --prefix mergeverse-presentation install",
+  "buildCommand": "npm --prefix mergeverse-presentation run build",
+  "outputDirectory": "mergeverse-presentation/dist"
+}
