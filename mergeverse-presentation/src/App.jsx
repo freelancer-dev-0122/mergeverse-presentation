@@ -235,6 +235,7 @@ function App() {
 
   useEffect(() => {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      setIsOutroInView(true);
       return;
     }
 
@@ -247,14 +248,20 @@ function App() {
           }
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
     );
 
     const el = forestOutroRef.current;
     if (el) observer.observe(el);
 
+    // Fallback safety net to guarantee visibility
+    const safetyTimer = setTimeout(() => {
+      setIsOutroInView(true);
+    }, 500);
+
     return () => {
       if (el) observer.unobserve(el);
+      clearTimeout(safetyTimer);
     };
   }, []);
 
@@ -1982,39 +1989,41 @@ function App() {
       />
 
       {/* ---------------------------------------------------------------------
-          SECTION 7: FOREST OUTRO SECTION
-          Full-width section with painted mountain/farm backdrop, mist gradient overlay,
-          soft vignette, slow drifting mist bands, falling leaf shapes,
-          chrome dark green/gold title, tagline, and two action buttons
+          SECTION 7: FOREST OUTRO SECTION (STEP 6)
+          Full-width section, min-height about 90vh, generous padding.
+          Backdrop with slow zoom on painted mountain/farm image, mist scrim,
+          soft vignette, drifting mist bands, and falling leaf shapes.
+          Chrome-and-gold MERGEVERSE wordmark, letter-spaced tagline,
+          poignant lead line, and two buttons (.btn--gold, .btn--ghost).
           --------------------------------------------------------------------- */}
       <section
         id="forest-outro"
         ref={forestOutroRef}
-        className={`forest-outro-section ${isOutroInView ? 'is-in-view' : ''}`}
-        aria-label="MERGEVERSE Forest Outro Finale"
+        className="section section--dark outro-section"
+        aria-label="MERGEVERSE Finale"
       >
-        <div className="forest-outro-backdrop-wrap" aria-hidden="true">
+        <div className="outro-backdrop-wrap" aria-hidden="true">
           <img
             src="/images/mergeverse-title.jpg"
             alt="MERGEVERSE painted mountain and farm landscape with mist"
-            className="forest-outro-backdrop-img"
+            className="outro-backdrop-img"
             loading="lazy"
             decoding="async"
           />
           {/* Cream-to-transparent misty gradient overlay & soft vignette */}
-          <div className="forest-outro-mist-scrim" />
-          <div className="forest-outro-vignette-scrim" />
+          <div className="outro-mist-scrim" />
+          <div className="outro-vignette-scrim" />
 
-          {/* Drifting Mist Layers (2 blurred white gradient bands in 40s slow loops) */}
-          <div className="forest-mist-band band-primary" />
-          <div className="forest-mist-band band-secondary" />
+          {/* Drifting Mist Layers (2 blurred mist bands drifting sideways) */}
+          <div className="outro-mist-band band-primary" />
+          <div className="outro-mist-band band-secondary" />
 
-          {/* Falling Leaf Shapes (8 CSS leaf-shaped divs with border-radius trick) */}
-          <div className="forest-falling-leaves-layer">
+          {/* Falling Leaf Shapes (8 low-opacity CSS leaf elements) */}
+          <div className="outro-falling-leaves-layer">
             {Array.from({ length: 8 }).map((_, i) => (
               <span
                 key={i}
-                className="forest-falling-leaf"
+                className="outro-falling-leaf"
                 style={{
                   '--leaf-left': `${6 + i * 12}%`,
                   '--leaf-delay': `${i * 1.6}s`,
@@ -2027,44 +2036,50 @@ function App() {
           </div>
         </div>
 
-        {/* Center Content: Fades up when scrolled into view */}
-        <div className="forest-outro-content-lockup">
-          <div className="outro-gold-ornament" aria-hidden="true">
-            <span className="ornament-line" />
-            <span className="ornament-star">✦</span>
-            <span className="ornament-line right" />
-          </div>
+        {/* Center Content: Fades up with .reveal */}
+        <div className="section-container outro-container">
+          <div className={`outro-content-lockup reveal ${isOutroInView ? 'is-visible' : ''}`}>
+            {/* Small gold ornament */}
+            <div className="outro-gold-ornament" aria-hidden="true">
+              <span className="ornament-line" />
+              <span className="ornament-star">✦</span>
+              <span className="ornament-line right" />
+            </div>
 
-          <h2 className="outro-wordmark-title">MERGEVERSE</h2>
+            {/* MERGEVERSE wordmark in chrome-and-gold gradient */}
+            <h2 className="outro-wordmark-title">MERGEVERSE</h2>
 
-          <div className="outro-tagline-wrap">
-            <p className="outro-tagline-text">EXPLORE. SOLVE. DISCOVER.</p>
-          </div>
+            {/* Tagline in letter-spaced caps */}
+            <div className="outro-tagline-wrap">
+              <p className="outro-tagline-text">EXPLORE. SOLVE. DISCOVER.</p>
+            </div>
 
-          <p className="outro-prose-lead">
-            From the fertile soils of early agriculture to the adaptive horizons of tomorrow,
-            every merge chronicles humanity's greatest milestones.
-          </p>
+            {/* One line "Merge. Solve. Discover." as a lead */}
+            <p className="section-lead outro-prose-lead">
+              Merge. Solve. Discover.
+            </p>
 
-          <div className="outro-action-buttons-row">
-            <button
-              type="button"
-              className="outro-action-btn primary-gold"
-              onClick={() => handleScrollToSection('game-intro')}
-              aria-label="Enter the Game: Return to Overview"
-            >
-              <span>Enter the Game</span>
-              <span className="btn-arrow" aria-hidden="true">↓</span>
-            </button>
-            <button
-              type="button"
-              className="outro-action-btn secondary-outline"
-              onClick={() => handleScrollToSection('behind-the-worlds')}
-              aria-label="The Creator Story: Jump to Behind the Worlds"
-            >
-              <span>The Creator Story</span>
-              <span className="btn-arrow" aria-hidden="true">→</span>
-            </button>
+            {/* Two buttons */}
+            <div className="outro-action-buttons-row">
+              <button
+                type="button"
+                className="btn btn--gold"
+                onClick={() => handleScrollToSection('game-intro')}
+                aria-label="Enter the Game: Return to Overview"
+              >
+                <span>Enter the Game</span>
+                <span className="btn-arrow" aria-hidden="true">↓</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn--ghost outro-btn-ghost"
+                onClick={() => handleScrollToSection('behind-the-worlds')}
+                aria-label="The Creator Story: Jump to Behind the Worlds"
+              >
+                <span>The Creator Story</span>
+                <span className="btn-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -2072,15 +2087,15 @@ function App() {
       </main>
 
       {/* ---------------------------------------------------------------------
-          PART B: FOOTER
+          PART B: FOOTER (STEP 6)
           Dark green footer with thin gold top border, 3 columns on desktop,
           1 column on mobile, visible focus styles, and smooth back-to-top
           --------------------------------------------------------------------- */}
-      <footer className="mergeverse-site-footer" id="site-footer" role="contentinfo" aria-label="MERGEVERSE Footer">
-        <div className="footer-inner-shell">
+      <footer className="site-footer" id="site-footer" role="contentinfo" aria-label="MERGEVERSE Footer">
+        <div className="section-container footer-container">
           <div className="footer-cols-grid">
-            {/* COLUMN 1 (LEFT): Logo + Tagline + Short Line */}
-            <div className="footer-col footer-brand-col">
+            {/* COLUMN 1 (LEFT): Brand */}
+            <div className="footer-col footer-col--brand">
               <a
                 href="#hero"
                 className="footer-brand-lockup"
@@ -2101,7 +2116,7 @@ function App() {
             </div>
 
             {/* COLUMN 2 (MIDDLE): Explore links to existing page sections */}
-            <div className="footer-col footer-links-col">
+            <div className="footer-col footer-col--links">
               <h3 className="footer-column-heading">EXPLORE</h3>
               <ul className="footer-links-list">
                 <li>
@@ -2168,24 +2183,24 @@ function App() {
             </div>
 
             {/* COLUMN 3 (RIGHT): The Realms list with active / coming soon badges */}
-            <div className="footer-col footer-realms-col">
+            <div className="footer-col footer-col--realms">
               <h3 className="footer-column-heading">THE REALMS</h3>
               <ul className="footer-realms-list">
                 <li className="footer-realm-row">
                   <span className="realm-title">Agriculture</span>
-                  <span className="realm-badge status-active">Active</span>
+                  <span className="badge badge--gold">Active</span>
                 </li>
                 <li className="footer-realm-row">
                   <span className="realm-title">Food &amp; Culinary</span>
-                  <span className="realm-badge status-coming-soon">Coming soon</span>
+                  <span className="badge badge--muted">Coming soon</span>
                 </li>
                 <li className="footer-realm-row">
                   <span className="realm-title">Healthcare &amp; Medicine</span>
-                  <span className="realm-badge status-coming-soon">Coming soon</span>
+                  <span className="badge badge--muted">Coming soon</span>
                 </li>
                 <li className="footer-realm-row">
                   <span className="realm-title">Assistive Technology</span>
-                  <span className="realm-badge status-coming-soon">Coming soon</span>
+                  <span className="badge badge--muted">Coming soon</span>
                 </li>
               </ul>
             </div>
@@ -2193,12 +2208,18 @@ function App() {
 
           {/* BOTTOM ROW: Copyright & Smooth Back to Top Button */}
           <div className="footer-bottom-bar">
-            <p className="footer-copyright-text">
-              © 2026 Mergeverse. All rights reserved.
-            </p>
+            <div className="footer-bottom-meta">
+              <p className="footer-copyright-text">
+                © 2026 Mergeverse. All rights reserved.
+              </p>
+              <span className="footer-meta-sep" aria-hidden="true">•</span>
+              <p className="footer-builder-text">
+                Designed and built by Vikas
+              </p>
+            </div>
             <button
               type="button"
-              className="footer-back-to-top-btn"
+              className="btn btn--ghost footer-back-to-top-btn"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               aria-label="Scroll smoothly back to top"
             >

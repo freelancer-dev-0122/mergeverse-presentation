@@ -125,6 +125,13 @@ A single source of truth for design tokens and reusable utility classes across t
 | `.pillars-grid` | Responsive 2x2 grid of `.card--glass` cards for realm pillars. | Use for the 4 civilizational pillars in Chapter I. |
 | `.palette-swatches-grid` | 4-column responsive grid displaying circular color tokens and labels. | Use for the director's visual palette swatches in Chapter II. |
 | `.atelier-steps-stack` | Vertical stack of `.atelier-step-card` cards detailing development phases. | Use for the chronological atelier copilot phases in Chapter III. |
+| `.outro-section` | Full-width atmospheric finale section with painted landscape cover, slow zoom, mist scrim, and falling leaves. | Use for the outro finale section (`#forest-outro`). |
+| `.outro-wordmark-title` | Chrome-and-gold gradient monumental wordmark with high-contrast dual drop-shadow. | Use for the MERGEVERSE brand title in the outro lockup. |
+| `.outro-tagline-text` | Letter-spaced all-caps subtitle in ink-900 with white glow text-shadow. | Use for the tagline in the outro lockup. |
+| `.site-footer` | Deep dark green footer canvas (`--green-950`) with thin gold top border and generous vertical breathing room. | Use for the global site footer (`#site-footer`). |
+| `.footer-cols-grid` | Responsive 3-column desktop layout (Brand, Explore, Realms) collapsing to 1 column on mobile. | Use inside `.site-footer` for main navigation and info columns. |
+| `.footer-nav-anchor` | Fluid navigation link with `--gold-500` hover shift and accessible `:focus-visible` ring. | Use for section navigation links in the footer. |
+| `.footer-bottom-bar` | Horizontal credits row separated by a subtle top border, featuring copyright, designer credit, and back-to-top button. | Use at the base of `.site-footer`. |
 | `.reveal` | Initial hidden state (`opacity: 0; transform: translateY(28px)`). | Use on any element or section container that should smoothly fade and slide up when scrolled into view. |
 | `.reveal.is-visible` | Animated visible state (`opacity: 1; transform: translateY(0)`). | Applied automatically by `initScrollReveal()` IntersectionObserver once the element enters the viewport. |
 
