@@ -6,7 +6,7 @@ import './styles/scrollScene.css';
 import BehindTheWorlds from './BehindTheWorlds.jsx';
 import CinematicOpening from './CinematicOpening.jsx';
 import { initScrollReveal } from './utils/reveal.js';
-import { useScrollScene } from './utils/scrollScene.js';
+import { SCENES, useScrollScene } from './utils/scrollScene.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -322,9 +322,9 @@ function App() {
   const gameplaySectionRef = useRef(null);
 
   // Scroll-Pinned Scenes (STEP 9)
-  const laptopScene = useScrollScene(creamSliderRef, { stages: 3 });
-  const oceanScene = useScrollScene(oceanSectionRef, { stages: 4 });
-  const gameplayScene = useScrollScene(gameplaySectionRef, { stages: 4 });
+  const laptopScene = useScrollScene(creamSliderRef, { stages: 3, scene: 'laptop', enabled: SCENES.laptop });
+  const oceanScene = useScrollScene(oceanSectionRef, { stages: 4, scene: 'ocean', enabled: SCENES.ocean });
+  const gameplayScene = useScrollScene(gameplaySectionRef, { stages: 4, scene: 'gameplay', enabled: SCENES.gameplay });
 
   // Synchronize Cream Laptop Slide with active scene stage
   useEffect(() => {
@@ -335,6 +335,7 @@ function App() {
 
   // Ocean Four Realms Section State & Handlers
   const [highlightedOceanCardId, setHighlightedOceanCardId] = useState(null);
+  const [hoveredRealmId, setHoveredRealmId] = useState(null);
   const [isOceanCardsInView, setIsOceanCardsInView] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1163,75 +1164,77 @@ function App() {
       </section>
 
       {/* ---------------------------------------------------------------------
-          SECTION 1.8: OCEAN ARCHIPELAGO — THE FOUR REALMS (SCENE 2: 4 STAGES)
+          SECTION 1.8: OCEAN ARCHIPELAGO — THE FOUR REALMS
           Full-width section with CSS-only animated ocean, floating map & interactive hotspots
           --------------------------------------------------------------------- */}
       <section
         id="four-realms-ocean"
         ref={oceanSectionRef}
-        className={`ocean-scene-wrapper ${oceanScene.isSceneActive ? 'is-scene' : ''} ocean-realms-section ${isOceanInView ? 'is-in-view' : ''}`}
+        className={`ocean-realms-section ${isOceanInView ? 'is-in-view' : ''}`}
         aria-label="The Four Realms Archipelago"
       >
-        <div className="scene-sticky-inner ocean-scene-sticky-inner">
-          {/* Animated Ocean Background: Teal/Deep Blue Gradients, Drift Waves, Clouds & Sparkles */}
-          <div className="ocean-bg-canvas" aria-hidden="true">
-            <div className="ocean-gradient-layer" />
-            <div className="ocean-wave-band ocean-wave-1" />
-            <div className="ocean-wave-band ocean-wave-2" />
-            <div className="ocean-wave-band ocean-wave-3" />
-            <div className="ocean-cloud ocean-cloud-1" />
-            <div className="ocean-cloud ocean-cloud-2" />
-            <div className="ocean-cloud ocean-cloud-3" />
-            <div className="ocean-sparkles-field">
-              {Array.from({ length: 24 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="ocean-sparkle-dot"
-                  style={{
-                    top: `${(i * 17 + 9) % 94}%`,
-                    left: `${(i * 23 + 4) % 96}%`,
-                    animationDelay: `${(i * 0.35).toFixed(1)}s`,
-                    animationDuration: `${2.4 + (i % 4) * 0.7}s`,
-                  }}
-                />
-              ))}
+        {/* Animated Ocean Background: Teal/Deep Blue Gradients, Drift Waves, Clouds & Sparkles */}
+        <div className="ocean-bg-canvas" aria-hidden="true">
+          <div className="ocean-gradient-layer" />
+          <div className="ocean-wave-band ocean-wave-1" />
+          <div className="ocean-wave-band ocean-wave-2" />
+          <div className="ocean-wave-band ocean-wave-3" />
+          <div className="ocean-cloud ocean-cloud-1" />
+          <div className="ocean-cloud ocean-cloud-2" />
+          <div className="ocean-cloud ocean-cloud-3" />
+          <div className="ocean-sparkles-field">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <span
+                key={i}
+                className="ocean-sparkle-dot"
+                style={{
+                  top: `${(i * 17 + 9) % 94}%`,
+                  left: `${(i * 23 + 4) % 96}%`,
+                  animationDelay: `${(i * 0.35).toFixed(1)}s`,
+                  animationDuration: `${2.4 + (i % 4) * 0.7}s`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="ocean-content-wrapper">
+          {/* Top of Section: Gold badge, serif headline & centered short line */}
+          <div className="ocean-section-header">
+            <div className="ocean-eyebrow-badge">
+              <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
+              <span>ARCHIPELAGO</span>
+              <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
             </div>
+            <h2 className="ocean-section-headline">FOUR REALMS. ONE LIVING WORLD.</h2>
+            <p className="ocean-section-subhead">
+              Explore the four sovereign lands of human discovery, united across a boundless living ocean.
+            </p>
           </div>
 
-          <div className="ocean-content-wrapper scene-fit-content">
-            {/* Top of Section: Gold badge, serif headline & centered short line */}
-            <div className="ocean-section-header">
-              <div className="ocean-eyebrow-badge">
-                <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
-                <span>ARCHIPELAGO</span>
-                <span className="ocean-eyebrow-star" aria-hidden="true">✦</span>
-              </div>
-              <h2 className="ocean-section-headline">FOUR REALMS. ONE LIVING WORLD.</h2>
-              <p className="ocean-section-subhead">
-                Explore the four sovereign lands of human discovery, united across a boundless living ocean.
-              </p>
-            </div>
+          {/* Center: World Map Image with Floating Animation & Interactive Hotspots */}
+          <div className="ocean-map-floating-wrap">
+            <div className="ocean-map-img-frame">
+              <img
+                src="/images/world-map.jpg"
+                alt="Mergeverse World Map Archipelago"
+                className="ocean-map-image"
+                loading="lazy"
+                decoding="async"
+              />
 
-            {/* Center: World Map Image with Floating Animation & Interactive Hotspots */}
-            <div className="ocean-map-floating-wrap">
-              <div className="ocean-map-img-frame">
-                <img
-                  src="/images/world-map.jpg"
-                  alt="Mergeverse World Map Archipelago"
-                  className="ocean-map-image"
-                  loading="lazy"
-                  decoding="async"
-                />
-
-                {/* 4 Interactive Hotspot Buttons */}
-                {OCEAN_REALMS_DATA.map((realm, idx) => (
+              {/* 4 Interactive Hotspot Buttons */}
+              {OCEAN_REALMS_DATA.map((realm) => {
+                const isRealmActive = hoveredRealmId === realm.id || highlightedOceanCardId === realm.id;
+                return (
                   <button
                     key={realm.id}
                     type="button"
-                    className={`ocean-hotspot-btn hotspot-${realm.id}`}
+                    className={`ocean-hotspot-btn hotspot-${realm.id} ${isRealmActive ? 'is-active-hotspot' : ''}`}
                     style={{ left: realm.hotspot.x, top: realm.hotspot.y }}
                     onClick={() => handleOceanHotspotClick(realm.id)}
-                    data-scene-stage={idx}
+                    onMouseEnter={() => setHoveredRealmId(realm.id)}
+                    onMouseLeave={() => setHoveredRealmId(null)}
                     aria-label={`${realm.name} realm — ${realm.tooltipStatus}. Click to highlight realm card.`}
                   >
                     <span className="hotspot-pulse-ring" aria-hidden="true" />
@@ -1247,25 +1250,29 @@ function App() {
                       </span>
                     </span>
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
+          </div>
 
-            {/* Row of 4 Glass Cards (Staggered Animation via IntersectionObserver) */}
-            <div
-              ref={oceanCardsRef}
-              className={`ocean-cards-grid ${isOceanCardsInView ? 'is-in-view' : ''}`}
-            >
-              {OCEAN_REALMS_DATA.map((realm, idx) => (
+          {/* Row of 4 Glass Cards (Staggered Animation via IntersectionObserver) */}
+          <div
+            ref={oceanCardsRef}
+            className={`ocean-cards-grid ${isOceanCardsInView ? 'is-in-view' : ''}`}
+          >
+            {OCEAN_REALMS_DATA.map((realm, idx) => {
+              const isRealmActive = hoveredRealmId === realm.id || highlightedOceanCardId === realm.id;
+              return (
                 <div
                   key={realm.id}
                   id={`ocean-card-${realm.id}`}
-                  data-scene-stage={idx}
                   tabIndex={0}
-                  className={`ocean-realm-card ${highlightedOceanCardId === realm.id ? 'is-highlighted-card' : ''}`}
+                  className={`ocean-realm-card ${isRealmActive ? 'is-highlighted-card' : ''}`}
                   style={{
-                    transitionDelay: `${idx * 80}ms`,
+                    transitionDelay: `${idx * 100}ms`,
                   }}
+                  onMouseEnter={() => setHoveredRealmId(realm.id)}
+                  onMouseLeave={() => setHoveredRealmId(null)}
                 >
                   <div className="ocean-card-header">
                     <span className="ocean-card-icon" aria-hidden="true">
@@ -1280,15 +1287,8 @@ function App() {
                   <h3 className="ocean-card-title">{realm.name}</h3>
                   <p className="ocean-card-desc">{realm.description}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Edge Stage Indicator (aria-hidden, decorative) */}
-          <div className="scene-stage-indicator" aria-hidden="true">
-            {OCEAN_REALMS_DATA.map((_, i) => (
-              <span key={i} className={`scene-stage-dot ${i === oceanScene.stage ? 'is-active' : ''}`} />
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

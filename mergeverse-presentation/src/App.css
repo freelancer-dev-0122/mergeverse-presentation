@@ -1391,15 +1391,20 @@
    -------------------------------------------------------------------------- */
 .ocean-realms-section {
   width: 100%;
-  min-height: 100vh;
+  min-height: auto;
   position: relative;
   overflow: hidden;
-  padding: var(--section-pad) 24px;
+  padding-top: clamp(120px, 14vh, 160px);
+  padding-bottom: clamp(64px, 8vh, 100px);
+  padding-left: clamp(16px, 3vw, 32px);
+  padding-right: clamp(16px, 3vw, 32px);
+  scroll-margin-top: 100px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  z-index: 3;
 }
 
 .ocean-realms-section::before {
@@ -1639,7 +1644,7 @@
   position: relative;
   width: 100%;
   max-width: 1100px;
-  margin: 0 auto;
+  margin: 0 auto clamp(24px, 3vh, 36px);
   animation: oceanMapFloat 6s ease-in-out infinite;
 }
 
@@ -1648,26 +1653,32 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
 .ocean-map-img-frame {
   position: relative;
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
   border-radius: 28px;
   box-shadow:
     0 28px 70px rgba(0, 0, 0, 0.72),
     0 0 50px rgba(78, 157, 134, 0.3),
     0 0 24px rgba(233, 173, 72, 0.22);
   border: 1px solid rgba(233, 173, 72, 0.38);
-  background: #081d18;
+  background: transparent;
+  overflow: hidden;
+  line-height: 0;
 }
 
 .ocean-map-image {
   width: 100%;
+  max-width: 1100px;
   height: auto;
   display: block;
+  margin: 0 auto;
   border-radius: 28px;
   object-fit: contain;
 }
@@ -1777,9 +1788,27 @@
 }
 
 .ocean-hotspot-btn:hover .hotspot-tooltip-card,
-.ocean-hotspot-btn:focus-visible .hotspot-tooltip-card {
+.ocean-hotspot-btn:focus-visible .hotspot-tooltip-card,
+.ocean-hotspot-btn.is-active-hotspot .hotspot-tooltip-card {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+.ocean-hotspot-btn.is-active-hotspot .hotspot-pulse-ring,
+.ocean-hotspot-btn:hover .hotspot-pulse-ring,
+.ocean-hotspot-btn:focus-visible .hotspot-pulse-ring {
+  border-color: #FFF6D8;
+  box-shadow: 0 0 24px rgba(233, 173, 72, 1);
+  animation: oceanHotspotPulse 1.2s ease-out infinite;
+}
+
+.ocean-hotspot-btn.is-active-hotspot .hotspot-core-dot,
+.ocean-hotspot-btn:hover .hotspot-core-dot,
+.ocean-hotspot-btn:focus-visible .hotspot-core-dot {
+  background: #ffffff;
+  border-color: #FFF6D8;
+  box-shadow: 0 0 16px rgba(233, 173, 72, 1);
+  transform: scale(1.2);
 }
 
 .tooltip-name {

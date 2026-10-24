@@ -23,6 +23,12 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+export const SCENES = {
+  laptop: true,
+  ocean: false,
+  gameplay: true,
+};
+
 export const SCENES_ENABLED = true;
 
 /**
@@ -31,9 +37,11 @@ export const SCENES_ENABLED = true;
  * @param {Object} options
  * @param {number} options.stages - Number of distinct stages in the scene (e.g. 3 or 4)
  * @param {string} [options.contentSelector] - Optional selector for the content card to fit
+ * @param {string} [options.scene] - Scene key ('laptop' | 'ocean' | 'gameplay')
+ * @param {boolean} [options.enabled] - Explicit enable flag
  * @returns {{ isSceneActive: boolean, progress: number, stage: number, scrollToStage: Function }}
  */
-export function useScrollScene(wrapperRef, { stages = 3, contentSelector = null } = {}) {
+export function useScrollScene(wrapperRef, { stages = 3, contentSelector = null, scene = null, enabled = true } = {}) {
   const [isSceneActive, setIsSceneActive] = useState(false);
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState(0);
@@ -45,15 +53,17 @@ export function useScrollScene(wrapperRef, { stages = 3, contentSelector = null 
   const isSceneActiveRef = useRef(false);
 
   // Scene mode runs ONLY if:
-  // innerWidth >= 1024 AND innerHeight >= 720 AND reduced motion is off
+  // SCENES[scene] !== false AND enabled AND innerWidth >= 1024 AND innerHeight >= 720 AND reduced motion is off
   const checkShouldEnable = useCallback(() => {
     if (!SCENES_ENABLED) return false;
+    if (scene && SCENES[scene] === false) return false;
+    if (!enabled) return false;
     if (typeof window === 'undefined') return false;
     const isWideEnough = window.innerWidth >= 1024;
     const isTallEnough = window.innerHeight >= 720;
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     return isWideEnough && isTallEnough && !prefersReducedMotion;
-  }, []);
+  }, [scene, enabled]);
 
   // Update progress (0.0 to 1.0) and stage (0 to stages - 1)
   const updateProgress = useCallback(() => {
