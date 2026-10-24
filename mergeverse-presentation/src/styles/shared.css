@@ -253,7 +253,355 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. GLOBAL FOCUS-VISIBLE & PREFERS-REDUCED-MOTION
+   7. STATS GRID & STAT CARDS (.stats-grid, .stat-card)
+   -------------------------------------------------------------------------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-5) var(--space-4);
+  background-color: var(--cream-50);
+  border: 1px solid rgba(233, 173, 72, 0.3);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(18, 61, 43, 0.08);
+}
+
+.stat-card__number {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink-900);
+}
+
+.stat-card__label {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--ink-600);
+  letter-spacing: 0.03em;
+  margin-top: var(--space-1);
+}
+
+/* --------------------------------------------------------------------------
+   8. MEDIA FRAME (.media-frame, .media-frame--folio)
+   Preserves 100% uncropped aspect ratio with shared tokens
+   -------------------------------------------------------------------------- */
+.media-frame {
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1.5px solid rgba(233, 173, 72, 0.35);
+  background: var(--green-950);
+  aspect-ratio: 16 / 10;
+  width: 100%;
+}
+
+.media-frame--folio {
+  aspect-ratio: 16 / 11;
+}
+
+.media-frame__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.media-frame:hover .media-frame__img {
+  transform: scale(1.025);
+}
+
+.media-frame__badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+}
+
+.media-frame__btn {
+  position: absolute;
+  bottom: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
+  font-size: 0.78rem;
+  padding: 0 var(--space-3);
+  min-height: 38px;
+}
+
+/* --------------------------------------------------------------------------
+   9. SPLIT GRID & EDITORIAL PULLQUOTE (.split-grid, .pullquote-editorial)
+   -------------------------------------------------------------------------- */
+.split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .split-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.pullquote-editorial {
+  position: relative;
+  background: var(--cream-50);
+  border-left: 4px solid var(--gold-500);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-6);
+  margin: var(--space-5) 0;
+  box-shadow: var(--shadow-soft);
+}
+
+.pullquote-editorial__glyph {
+  position: absolute;
+  top: var(--space-1);
+  left: var(--space-2);
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  color: rgba(233, 173, 72, 0.4);
+  line-height: 1;
+  user-select: none;
+}
+
+.pullquote-editorial__text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--ink-900);
+  margin: 0 0 var(--space-2);
+}
+
+.pullquote-editorial__cite {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--gold-500);
+  letter-spacing: 0.04em;
+}
+
+/* --------------------------------------------------------------------------
+   10. CHIPS GRID (.chips-grid, .chip-card)
+   -------------------------------------------------------------------------- */
+.chips-grid {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-5);
+}
+
+.chip-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--cream-50);
+  border: 1px solid rgba(233, 173, 72, 0.25);
+  border-radius: 12px;
+  flex: 1 1 calc(33.333% - var(--space-3));
+  min-width: 140px;
+  box-shadow: var(--shadow-soft);
+}
+
+.chip-card__glyph {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.chip-card__title {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.chip-card__sub {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--ink-600);
+}
+
+/* --------------------------------------------------------------------------
+   11. SHOWCASE ROWS (.showcase-row, .showcase-row--reverse)
+   -------------------------------------------------------------------------- */
+.showcase-row {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--space-7);
+  align-items: center;
+  margin-bottom: var(--space-8);
+}
+
+.showcase-row:last-child {
+  margin-bottom: 0;
+}
+
+.showcase-row--reverse {
+  grid-template-columns: 0.85fr 1.15fr;
+}
+
+@media (max-width: 900px) {
+  .showcase-row,
+  .showcase-row--reverse {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .showcase-row--reverse .showcase-row__media {
+    order: 1;
+  }
+
+  .showcase-row--reverse .showcase-row__content {
+    order: 2;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. CHECKMARKS & MECHANICS (.checkmarks-list, .checkmark-item)
+   -------------------------------------------------------------------------- */
+.checkmarks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.checkmark-item {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  transition: transform var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out);
+}
+
+.checkmark-item--glass {
+  background: rgba(9, 28, 20, 0.65);
+  border: 1px solid rgba(233, 173, 72, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.checkmark-item--glass:hover {
+  background: rgba(9, 28, 20, 0.85);
+  border-color: rgba(233, 173, 72, 0.45);
+  transform: translateY(-2px);
+}
+
+.checkmark-item__icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkmark-item__title {
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--cream-50);
+  margin: 0 0 var(--space-1);
+}
+
+.checkmark-item__desc {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   13. ARCHIVAL FOLIO CARD & PROGRESS BAR (.folio-card, .progress-bar)
+   -------------------------------------------------------------------------- */
+.folio-card {
+  background: var(--cream-100);
+  border: 1.5px solid rgba(233, 173, 72, 0.5);
+  outline: 1.5px solid rgba(233, 173, 72, 0.35);
+  outline-offset: 6px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  box-sizing: border-box;
+  margin: 6px;
+}
+
+@media (max-width: 768px) {
+  .folio-card {
+    padding: var(--space-4);
+    margin: 4px;
+    outline-offset: 4px;
+  }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(18, 61, 43, 0.12);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-500), #fcd34d);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 10px rgba(233, 173, 72, 0.4);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   14. CODEX ENTRIES GRID (.codex-entries-grid)
+   -------------------------------------------------------------------------- */
+.codex-entries-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 900px) {
+  .codex-entries-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .codex-entries-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15. GLOBAL FOCUS-VISIBLE & PREFERS-REDUCED-MOTION
    -------------------------------------------------------------------------- */
 :focus-visible {
   outline: 2px solid var(--gold-500);
@@ -276,3 +624,4 @@
     transition: none !important;
   }
 }
+

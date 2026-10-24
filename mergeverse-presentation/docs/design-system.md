@@ -106,6 +106,19 @@ A single source of truth for design tokens and reusable utility classes across t
 | `.badge` | Compact rounded indicator pill with uppercase label. | Use for item statuses, category chips, and feature tags. |
 | `.badge--gold` | Gold tinted badge with gold border and text. | Use for "Active" realm/feature badges and active level milestones. |
 | `.badge--muted` | Translucent subtle badge with muted light border and gray-green text. | Use for "Coming soon" realm/feature badges. |
+| `.stats-grid` | 4-column responsive grid (4 desktop, 2 tablet, 1 mobile) for telemetry counters. | Use for the overview telemetry metrics bar. |
+| `.stat-card` | Raised cream stat card with serif number and muted body label. | Use inside `.stats-grid` for individual key metric displays. |
+| `.media-frame` | Responsive image showcase frame with aspect ratio, `--radius-card`, and `--shadow-card`. | Use for screenshots with overlay badges and inspect buttons. |
+| `.media-frame--folio` | 16/11 archival ratio variant of `.media-frame`. | Use for collection screenshot in the codex spread. |
+| `.split-grid` | 2-column responsive layout (1fr 1fr desktop, 1fr mobile/tablet below 900px). | Use for editorial storytelling beside framed media. |
+| `.pullquote-editorial` | Parchment callout card with gold accent bar, serif quote, and author cite. | Use for creator narrative quotes on cream surfaces. |
+| `.chips-grid` | Flexible wrapping grid for feature chips (`.chip-card`). | Use for verified feature metadata tags. |
+| `.showcase-row` | Asymmetric 2-column row (1.15fr 0.85fr) for gameplay movement breakdowns. | Use in gameplay showcase; supports `.showcase-row--reverse`. Below 900px, image always stacks first. |
+| `.checkmarks-list` | Vertical stack of mechanics items with icons and gold accents. | Use for gameplay mechanics lists and challenge criteria. |
+| `.checkmark-item--glass` | Dark glassmorphism card for in-depth gameplay mechanics. | Use inside gameplay showcase rows on dark backgrounds. |
+| `.folio-card` | Archival folio card featuring signature thin gold double border (border + outline with offset). | Use for the historical collection progression spread in the codex. |
+| `.progress-bar` | Fluid progress track with glowing gold gradient fill (`.progress-bar__fill`). | Use for milestone telemetry and collection completion bars. |
+| `.codex-entries-grid` | Responsive grid (3 cols desktop, 2 cols tablet, 1 col mobile) for discovery ledger items. | Use for milestone lists and entry chips inside archival folios. |
 | `.reveal` | Initial hidden state (`opacity: 0; transform: translateY(28px)`). | Use on any element or section container that should smoothly fade and slide up when scrolled into view. |
 | `.reveal.is-visible` | Animated visible state (`opacity: 1; transform: translateY(0)`). | Applied automatically by `initScrollReveal()` IntersectionObserver once the element enters the viewport. |
 

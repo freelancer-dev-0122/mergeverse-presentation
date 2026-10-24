@@ -1536,127 +1536,124 @@ function App() {
       <section
         id="game-intro"
         ref={presentationRef}
-        className="game-intro-section section-parchment"
+        className="section section--cream"
         aria-label="MERGEVERSE Introduction"
       >
-        <div className="editorial-container">
-          <div className="intro-editorial-split-layout">
+        <div className="section-container">
+          {/* Section Header */}
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: 'var(--space-6)' }}>
+            <div className="eyebrow">
+              <span className="eyebrow-star">✦</span>
+              <span>OVERVIEW · THE ARTISTIC VISION</span>
+              <span className="eyebrow-star">✦</span>
+            </div>
+            <h2 className="section-title">Where Human Breakthroughs Become Living Puzzles</h2>
+            <p className="section-lead">
+              Conceived and directed by indie creator <strong style={{ color: 'var(--ink-900)' }}>Vikas</strong>, MERGEVERSE
+              reimagines the puzzle-merge genre as an expansive chronicle of human breakthrough.
+            </p>
+          </div>
+
+          {/* 4 Key Stats Bar */}
+          <div className="stats-grid reveal" aria-label="Authentic Basecamp Statistics">
+            <div className="stat-card">
+              <span className="stat-card__number">18 / 80</span>
+              <span className="stat-card__label">Discoveries Cataloged</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-card__number">18 / 20</span>
+              <span className="stat-card__label">Agriculture Milestones</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-card__number">Level 6</span>
+              <span className="stat-card__label">1,395 / 1,400 XP</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-card__number">Level 19</span>
+              <span className="stat-card__label">Active Challenge Board</span>
+            </div>
+          </div>
+
+          {/* Editorial Split Composition */}
+          <div className="split-grid">
             {/* Left Column: Meaningful Editorial Storytelling */}
-            <div className="intro-narrative-col">
-              <div className="editorial-pill parchment-pill">
-                <span className="pill-star">✦</span>
-                <span>CHAPTER I · THE ARTISTIC VISION</span>
-                <span className="pill-star">✦</span>
-              </div>
-
-              <h2 className="intro-split-headline">
-                Where Human Breakthroughs Become Living Puzzles
-              </h2>
-
-              <p className="intro-editorial-prose">
-                Conceived and directed by indie creator <strong className="ink-bold">Vikas</strong>, MERGEVERSE
-                reimagines the puzzle-merge genre as an expansive chronicle of human breakthrough. Rather than merging
-                abstract jewels, sweets, or candies, players synthesize the tangible agrarian, culinary, medicinal, and
-                engineering achievements that built human civilization.
+            <div className="reveal">
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--ink-600)', marginBottom: 'var(--space-4)' }}>
+                Rather than merging abstract jewels, sweets, or candies, players synthesize the tangible agrarian, culinary, medicinal, and engineering achievements that built human civilization.
+              </p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--ink-600)', marginBottom: 'var(--space-4)' }}>
+                Every board is grounded in genuine historical progress: combining raw grains and clay ovens to discover harvest nutrition, or uniting apothecary herbs to advance clinical care across four sovereign realms.
               </p>
 
-              <p className="intro-editorial-prose">
-                Every board is grounded in genuine historical progress: combining raw grains and clay ovens to discover
-                harvest nutrition, or uniting apothecary herbs to advance clinical care across four sovereign realms.
-              </p>
-
-              <blockquote className="creator-editorial-pullquote">
-                <span className="pullquote-glyph">“</span>
-                <p className="pullquote-text">
-                  Every merge charts the tangible resilience of humanity—from the first cultivated seed in ancient soil to
-                  universal adaptive design.
+              <blockquote className="pullquote-editorial">
+                <span className="pullquote-editorial__glyph">“</span>
+                <p className="pullquote-editorial__text">
+                  Every merge charts the tangible resilience of humanity—from the first cultivated seed in ancient soil to universal adaptive design.
                 </p>
-                <cite className="pullquote-cite">— Vikas, Creator & Director of MERGEVERSE</cite>
+                <cite className="pullquote-editorial__cite">— Vikas, Creator & Director of MERGEVERSE</cite>
               </blockquote>
 
               {/* Verified Feature Chips */}
-              <div className="intro-feature-chips-row">
-                <div className="feature-chip">
-                  <span className="chip-glyph">🧩</span>
-                  <div className="chip-text-group">
-                    <span className="chip-title">5×6 Cascade Grid</span>
-                    <span className="chip-sub">Multi-tier item merges</span>
+              <div className="chips-grid">
+                <div className="chip-card">
+                  <span className="chip-card__glyph">🧩</span>
+                  <div>
+                    <span className="chip-card__title">5×6 Cascade Grid</span>
+                    <span className="chip-card__sub">Multi-tier item merges</span>
                   </div>
                 </div>
 
-                <div className="feature-chip">
-                  <span className="chip-glyph">📖</span>
-                  <div className="chip-text-group">
-                    <span className="chip-title">80 Discovery Codex</span>
-                    <span className="chip-sub">Permanent archival ledger</span>
+                <div className="chip-card">
+                  <span className="chip-card__glyph">📖</span>
+                  <div>
+                    <span className="chip-card__title">80 Discovery Codex</span>
+                    <span className="chip-card__sub">Permanent archival ledger</span>
                   </div>
                 </div>
 
-                <div className="feature-chip">
-                  <span className="chip-glyph">🗺️</span>
-                  <div className="chip-text-group">
-                    <span className="chip-title">4 Sky Realms</span>
-                    <span className="chip-sub">Floating cloud archipelago</span>
+                <div className="chip-card">
+                  <span className="chip-card__glyph">🗺️</span>
+                  <div>
+                    <span className="chip-card__title">4 Sky Realms</span>
+                    <span className="chip-card__sub">Floating cloud archipelago</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Genuine Framed Game Artwork + Telemetry Strip */}
-            <div className="intro-artwork-col">
-              <div className="intro-artwork-card">
-                <div className="intro-image-frame">
+            {/* Right Column: Genuine Framed Game Artwork */}
+            <div className="reveal">
+              <div className="card--cream" style={{ padding: 'var(--space-4)', borderRadius: 'var(--radius-card)' }}>
+                <div className="media-frame">
                   <img
                     src="/images/home-dashboard.jpg"
                     alt="MERGEVERSE Alpine Sanctuary & Expedition Basecamp in-game screenshot"
-                    className="intro-frame-img"
+                    className="media-frame__img"
                     loading="lazy"
                     decoding="async"
                   />
-                  <div className="frame-overlay-badge">
-                    <span className="badge-dot" />
+                  <div className="media-frame__badge badge badge--gold" style={{ background: 'rgba(9, 28, 20, 0.88)' }}>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 6px var(--success)' }} />
                     <span>Authentic In-Game Capture</span>
                   </div>
                   <button
                     type="button"
-                    className="frame-lightbox-btn"
+                    className="media-frame__btn btn btn--ghost"
                     onClick={() => setIsDashboardModalOpen(true)}
                     aria-label="Inspect Full Resolution Basecamp Screenshot"
                   >
-                    <span className="btn-glyph">⛶</span>
+                    <span>⛶</span>
                     <span>Inspect Interface</span>
                   </button>
                 </div>
 
-                <div className="intro-artwork-caption-box">
-                  <h3 className="caption-title">The Alpine Sanctuary · Player Basecamp</h3>
-                  <p className="caption-body">
-                    Persistent explorer station showing Explorer Level 6 standing (1,395 / 1,400 XP), verified three-star ratings,
-                    avatar selection, and expedition telemetry set against the sunlit alpine valley.
+                <div style={{ padding: 'var(--space-4) var(--space-2) var(--space-1)' }}>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h3)', fontWeight: 700, color: 'var(--ink-900)', margin: '0 0 var(--space-2)' }}>
+                    The Alpine Sanctuary · Player Basecamp
+                  </h3>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-small)', lineHeight: 1.6, color: 'var(--ink-600)', margin: 0 }}>
+                    Persistent explorer station showing Explorer Level 6 standing (1,395 / 1,400 XP), verified three-star ratings, avatar selection, and expedition telemetry set against the sunlit alpine valley.
                   </p>
-                </div>
-
-                {/* Integrated Archival Telemetry Ledger */}
-                <div className="intro-telemetry-ledger" aria-label="Authentic Basecamp Statistics">
-                  <div className="ledger-metric-cell">
-                    <span className="cell-number">18 / 80</span>
-                    <span className="cell-label">Discoveries Cataloged</span>
-                  </div>
-                  <div className="ledger-cell-divider" />
-                  <div className="ledger-metric-cell">
-                    <span className="cell-number">18 / 20</span>
-                    <span className="cell-label">Agriculture Milestones</span>
-                  </div>
-                  <div className="ledger-cell-divider" />
-                  <div className="ledger-metric-cell">
-                    <span className="cell-number">Level 6</span>
-                    <span className="cell-label">1,395 / 1,400 XP</span>
-                  </div>
-                  <div className="ledger-cell-divider" />
-                  <div className="ledger-metric-cell">
-                    <span className="cell-number">Level 19</span>
-                    <span className="cell-label">Active Challenge Board</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1671,77 +1668,81 @@ function App() {
           --------------------------------------------------------------------- */}
       <section
         id="gameplay-showcase"
-        className="gameplay-showcase-section"
+        className="section section--dark"
         aria-label="MERGEVERSE Gameplay In Motion"
       >
-        <div className="editorial-container">
-          <div className="gameplay-cinematic-header">
-            <div className="editorial-pill">
-              <span className="pill-star">✦</span>
+        <div className="section-container">
+          {/* Section Header */}
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: 'var(--space-7)' }}>
+            <div className="eyebrow">
+              <span className="eyebrow-star">✦</span>
               <span>IN-ENGINE MECHANICS · LIVE HARVEST BOARD</span>
-              <span className="pill-star">✦</span>
+              <span className="eyebrow-star">✦</span>
             </div>
-            <h2 className="gameplay-display-title">Gameplay, In Motion</h2>
-            <p className="gameplay-lead-prose">
-              Captured live in Level 19. Explorers combine elemental agrarian resources across a 5×6 puzzle grid—merging
-              grain stalks, fresh shoots, and culinary vessels to fulfill harvest orders and unlock civilization's milestones.
+            <h2 className="section-title">Gameplay, In Motion</h2>
+            <p className="section-lead">
+              Captured live in Level 19. Explorers combine elemental agrarian resources across a 5×6 puzzle grid—merging grain stalks, fresh shoots, and culinary vessels to fulfill harvest orders and unlock civilization's milestones.
             </p>
           </div>
 
-          {/* MOVEMENT 1: The Level 19 Harvest Board (Image Left, Mechanics Right) */}
-          <div className="gameplay-alternating-row gameplay-alt-row-1">
-            <div className="alt-image-col">
-              <div className="gameplay-artwork-frame">
+          {/* MOVEMENT 1: Level 19 Harvest Board (Image Left, Mechanics Right) */}
+          <div className="showcase-row reveal">
+            <div className="showcase-row__media">
+              <div className="media-frame">
                 <img
                   src="/images/gameplay.jpg"
                   alt="MERGEVERSE Level 19 live gameplay board showing 5x6 puzzle grid, recipe order fulfillment, item merges, and tactical action tray"
-                  className="gameplay-frame-img"
+                  className="media-frame__img"
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="artwork-corner-badge">Level 19 Harvest Board</div>
+                <div className="media-frame__badge badge badge--gold" style={{ background: 'rgba(9, 28, 20, 0.88)' }}>
+                  Level 19 Harvest Board
+                </div>
                 <button
                   type="button"
-                  className="gameplay-inspect-btn"
+                  className="media-frame__btn btn btn--ghost"
                   onClick={() => setIsGameplayModalOpen(true)}
                   aria-label="Inspect Full Resolution Gameplay Screenshot"
                 >
-                  <span className="btn-glyph">⛶</span>
+                  <span>⛶</span>
                   <span>View Full Resolution</span>
                 </button>
               </div>
             </div>
 
-            <div className="alt-narrative-col">
-              <div className="narrative-movement-badge">BOARD MECHANICS · 5×6 GRID</div>
-              <h3 className="movement-headline">Artisanal Order Fulfillment & Cascade Merges</h3>
-              <p className="movement-prose">
-                Explorers advance by fulfilling specific civilizational orders. In Level 19, active quotas demand
-                synthesizing a completed <strong>Clay-Oven Flatbread</strong> and crafting an active{' '}
-                <strong>Sourdough Harvest Loaf (0/1)</strong> from raw field elements.
+            <div className="showcase-row__content">
+              <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>
+                BOARD MECHANICS · 5×6 GRID
+              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h2)', fontWeight: 700, lineHeight: 1.25, color: 'var(--cream-50)', margin: '0 0 var(--space-3)' }}>
+                Artisanal Order Fulfillment & Cascade Merges
+              </h3>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-4)' }}>
+                Explorers advance by fulfilling specific civilizational orders. In Level 19, active quotas demand synthesizing a completed <strong style={{ color: 'var(--cream-50)' }}>Clay-Oven Flatbread</strong> and crafting an active{' '}
+                <strong style={{ color: 'var(--cream-50)' }}>Sourdough Harvest Loaf (0/1)</strong> from raw field elements.
               </p>
 
-              {/* In-depth Mechanics breakdown */}
-              <div className="mechanics-breakdown-list">
-                <div className="mechanic-card">
-                  <div className="mechanic-icon-box">⚡</div>
-                  <div className="mechanic-info">
-                    <h4 className="mechanic-title">Cascade Synthesis & Double Merges</h4>
-                    <p className="mechanic-desc">
-                      Combining Tier 1 Grain Stalks and Tier 2 Shoots yields Tier 3 Mixing Bowls and Tier 6 Loaves, triggering
-                      satisfying <em>Double Merge</em> score and combo multipliers.
+              {/* Mechanics breakdown with gold check lines */}
+              <div className="checkmarks-list">
+                <div className="checkmark-item checkmark-item--glass">
+                  <div className="checkmark-item__icon">⚡</div>
+                  <div>
+                    <h4 className="checkmark-item__title">Cascade Synthesis & Double Merges</h4>
+                    <p className="checkmark-item__desc">
+                      Combining Tier 1 Grain Stalks and Tier 2 Shoots yields Tier 3 Mixing Bowls and Tier 6 Loaves, triggering satisfying <em>Double Merge</em> score and combo multipliers.
                     </p>
                   </div>
                 </div>
 
-                <div className="mechanic-card">
-                  <div className="mechanic-icon-box">🛠️</div>
-                  <div className="mechanic-info">
-                    <h4 className="mechanic-title">Tactical Action Tray</h4>
-                    <p className="mechanic-desc">
-                      Field expedition tools include the <strong>Resource Spawner (6 remaining)</strong>, tactical board{' '}
-                      <strong>Shuffle</strong>, precision <strong>Zap</strong>, <strong>+3 Spawns</strong> boost, and contextual{' '}
-                      <strong>Hints</strong>.
+                <div className="checkmark-item checkmark-item--glass">
+                  <div className="checkmark-item__icon">🛠️</div>
+                  <div>
+                    <h4 className="checkmark-item__title">Tactical Action Tray</h4>
+                    <p className="checkmark-item__desc">
+                      Field expedition tools include the <strong style={{ color: 'var(--cream-50)' }}>Resource Spawner (6 remaining)</strong>, tactical board{' '}
+                      <strong style={{ color: 'var(--cream-50)' }}>Shuffle</strong>, precision <strong style={{ color: 'var(--cream-50)' }}>Zap</strong>, <strong style={{ color: 'var(--cream-50)' }}>+3 Spawns</strong> boost, and contextual{' '}
+                      <strong style={{ color: 'var(--cream-50)' }}>Hints</strong>.
                     </p>
                   </div>
                 </div>
@@ -1749,34 +1750,35 @@ function App() {
             </div>
           </div>
 
-          {/* MOVEMENT 2: Alternating Composition! In-Game Knowledge Challenge (Image Right, Mechanics Left) */}
-          <div className="gameplay-alternating-row gameplay-alt-row-2 is-reversed">
-            <div className="alt-narrative-col">
-              <div className="narrative-movement-badge">PEDAGOGICAL DESIGN · KNOWLEDGE CHALLENGE</div>
-              <h3 className="movement-headline">Civilizational Milestones & In-Game Challenges</h3>
-              <p className="movement-prose">
-                MERGEVERSE integrates educational discovery directly into gameplay. Upon fulfilling harvest quotas, explorers
-                encounter authentic in-game <strong>Knowledge Challenges</strong> that test verified historical facts regarding crop rotation,
-                mill mechanics, and settlement agriculture.
+          {/* MOVEMENT 2: Alternating Composition (Text Left, Image Right) */}
+          <div className="showcase-row showcase-row--reverse reveal">
+            <div className="showcase-row__content">
+              <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>
+                PEDAGOGICAL DESIGN · KNOWLEDGE CHALLENGE
+              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h2)', fontWeight: 700, lineHeight: 1.25, color: 'var(--cream-50)', margin: '0 0 var(--space-3)' }}>
+                Civilizational Milestones & In-Game Challenges
+              </h3>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-body)', lineHeight: 1.7, color: 'var(--muted)', margin: '0 0 var(--space-4)' }}>
+                MERGEVERSE integrates educational discovery directly into gameplay. Upon fulfilling harvest quotas, explorers encounter authentic in-game <strong style={{ color: 'var(--cream-50)' }}>Knowledge Challenges</strong> that test verified historical facts regarding crop rotation, mill mechanics, and settlement agriculture.
               </p>
 
-              <div className="mechanics-breakdown-list">
-                <div className="mechanic-card">
-                  <div className="mechanic-icon-box">🎯</div>
-                  <div className="mechanic-info">
-                    <h4 className="mechanic-title">Objective Verification & Ratings</h4>
-                    <p className="mechanic-desc">
-                      Correct responses award three-star ratings, bonus XP toward the Explorer Level 6 threshold (1,395/1,400 XP),
-                      and unlock permanent codex milestone entries.
+              <div className="checkmarks-list">
+                <div className="checkmark-item checkmark-item--glass">
+                  <div className="checkmark-item__icon">🎯</div>
+                  <div>
+                    <h4 className="checkmark-item__title">Objective Verification & Ratings</h4>
+                    <p className="checkmark-item__desc">
+                      Correct responses award three-star ratings, bonus XP toward the Explorer Level 6 threshold (1,395/1,400 XP), and unlock permanent codex milestone entries.
                     </p>
                   </div>
                 </div>
 
-                <div className="mechanic-card">
-                  <div className="mechanic-icon-box">🌱</div>
-                  <div className="mechanic-info">
-                    <h4 className="mechanic-title">Historical Progress Narrative</h4>
-                    <p className="mechanic-desc">
+                <div className="checkmark-item checkmark-item--glass">
+                  <div className="checkmark-item__icon">🌱</div>
+                  <div>
+                    <h4 className="checkmark-item__title">Historical Progress Narrative</h4>
+                    <p className="checkmark-item__desc">
                       Each puzzle solved represents a real civilizational leap—from the initial plow furrow to early irrigation networks.
                     </p>
                   </div>
@@ -1784,23 +1786,25 @@ function App() {
               </div>
             </div>
 
-            <div className="alt-image-col">
-              <div className="gameplay-artwork-frame">
+            <div className="showcase-row__media">
+              <div className="media-frame">
                 <img
                   src="/images/knowledge-challenge.png"
                   alt="MERGEVERSE In-Game Knowledge Challenge screen testing real agrarian civilization facts"
-                  className="gameplay-frame-img"
+                  className="media-frame__img"
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="artwork-corner-badge">In-Game Knowledge Challenge</div>
+                <div className="media-frame__badge badge badge--gold" style={{ background: 'rgba(9, 28, 20, 0.88)' }}>
+                  In-Game Knowledge Challenge
+                </div>
                 <button
                   type="button"
-                  className="gameplay-inspect-btn"
+                  className="media-frame__btn btn btn--ghost"
                   onClick={() => setIsKnowledgeModalOpen(true)}
                   aria-label="Inspect Full Resolution Knowledge Challenge Screenshot"
                 >
-                  <span className="btn-glyph">⛶</span>
+                  <span>⛶</span>
                   <span>View Full Resolution</span>
                 </button>
               </div>
@@ -1816,130 +1820,147 @@ function App() {
           --------------------------------------------------------------------- */}
       <section
         id="explorer-collection"
-        className="explorer-collection-section section-parchment"
+        className="section section--cream"
         aria-label="MERGEVERSE Explorer Collection & Discovery Progression"
       >
-        <div className="editorial-container">
-          <div className="collection-cinematic-header">
-            <div className="editorial-pill parchment-pill">
-              <span className="pill-star">✦</span>
+        <div className="section-container">
+          {/* Section Header */}
+          <div className="reveal" style={{ textAlign: 'center', marginBottom: 'var(--space-6)' }}>
+            <div className="eyebrow">
+              <span className="eyebrow-star">✦</span>
               <span>EXPEDITION CODEX · THE ARCHIVE</span>
-              <span className="pill-star">✦</span>
+              <span className="eyebrow-star">✦</span>
             </div>
-            <h2 className="collection-display-headline doc-parchment-title">A World of Discovery</h2>
-            <p className="collection-lead-prose doc-parchment-lead">
-              The Explorer Collection chronicles humanity's foundational milestones across the four realms.
-              From early agrarian breakthroughs to advanced farm mechanization, each merged discovery is preserved
-              in the expedition codex.
+            <h2 className="section-title">A World of Discovery</h2>
+            <p className="section-lead">
+              The Explorer Collection chronicles humanity's foundational milestones across the four realms. From early agrarian breakthroughs to advanced farm mechanization, each merged discovery is preserved in the expedition codex.
             </p>
           </div>
 
-          {/* DISTINCT ARCHIVAL FOLIO CODEX SPREAD */}
-          <div className="codex-folio-spread">
-            {/* Left: Framed High-Res Collection Capture */}
-            <div className="codex-capture-col">
-              <div className="codex-artwork-frame">
-                <img
-                  src="/images/collection.jpg"
-                  alt="MERGEVERSE Explorer Collection in-game interface showing 18 of 80 discoveries unlocked across Agriculture & Earth and Food & Nutrition"
-                  className="codex-frame-img"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="codex-badge-label">
-                  <span>Archival Codex · 18 / 80 Discoveries</span>
+          {/* Archival Folio Wrapper */}
+          <div className="folio-card reveal">
+            {/* Folio Header & Progress Bar */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-4)', marginBottom: 'var(--space-4)', paddingBottom: 'var(--space-4)', borderBottom: '1px solid rgba(233, 173, 72, 0.3)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+                <span style={{ fontSize: '1.8rem', lineHeight: 1 }}>📜</span>
+                <div>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-h3)', fontWeight: 700, color: 'var(--ink-900)', margin: '0 0 var(--space-1)' }}>
+                    Civilizational Progression Ledger
+                  </h3>
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-small)', fontWeight: 600, color: 'var(--ink-600)' }}>
+                    80 Historical Milestones Cataloged Across 4 Realms
+                  </span>
                 </div>
-                <button
-                  type="button"
-                  className="codex-lightbox-btn"
-                  onClick={() => setIsCollectionModalOpen(true)}
-                  aria-label="Inspect Full Resolution Collection Interface"
-                >
-                  <span className="btn-glyph">⛶</span>
-                  <span>View Full Resolution</span>
-                </button>
               </div>
 
-              <div className="codex-capture-caption">
-                <p>
-                  <strong>Verified In-Engine Capture:</strong> Displays the Discoveries tab, showing Volume I: Agriculture & Earth
-                  (18/20 milestones unlocked) and Volume II: Food & Nutrition (awaiting unlock).
-                </p>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink-900)' }}>
+                  18 / 80
+                </div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', color: 'var(--gold-500)' }}>
+                  TOTAL PROGRESS
+                </div>
+              </div>
+
+              {/* Gold Progress Bar */}
+              <div className="progress-bar" style={{ width: '100%', marginTop: 'var(--space-2)' }}>
+                <div className="progress-bar__fill" style={{ width: '22.5%' }} />
               </div>
             </div>
 
-            {/* Right: Illuminated Civilizational Ledger Folio */}
-            <div className="codex-ledger-col">
-              <div className="illuminated-ledger-card">
-                <div className="ledger-card-header">
-                  <div className="ledger-title-group">
-                    <span className="ledger-seal-icon">📜</span>
-                    <div>
-                      <h3 className="ledger-main-title">Civilizational Progression Ledger</h3>
-                      <span className="ledger-sub-title">80 Historical Milestones Cataloged Across 4 Realms</span>
-                    </div>
+            {/* Split Spread: Left Screenshot / Right Volumes */}
+            <div className="split-grid" style={{ alignItems: 'start' }}>
+              {/* Left Column: Framed High-Res Collection Capture */}
+              <div>
+                <div className="media-frame media-frame--folio">
+                  <img
+                    src="/images/collection.jpg"
+                    alt="MERGEVERSE Explorer Collection in-game interface showing 18 of 80 discoveries unlocked across Agriculture & Earth and Food & Nutrition"
+                    className="media-frame__img"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="media-frame__badge badge badge--gold" style={{ background: 'rgba(9, 28, 20, 0.88)' }}>
+                    Archival Codex · 18 / 80 Discoveries
                   </div>
-                  <div className="ledger-overall-badge">
-                    <span className="badge-count">18 / 80</span>
-                    <span className="badge-desc">TOTAL PROGRESS</span>
-                  </div>
+                  <button
+                    type="button"
+                    className="media-frame__btn btn btn--ghost"
+                    onClick={() => setIsCollectionModalOpen(true)}
+                    aria-label="Inspect Full Resolution Collection Interface"
+                  >
+                    <span>⛶</span>
+                    <span>View Full Resolution</span>
+                  </button>
                 </div>
 
+                <div style={{ padding: 'var(--space-3) var(--space-1) 0' }}>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-small)', lineHeight: 1.55, color: 'var(--ink-600)', margin: 0 }}>
+                    <strong style={{ color: 'var(--ink-900)' }}>Verified In-Engine Capture:</strong> Displays the Discoveries tab, showing Volume I: Agriculture & Earth (18/20 milestones unlocked) and Volume II: Food & Nutrition (awaiting unlock).
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Volume Entries & Milestone Cards */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
                 {/* Volume I: Agriculture & Earth */}
-                <div className="ledger-volume-block is-active">
-                  <div className="volume-block-header">
-                    <div className="volume-meta">
-                      <span className="volume-roman-tag">VOLUME I</span>
-                      <h4 className="volume-name">Agriculture & Earth</h4>
+                <div style={{ background: 'var(--cream-50)', border: '1.5px solid rgba(74, 222, 128, 0.5)', borderRadius: 'var(--radius-card)', padding: 'var(--space-4)', boxShadow: '0 4px 16px rgba(74, 222, 128, 0.08)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--gold-500)', letterSpacing: '0.08em' }}>VOLUME I</span>
+                      <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.05rem', fontWeight: 700, color: 'var(--ink-900)', margin: 0 }}>Agriculture & Earth</h4>
                     </div>
-                    <span className="volume-progress-pill active">18 / 20 Milestones Unlocked (90%)</span>
+                    <span className="badge badge--gold" style={{ fontSize: '0.7rem' }}>
+                      18 / 20 Milestones Unlocked (90%)
+                    </span>
                   </div>
 
-                  <p className="volume-prose">
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', lineHeight: 1.5, color: 'var(--ink-600)', margin: '0 0 var(--space-3)' }}>
                     Chronicles the dawn of agrarian civilization—from primal seed cultivation to mechanical threshing.
                   </p>
 
-                  <div className="milestone-chronicle-chips">
-                    <span className="chronicle-chip unlocked">✦ The Planted Fertility</span>
-                    <span className="chronicle-chip unlocked">✦ Working with Draft Animals</span>
-                    <span className="chronicle-chip unlocked">✦ Early Irrigation Furrows</span>
-                    <span className="chronicle-chip unlocked">✦ Waterworks & Windmills</span>
-                    <span className="chronicle-chip unlocked">✦ The Steel Plow</span>
-                    <span className="chronicle-chip unlocked">✦ The Green Revolution</span>
-                    <span className="chronicle-chip locked">🔒 Milestones XIX & XX Locked</span>
+                  <div className="codex-entries-grid">
+                    <span className="badge badge--gold" style={{ justifyContent: 'center' }}>✦ The Planted Fertility</span>
+                    <span className="badge badge--gold" style={{ justifyContent: 'center' }}>✦ Working with Draft Animals</span>
+                    <span className="badge badge--gold" style={{ justifyContent: 'center' }}>✦ Early Irrigation Furrows</span>
+                    <span className="badge badge--gold" style={{ justifyContent: 'center' }}>✦ Waterworks & Windmills</span>
+                    <span className="badge badge--gold" style={{ justifyContent: 'center' }}>✦ The Steel Plow</span>
+                    <span className="badge badge--gold" style={{ justifyContent: 'center' }}>✦ The Green Revolution</span>
+                    <span className="badge badge--muted" style={{ justifyContent: 'center', gridColumn: '1 / -1' }}>🔒 Milestones XIX & XX Locked</span>
                   </div>
                 </div>
 
                 {/* Volume II: Food & Nutrition */}
-                <div className="ledger-volume-block is-waiting">
-                  <div className="volume-block-header">
-                    <div className="volume-meta">
-                      <span className="volume-roman-tag">VOLUME II</span>
-                      <h4 className="volume-name">Food & Nutrition</h4>
+                <div style={{ background: 'var(--cream-50)', border: '1px dashed rgba(233, 173, 72, 0.4)', borderRadius: 'var(--radius-card)', padding: 'var(--space-4)', opacity: 0.9 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--ink-600)', letterSpacing: '0.08em' }}>VOLUME II</span>
+                      <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.05rem', fontWeight: 700, color: 'var(--ink-900)', margin: 0 }}>Food & Nutrition</h4>
                     </div>
-                    <span className="volume-progress-pill waiting">0 / 20 Unlocked · Next Horizon</span>
+                    <span className="badge badge--muted" style={{ fontSize: '0.7rem' }}>
+                      0 / 20 Unlocked · Next Horizon
+                    </span>
                   </div>
 
-                  <p className="volume-prose">
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', lineHeight: 1.5, color: 'var(--ink-600)', margin: '0 0 var(--space-3)' }}>
                     20 gastronomic recipes and preservation arts awaiting discovery as exploration advances into Realm II.
                   </p>
 
-                  <div className="milestone-chronicle-chips">
-                    <span className="chronicle-chip pending">Culinary Arts & Fermentation</span>
-                    <span className="chronicle-chip pending">Food Preservation & Cellaring</span>
-                    <span className="chronicle-chip pending">Nutritional Science</span>
-                    <span className="chronicle-chip locked">🔒 Milestones I – XX Awaiting Realm II Unlock</span>
+                  <div className="codex-entries-grid">
+                    <span className="badge badge--muted" style={{ justifyContent: 'center' }}>Culinary Arts & Fermentation</span>
+                    <span className="badge badge--muted" style={{ justifyContent: 'center' }}>Food Preservation & Cellaring</span>
+                    <span className="badge badge--muted" style={{ justifyContent: 'center' }}>Nutritional Science</span>
+                    <span className="badge badge--muted" style={{ justifyContent: 'center', gridColumn: '1 / -1' }}>🔒 Milestones I – XX Awaiting Realm II Unlock</span>
                   </div>
                 </div>
 
                 {/* Archival Authenticity Seal */}
-                <div className="ledger-authenticity-seal">
-                  <span className="seal-star">✦</span>
-                  <p className="seal-prose">
-                    <strong>Archival Integrity:</strong> Milestone telemetry is backed by persistent in-game state.
-                    No generic dashboard metrics or placeholders are utilized.
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', background: 'var(--cream-50)', borderRadius: '12px', border: '1px solid rgba(233, 173, 72, 0.3)' }}>
+                  <span style={{ color: 'var(--gold-500)', fontSize: '0.9rem' }}>✦</span>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.45, color: 'var(--ink-600)', margin: 0 }}>
+                    <strong style={{ color: 'var(--ink-900)' }}>Archival Integrity:</strong> Milestone telemetry is backed by persistent in-game state. No generic dashboard metrics or placeholders are utilized.
                   </p>
-                  <span className="seal-star">✦</span>
+                  <span style={{ color: 'var(--gold-500)', fontSize: '0.9rem' }}>✦</span>
                 </div>
               </div>
             </div>
