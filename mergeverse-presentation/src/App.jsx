@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './App.css';
 import BehindTheWorlds from './BehindTheWorlds.jsx';
+import CinematicOpening from './CinematicOpening.jsx';
 import { initScrollReveal } from './utils/reveal.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -137,6 +138,48 @@ function App() {
   const containerRef = useRef(null);
   const heroViewportRef = useRef(null);
   const presentationRef = useRef(null);
+
+  // Cinematic Opening Sequence State (STEP 8)
+  const [isIntroActive, setIsIntroActive] = useState(() => {
+    try {
+      if (typeof window === 'undefined') return false;
+      if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+        return false;
+      }
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('intro') === '1') {
+        return true;
+      }
+      const hasPlayed = window.sessionStorage?.getItem('mv_intro_played');
+      if (hasPlayed) {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
+  // Manage html class and body scroll locking during intro
+  useEffect(() => {
+    if (isIntroActive) {
+      document.documentElement.classList.add('intro-active');
+      document.documentElement.classList.remove('intro-done');
+      document.documentElement.classList.remove('intro-active-exited');
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      const wasActive = document.documentElement.classList.contains('intro-active');
+      document.documentElement.classList.remove('intro-active');
+      document.documentElement.classList.add('intro-done');
+      if (wasActive) {
+        document.documentElement.classList.add('intro-active-exited');
+      }
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+    };
+  }, [isIntroActive]);
 
   // Initialize shared scroll reveal observer
   useEffect(() => {
@@ -570,8 +613,9 @@ function App() {
     });
   }, []);
 
-  // GSAP Animations and ScrollTriggers
+  // GSAP Animations and ScrollTriggers (fires when intro is done)
   useEffect(() => {
+    if (isIntroActive) return;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -593,7 +637,7 @@ function App() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isIntroActive]);
 
   const handleScrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -604,6 +648,15 @@ function App() {
 
   return (
     <div ref={containerRef} className="mergeverse-root">
+      {/* Cinematic Opening Sequence Overlay (STEP 8) */}
+      {isIntroActive && (
+        <CinematicOpening
+          onComplete={() => {
+            setIsIntroActive(false);
+          }}
+        />
+      )}
+
       {/* Thin Gold Scroll-Progress Bar (requestAnimationFrame driven) */}
       <div ref={scrollProgressRef} className="global-scroll-progress-bar" aria-hidden="true" />
 
