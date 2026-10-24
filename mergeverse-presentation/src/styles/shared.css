@@ -1510,6 +1510,15 @@
   background: linear-gradient(180deg, var(--green-900) 0%, rgba(13, 40, 28, 0.7) 50%, var(--green-900) 100%);
 }
 
+/* Eliminate large empty gap above Codex section (#explorer-collection) and tight seam transitions */
+#gameplay-showcase {
+  padding-bottom: var(--space-4);
+}
+
+#explorer-collection {
+  padding-top: var(--space-6);
+}
+
 /* --------------------------------------------------------------------------
    22. PERFORMANCE: OFF-SCREEN ANIMATION PAUSING (STEP 7)
    Pause heavy GPU/CPU animations when their parent section is not visible.

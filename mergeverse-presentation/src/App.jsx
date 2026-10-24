@@ -1016,7 +1016,7 @@ function App() {
       >
         <div className="scene-sticky-inner cream-scene-sticky-inner">
           <div
-            className="cream-slider-outer-card"
+            className="cream-slider-outer-card scene-fit-content"
             onMouseEnter={() => setIsSliderHovered(true)}
             onMouseLeave={() => setIsSliderHovered(false)}
             onTouchStart={handleTouchStart}
@@ -1198,7 +1198,7 @@ function App() {
             </div>
           </div>
 
-          <div className="ocean-content-wrapper">
+          <div className="ocean-content-wrapper scene-fit-content">
             {/* Top of Section: Gold badge, serif headline & centered short line */}
             <div className="ocean-section-header">
               <div className="ocean-eyebrow-badge">
@@ -1304,7 +1304,7 @@ function App() {
         aria-label="Authentic Gameplay & Progression Showcase"
       >
         <div className="scene-sticky-inner gameplay-scene-sticky-inner">
-          <div className="gameplay-cards-outer-card">
+          <div className="gameplay-cards-outer-card scene-fit-content">
             <div className="gameplay-cards-inner-grid">
               {/* LEFT COLUMN: Badge, Heading, Narrative, Checkmarks & Gold CTA */}
               <div className="gameplay-text-col">
