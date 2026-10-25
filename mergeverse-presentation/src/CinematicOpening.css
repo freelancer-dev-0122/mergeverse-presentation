@@ -488,24 +488,53 @@ html.intro-active-exited.intro-done .hero-content-wrapper {
 }
 
 /* --------------------------------------------------------------------------
-   6. RESPONSIVE ADJUSTMENTS (390px Mobile Viewport)
+   6. RESPONSIVE ADJUSTMENTS (Ultra-Small to Tablet Viewports)
    -------------------------------------------------------------------------- */
 @media (max-width: 600px) {
+  .intro-content-center {
+    padding: 0 16px;
+    max-width: 100%;
+  }
+
   .intro-wordmark-title {
-    font-size: clamp(2rem, 9.5vw, 2.7rem);
-    letter-spacing: 0.16em;
-    text-indent: 0.16em;
+    font-size: clamp(1.6rem, 8.2vw, 2.5rem);
+    letter-spacing: 0.12em;
+    text-indent: 0.12em;
+    word-break: break-word;
   }
 
   .intro-tagline-trio {
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tagline-word {
+    font-size: clamp(0.72rem, 3.2vw, 0.92rem);
+    letter-spacing: 0.14em;
   }
 
   .intro-skip-button {
-    bottom: 20px;
-    right: 20px;
-    padding: 7px 14px;
-    font-size: 0.75rem;
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .intro-wordmark-title {
+    font-size: clamp(1.4rem, 7.5vw, 1.85rem);
+    letter-spacing: 0.08em;
+    text-indent: 0.08em;
+  }
+
+  .intro-crest-lockup {
+    gap: 6px;
+  }
+
+  .intro-flourish {
+    width: 20px;
   }
 }
 

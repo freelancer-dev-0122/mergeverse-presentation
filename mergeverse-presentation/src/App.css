@@ -330,58 +330,84 @@
 
 @media (max-width: 480px) {
   .studio-navbar {
-    width: calc(100% - 20px);
-    top: 12px;
+    width: calc(100% - 16px);
+    top: 10px;
   }
 
   .studio-navbar.is-scrolled {
-    top: 12px;
+    top: 10px;
   }
 
   .navbar-inner {
-    padding: 7px 10px 7px 14px;
-    gap: 0.45rem;
+    padding: 7px 10px 7px 12px;
+    gap: 0.35rem;
   }
 
   .navbar-cta-btn {
-    padding: 0.38rem 0.75rem;
-    font-size: 0.68rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.65rem;
   }
 
   .brand-title {
-    font-size: 0.92rem;
-    letter-spacing: 0.12em;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
   }
 
   .cinematic-hero-section {
-    padding: 5rem 0.85rem 2.8rem;
-    min-height: 560px;
+    padding: 4.8rem 0.75rem 2.5rem;
+    min-height: 520px;
   }
 
   .hero-main-title {
-    font-size: clamp(2.2rem, 9.5vw, 2.85rem);
-    letter-spacing: 0.16em;
-    text-indent: 0.16em;
+    font-size: clamp(1.75rem, 8.2vw, 2.5rem);
+    letter-spacing: 0.1em;
+    text-indent: 0.1em;
+    word-break: break-word;
   }
 
   .hero-tagline-pill {
-    padding: 0.38rem 1.1rem;
+    padding: 0.35rem 0.85rem;
+    max-width: 90vw;
   }
 
   .hero-tagline-text {
-    font-size: 0.74rem;
-    letter-spacing: 0.16em;
-    text-indent: 0.16em;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-indent: 0.1em;
+  }
+
+  .hero-cta-button-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    gap: 0.75rem;
   }
 
   .hero-primary-cta {
-    padding: 0.75rem 1.6rem;
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.4rem;
     font-size: 0.82rem;
   }
 
   .hero-secondary-cta {
-    padding: 0.75rem 1.4rem;
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.2rem;
     font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-main-title {
+    font-size: clamp(1.5rem, 7.8vw, 1.95rem);
+    letter-spacing: 0.06em;
+    text-indent: 0.06em;
+  }
+
+  .hero-tagline-text {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
   }
 }
 
@@ -962,7 +988,13 @@
 
 .cream-slider-quote-headline span {
   display: block;
-  white-space: nowrap;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 900px) {
+  .cream-slider-quote-headline span {
+    white-space: normal;
+  }
 }
 
 /* CENTER COLUMN: Laptop Mockup & Dots */
@@ -2553,7 +2585,7 @@
 
   .gameplay-stack-card.card-world-map {
     top: 8px;
-    left: 10px;
+    left: 8px;
   }
 
   .gameplay-stack-card.card-harvest-board {
@@ -2563,12 +2595,12 @@
 
   .gameplay-stack-card.card-knowledge-challenge {
     bottom: 20px;
-    right: 15px;
+    right: 10px;
   }
 
   .gameplay-stack-card.card-profile {
     bottom: 10px;
-    left: 10px;
+    left: 8px;
   }
 
   .gameplay-lightbox-close-btn {
@@ -2576,6 +2608,39 @@
     right: -12px;
     width: 38px;
     height: 38px;
+  }
+}
+
+@media (max-width: 380px) {
+  .gameplay-cards-stack-container {
+    max-width: 280px;
+    height: 250px;
+  }
+
+  .gameplay-stack-card {
+    width: 175px;
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .gameplay-stack-card.card-world-map {
+    top: 5px;
+    left: 4px;
+  }
+
+  .gameplay-stack-card.card-harvest-board {
+    top: 20px;
+    right: 4px;
+  }
+
+  .gameplay-stack-card.card-knowledge-challenge {
+    bottom: 15px;
+    right: 4px;
+  }
+
+  .gameplay-stack-card.card-profile {
+    bottom: 8px;
+    left: 4px;
   }
 }
 
@@ -3176,6 +3241,20 @@
   white-space: nowrap;
 }
 
+@media (max-width: 480px) {
+  .monitor-sticky-note {
+    right: 8px;
+    bottom: -16px;
+    padding: 6px 10px;
+    max-width: calc(100% - 20px);
+  }
+
+  .sticky-note-handwriting {
+    font-size: 0.95rem;
+    white-space: normal;
+  }
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 900px) {
   .desk-build-story-section {
@@ -3205,6 +3284,8 @@
 
   .notebook-line-text {
     font-size: 1.25rem;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 }
 
@@ -3492,6 +3573,34 @@
 .map-lightbox-trigger:hover {
   background: var(--sunlit-gold);
   color: var(--emerald-deep);
+}
+
+@media (max-width: 600px) {
+  .beacon-core {
+    width: 28px;
+    height: 28px;
+  }
+
+  .beacon-glyph {
+    font-size: 0.85rem;
+  }
+
+  .beacon-tooltip {
+    padding: 4px 8px;
+    font-size: 0.72rem;
+    bottom: calc(100% + 6px);
+  }
+
+  .beacon-tooltip-name {
+    font-size: 0.72rem;
+  }
+
+  .map-lightbox-trigger {
+    bottom: 8px;
+    right: 8px;
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
 }
 
 /* Asymmetric Realm Composition (Featured Hero + Supporting Stack) */
@@ -4217,6 +4326,42 @@
 
   .ledger-cell-divider {
     display: none;
+  }
+
+  .map-modal-dialog {
+    max-width: 95vw;
+    width: 95vw;
+  }
+
+  .modal-info-footer {
+    padding: 0.85rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .intro-telemetry-ledger {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .hero-telemetry-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .realms-asymmetric-layout {
+    gap: 1.25rem;
+  }
+
+  .realm-featured-hero {
+    padding: 1.4rem 1.1rem;
+  }
+
+  .gameplay-lightbox-dialog {
+    max-width: 96vw;
+  }
+
+  .gameplay-lightbox-overlay {
+    padding: 12px;
   }
 }
 
