@@ -26,6 +26,14 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 600px) {
+  .section-container,
+  .section__container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
 /* Background Variations */
 .section--dark {
   background-color: var(--green-900);
@@ -222,6 +230,18 @@
   text-transform: uppercase;
   white-space: nowrap;
   box-sizing: border-box;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .badge {
+    white-space: normal;
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    line-height: 1.35;
+    word-break: break-word;
+  }
 }
 
 .badge--gold {
@@ -231,6 +251,13 @@
 }
 
 .badge--muted {
+  background: rgba(18, 61, 43, 0.08);
+  border: 1px solid rgba(18, 61, 43, 0.2);
+  color: var(--ink-muted);
+}
+
+.section--dark .badge--muted,
+.card--glass .badge--muted {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--muted);
@@ -261,6 +288,34 @@
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
   margin-bottom: var(--space-7);
+}
+
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: var(--space-4);
+  }
+
+  .stat-card {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .stat-card__number {
+    font-size: 1.35rem;
+  }
+
+  .stat-card__label {
+    font-size: 0.72rem;
+  }
 }
 
 .stat-card {
@@ -313,10 +368,18 @@
   background: var(--green-950);
   aspect-ratio: 16 / 10;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .media-frame--folio {
   aspect-ratio: 16 / 11;
+}
+
+@media (max-width: 600px) {
+  .media-frame--folio {
+    aspect-ratio: 16 / 12;
+  }
 }
 
 .media-frame__img {
@@ -336,6 +399,20 @@
   top: var(--space-3);
   left: var(--space-3);
   z-index: 2;
+  max-width: calc(100% - 24px);
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .media-frame__badge {
+    top: 8px;
+    left: 8px;
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    max-width: calc(100% - 16px);
+  }
 }
 
 .media-frame__btn {
@@ -345,7 +422,25 @@
   z-index: 2;
   font-size: 0.78rem;
   padding: 0 var(--space-3);
-  min-height: 38px;
+  min-height: 40px;
+  background: rgba(7, 22, 16, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(233, 173, 72, 0.65);
+  color: #FFF6D8;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: var(--transition-smooth);
+}
+
+@media (max-width: 480px) {
+  .media-frame__btn {
+    bottom: 8px;
+    right: 8px;
+    font-size: 0.7rem;
+    padding: 0 10px;
+    min-height: 34px;
+    gap: 4px;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -552,14 +647,55 @@
   box-shadow: var(--shadow-card);
   padding: var(--space-6);
   box-sizing: border-box;
-  margin: 6px;
+  margin: 6px auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
   .folio-card {
     padding: var(--space-4);
-    margin: 4px;
-    outline-offset: 4px;
+    margin: 4px 0;
+    outline-offset: 3px;
+    border-radius: var(--radius-card);
+  }
+}
+
+@media (max-width: 480px) {
+  .folio-card {
+    padding: 14px 12px;
+    margin: 0;
+    outline: none;
+    border-radius: 16px;
+  }
+}
+
+.folio-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(233, 173, 72, 0.3);
+}
+
+@media (max-width: 600px) {
+  .folio-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .folio-header-stats {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    text-align: left !important;
+    border-top: 1px dashed rgba(233, 173, 72, 0.25);
+    padding-top: var(--space-2);
   }
 }
 
@@ -810,6 +946,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 
@@ -825,6 +962,21 @@
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--gold-500);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .atelier-step-card {
+    padding: 10px 12px;
+  }
+
+  .atelier-step-card__stage {
+    font-size: 0.74rem;
+  }
+
+  .atelier-step-card__top {
+    gap: 6px;
+  }
 }
 
 .atelier-step-card__desc {
@@ -865,11 +1017,12 @@
     direction: ltr;
   }
 
-  .story-chapter__visuals {
+  /* Default flow: narrative content first, then supporting card/visual */
+  .story-chapter__content {
     order: 1;
   }
 
-  .story-chapter__content {
+  .story-chapter__visuals {
     order: 2;
   }
 
@@ -1566,5 +1719,352 @@ textarea:focus-visible,
   outline: 2px solid var(--gold-500) !important;
   outline-offset: 3px !important;
 }
+
+/* --------------------------------------------------------------------------
+   24. MOBILE RESPONSIVENESS DEFENSE (360px, 390px, 430px VIEWPORTS)
+   Eliminate unintended horizontal scrolling, clipped content, overlapping text.
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  html, body, #root {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* Fluid typography defense */
+  .section-title {
+    font-size: clamp(1.4rem, 6.2vw, 1.85rem) !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .section-lead {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: var(--space-4) !important;
+  }
+
+  /* Single-column split layouts on mobile */
+  .split-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-4) !important;
+  }
+
+  /* Archival Folio Codex mobile defense */
+  .folio-card {
+    padding: 12px 10px !important;
+    margin: 0 !important;
+    outline: none !important;
+    border-radius: 14px !important;
+  }
+
+  /* In-engine capture card image defense */
+  .media-frame,
+  .media-frame--folio {
+    aspect-ratio: 16 / 11 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Story chapter and timeline mobile adjustments */
+  .story-chapter {
+    padding-left: 44px !important;
+  }
+
+  .story-timeline__track {
+    left: 14px !important;
+  }
+
+  .story-chapter__marker {
+    left: 14px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Button touch target compliance (min 44px) */
+  .btn,
+  .hero-primary-cta,
+  .hero-secondary-cta,
+  .footer-back-to-top-btn,
+  .gameplay-explore-btn {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Prevent text clipping inside cards and code blocks */
+  pre, code {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   25. COMPREHENSIVE RESPONSIVENESS OVERRIDES FOR ALL DEVICES
+   Guarantees all text, containers, cards, images, and grids adapt flawlessly
+   to every viewport width from 320px up to large desktop monitors.
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  /* Sections padding */
+  .section {
+    padding-top: clamp(36px, 6vw, 60px) !important;
+    padding-bottom: clamp(36px, 6vw, 60px) !important;
+  }
+
+  /* Section containers */
+  .section-container,
+  .section__container,
+  .editorial-container {
+    padding-left: clamp(14px, 4vw, 24px) !important;
+    padding-right: clamp(14px, 4vw, 24px) !important;
+    max-width: 100% !important;
+  }
+
+  /* Universal grid collapsing */
+  .split-grid,
+  .showcase-row,
+  .showcase-row--reverse,
+  .story-chapter__grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-4) !important;
+  }
+
+  /* Headline scaling */
+  .section-title {
+    font-size: clamp(1.6rem, 5.5vw, 2.3rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  .section-lead {
+    font-size: clamp(0.92rem, 2.5vw, 1.05rem) !important;
+    line-height: 1.6 !important;
+  }
+
+  /* 4-Column and 3-Column chips to 2-column or flex */
+  .chips-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .chip-card {
+    min-width: 0 !important;
+    flex: none !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Ensure container and wrapper boundary */
+  *, *::before, *::after {
+    max-width: 100%;
+  }
+
+  /* Headings & typography */
+  h1, .hero-main-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem) !important;
+    line-height: 1.2 !important;
+    word-break: break-word !important;
+  }
+
+  h2, .section-title, .gameplay-section-title {
+    font-size: clamp(1.35rem, 6vw, 1.85rem) !important;
+    line-height: 1.25 !important;
+    word-break: break-word !important;
+  }
+
+  h3, .card-title, .alt-headline {
+    font-size: clamp(1.1rem, 4.5vw, 1.35rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  h4 {
+    font-size: clamp(0.98rem, 3.8vw, 1.15rem) !important;
+  }
+
+  p, .section-lead, .card-desc, .story-chapter__desc {
+    font-size: clamp(0.85rem, 3.2vw, 0.95rem) !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Stats grid: clean 2-column with balanced padding */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: var(--space-4) !important;
+  }
+
+  .stat-card {
+    padding: 14px 10px !important;
+  }
+
+  .stat-card__number {
+    font-size: clamp(1.2rem, 5vw, 1.55rem) !important;
+    margin-bottom: 4px !important;
+  }
+
+  .stat-card__label {
+    font-size: clamp(0.68rem, 2.4vw, 0.78rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Chips grid: single column on phones */
+  .chips-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Folio Card (Explorer Collection) */
+  .folio-card {
+    padding: 14px 12px !important;
+    margin: 0 !important;
+    outline: none !important;
+    border-radius: 16px !important;
+    border-width: 1px !important;
+  }
+
+  .folio-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .folio-header-stats {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    text-align: left !important;
+    padding-top: 8px !important;
+  }
+
+  /* Codex entries */
+  .codex-entries-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Behind the Worlds story chapters */
+  .story-timeline__track {
+    left: 16px !important;
+  }
+
+  .story-chapter {
+    padding-left: 48px !important;
+    margin-bottom: var(--space-6) !important;
+  }
+
+  .story-chapter__marker {
+    left: 16px !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .story-chapter__content {
+    order: 1 !important;
+  }
+
+  .story-chapter__visuals {
+    order: 2 !important;
+  }
+
+  /* Atelier Step Card */
+  .atelier-step-card {
+    padding: 12px 14px !important;
+  }
+
+  .atelier-step-card__top {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Pullquote */
+  .pullquote-editorial {
+    padding: 12px 14px 12px 38px !important;
+    margin: var(--space-4) 0 !important;
+  }
+
+  .pullquote-editorial__glyph {
+    font-size: 2.2rem !important;
+    left: 8px !important;
+    top: 4px !important;
+  }
+
+  .pullquote-editorial__text {
+    font-size: 0.98rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Action buttons & strips */
+  .btw-action-strip {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .btw-action-strip .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Media frames and aspect ratios */
+  .media-frame {
+    border-radius: 14px !important;
+  }
+
+  .media-frame__btn {
+    bottom: 8px !important;
+    right: 8px !important;
+    font-size: 0.68rem !important;
+    min-height: 34px !important;
+    padding: 0 10px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .section-container,
+  .section__container,
+  .editorial-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .story-chapter {
+    padding-left: 40px !important;
+  }
+
+  .story-timeline__track {
+    left: 12px !important;
+  }
+
+  .story-chapter__marker {
+    left: 12px !important;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .stat-card {
+    padding: 10px 6px !important;
+  }
+
+  .stat-card__number {
+    font-size: 1.15rem !important;
+  }
+
+  .stat-card__label {
+    font-size: 0.65rem !important;
+  }
+
+  .folio-card {
+    padding: 10px 8px !important;
+  }
+}
+
 
 

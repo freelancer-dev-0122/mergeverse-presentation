@@ -145,11 +145,13 @@ export default function BehindTheWorlds({ onOpenModal: _onOpenModal = () => {} }
             return r.top < windowHeight * 0.82;
           };
 
-          setVisibleMarkers((prev) => ({
-            1: prev[1] || isNodeInView('chapter-node-1'),
-            2: prev[2] || isNodeInView('chapter-node-2'),
-            3: prev[3] || isNodeInView('chapter-node-3'),
-          }));
+          setVisibleMarkers((prev) => {
+            const m1 = prev[1] || isNodeInView('chapter-node-1');
+            const m2 = prev[2] || isNodeInView('chapter-node-2');
+            const m3 = prev[3] || isNodeInView('chapter-node-3');
+            if (m1 === prev[1] && m2 === prev[2] && m3 === prev[3]) return prev;
+            return { 1: m1, 2: m2, 3: m3 };
+          });
 
           // Reveal any .reveal elements within view
           if (containerRef.current) {

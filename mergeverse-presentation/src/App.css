@@ -29,31 +29,33 @@
   margin-inline: auto;
   width: min(var(--container), calc(100% - 48px));
   z-index: 100;
+  will-change: transform, top;
   transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-radius 0.3s ease;
-  background: rgba(9, 28, 20, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(233, 173, 72, 0.28);
+  background: rgba(7, 22, 16, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(233, 173, 72, 0.35);
   border-radius: var(--radius-pill);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.42), 0 0 20px rgba(233, 173, 72, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(233, 173, 72, 0.08);
   box-sizing: border-box;
 }
 
 .studio-navbar.is-scrolled {
   top: 10px;
-  background: rgba(7, 22, 16, 0.94);
-  border-color: rgba(233, 173, 72, 0.45);
-  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.6), 0 0 24px rgba(233, 173, 72, 0.15);
+  background: rgba(5, 17, 12, 0.97);
+  border-color: rgba(233, 173, 72, 0.5);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.7), 0 0 24px rgba(233, 173, 72, 0.18);
   transform: scale(0.985);
 }
 
 .studio-navbar.menu-open {
-  border-radius: 28px;
+  border-radius: 20px;
+  background: rgba(5, 17, 12, 0.98);
 }
 
 .navbar-inner {
@@ -331,27 +333,78 @@
 @media (max-width: 480px) {
   .studio-navbar {
     width: calc(100% - 16px);
-    top: 10px;
+    top: 8px;
   }
 
   .studio-navbar.is-scrolled {
-    top: 10px;
+    top: 8px;
   }
 
   .navbar-inner {
-    padding: 7px 10px 7px 12px;
+    padding: 6px 10px;
     gap: 0.35rem;
   }
 
+  .navbar-action-area {
+    gap: 0.45rem;
+  }
+
   .navbar-cta-btn {
-    padding: 0.35rem 0.65rem;
-    font-size: 0.65rem;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.68rem;
+    gap: 0.25rem;
+  }
+
+  .navbar-cta-btn .btn-arrow {
+    display: inline-block;
+  }
+
+  .navbar-hamburger-btn {
+    width: 34px;
+    height: 34px;
+    padding: 7px 6px;
   }
 
   .brand-title {
-    font-size: 0.88rem;
-    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
   }
+
+  .brand-crest-star {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .studio-navbar {
+    width: calc(100% - 10px);
+    top: 6px;
+  }
+
+  .studio-navbar.is-scrolled {
+    top: 6px;
+  }
+
+  .navbar-inner {
+    padding: 5px 8px;
+  }
+
+  .brand-title {
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+  }
+
+  .navbar-cta-btn {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.64rem;
+  }
+
+  .navbar-hamburger-btn {
+    width: 32px;
+    height: 32px;
+    padding: 6px 5px;
+  }
+}
 
   .cinematic-hero-section {
     padding: 4.8rem 0.75rem 2.5rem;
@@ -399,6 +452,32 @@
 }
 
 @media (max-width: 360px) {
+  .studio-navbar {
+    width: calc(100% - 12px);
+    top: 6px;
+  }
+
+  .navbar-inner {
+    padding: 5px 6px 5px 10px;
+    gap: 0.25rem;
+  }
+
+  .brand-title {
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+  }
+
+  .navbar-cta-btn {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.62rem;
+  }
+
+  .navbar-hamburger-btn {
+    width: 34px;
+    height: 34px;
+    padding: 8px 7px;
+  }
+
   .hero-main-title {
     font-size: clamp(1.5rem, 7.8vw, 1.95rem);
     letter-spacing: 0.06em;
@@ -4362,6 +4441,31 @@
 
   .gameplay-lightbox-overlay {
     padding: 12px;
+  }
+
+  .artwork-modal-backdrop {
+    padding: 12px;
+  }
+
+  .artwork-modal-dialog {
+    max-width: 96vw;
+    border-radius: 12px;
+  }
+
+  .modal-top-bar {
+    padding: 0.75rem 1rem;
+  }
+
+  .modal-title {
+    font-size: 0.76rem;
+  }
+
+  .modal-info-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  .modal-info-footer p {
+    font-size: 0.78rem;
   }
 }
 

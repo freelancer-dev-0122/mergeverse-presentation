@@ -194,14 +194,14 @@ export default function CinematicOpening({ onComplete }) {
     ctx.scale(dpr, dpr);
 
     const isMobile = width <= 768;
-    const count = isMobile ? 25 : 50;
+    const count = isMobile ? 16 : 28;
 
     firefliesRef.current = Array.from({ length: count }).map(() => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.45,
-      vy: -0.2 - Math.random() * 0.4, // Gentle upward drift
-      radius: 1.2 + Math.random() * 2.2,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -0.2 - Math.random() * 0.3, // Gentle upward drift
+      radius: 1.2 + Math.random() * 1.8,
       baseAlpha: 0.35 + Math.random() * 0.5,
       pulseSpeed: 0.015 + Math.random() * 0.03,
       phaseOffset: Math.random() * Math.PI * 2,

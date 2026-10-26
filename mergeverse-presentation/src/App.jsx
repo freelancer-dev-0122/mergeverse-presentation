@@ -575,13 +575,22 @@ function App() {
       { id: 'forest-outro', navKey: 'behind-the-worlds' },
     ];
 
+    let lastScrolledState = false;
+    let lastNavKey = 'hero';
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsScrolledPast40(scrollY > 40);
+      const isPast40 = scrollY > 40;
+      if (isPast40 !== lastScrolledState) {
+        lastScrolledState = isPast40;
+        setIsScrolledPast40(isPast40);
+      }
 
-      if (rafId) window.cancelAnimationFrame(rafId);
+      if (rafId) return; // Drop redundant frames if a frame is already queued
       rafId = window.requestAnimationFrame(() => {
-        // 1. Update gold scroll-progress bar
+        rafId = null;
+
+        // 1. Update gold scroll-progress bar directly via DOM without React render
         const docEl = document.documentElement;
         const maxScroll = docEl.scrollHeight - window.innerHeight;
         const progress = maxScroll > 0 ? Math.min(Math.max((scrollY / maxScroll) * 100, 0), 100) : 0;
@@ -594,9 +603,12 @@ function App() {
           heroBackdropRef.current.style.transform = `translate3d(0, ${scrollY * 0.32}px, 0)`;
         }
 
-        // 3. Accurate scroll-spy
+        // 3. Accurate scroll-spy: Only trigger React state change when active nav section actually changes
         if (window.innerHeight + scrollY >= docEl.scrollHeight - 60) {
-          setActiveNavSection('behind-the-worlds');
+          if (lastNavKey !== 'behind-the-worlds') {
+            lastNavKey = 'behind-the-worlds';
+            setActiveNavSection('behind-the-worlds');
+          }
           return;
         }
 
@@ -608,7 +620,10 @@ function App() {
             currentNav = sectionsForSpy[i].navKey;
           }
         }
-        setActiveNavSection(currentNav);
+        if (currentNav !== lastNavKey) {
+          lastNavKey = currentNav;
+          setActiveNavSection(currentNav);
+        }
       });
     };
 
@@ -1979,7 +1994,7 @@ function App() {
           {/* Archival Folio Wrapper */}
           <div className="folio-card reveal">
             {/* Folio Header & Progress Bar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-4)', marginBottom: 'var(--space-4)', paddingBottom: 'var(--space-4)', borderBottom: '1px solid rgba(233, 173, 72, 0.3)' }}>
+            <div className="folio-header-row">
               <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
                 <span style={{ fontSize: '1.8rem', lineHeight: 1 }}>📜</span>
                 <div>
@@ -1992,7 +2007,7 @@ function App() {
                 </div>
               </div>
 
-              <div style={{ textAlign: 'right' }}>
+              <div className="folio-header-stats" style={{ textAlign: 'right' }}>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--ink-900)' }}>
                   18 / 80
                 </div>
